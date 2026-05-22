@@ -1,73 +1,101 @@
-# React + TypeScript + Vite
+# Math Quest: Grade 5 Adventure
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive educational math game for Grade 5 students, covering the complete **Cambridge Primary Mathematics Stage 5** and **NCERT Class 5** curriculum.
 
-Currently, two official plugins are available:
+## Play Online
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**[Play Now](https://rcrxuwv6fx2na.kimi.page)** — Works in any browser on desktop, tablet, and mobile!
 
-## React Compiler
+## Download APK
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Download the Android APK file to install directly on your Android phone or tablet:
+- **[MathQuest-Grade5-Adventure.apk](./MathQuest-Grade5-Adventure.apk)** (33 MB)
 
-## Expanding the ESLint configuration
+> To install: Download the APK, open it on your Android device, and tap "Install". You may need to enable "Install from Unknown Sources" in Settings.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 10 Math Worlds
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| World | Topic | Description |
+|-------|-------|-------------|
+| 1. Number Kingdom | Place Value | 5-6 digit numbers, expanded form |
+| 2. Multiplication Forest | Multiplication | 3-digit by 1-digit, multiplying by 10/100 |
+| 3. Division Desert | Division | Division with remainders |
+| 4. Factor Farm | Factors & Multiples | Factors, multiples, prime numbers, HCF/LCM |
+| 5. Lake Fraction | Fractions | Addition, subtraction, comparison |
+| 6. Decimal City | Decimals | Decimal operations, fraction conversion |
+| 7. Percentage Park | Percentages | Percentage calculations, conversions |
+| 8. Geometry Mountain | Geometry | Angles, shapes, 3D figures |
+| 9. Measurement Meadows | Measurement | Length, mass conversions, area, perimeter |
+| 10. Data Castle | Data Handling | Bar charts, probability, data interpretation |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Features
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **No-fail learning** — Wrong answers let you try again with helpful explanations
+- **Dynamically generated questions** — 50+ question patterns for endless variety
+- **Star collection system** — Earn up to 5 stars per world
+- **Progressive unlocking** — Complete worlds to unlock new math topics
+- **Persistent progress** — Saves locally so students can continue anytime
+- **Beautiful themed worlds** — 10 unique environments with gorgeous artwork
+- **Works offline** — Once loaded, no internet connection needed
+
+## Screenshots
+
+### Menu Screen
+Beautiful magical landscape with floating math symbols and a cute math wizard mascot.
+
+### World Select
+Grid of 10 themed world cards showing lock/unlock status and star ratings.
+
+### Question Screen
+Card-based questions with large, touch-friendly answer buttons and immediate visual feedback.
+
+### World Complete
+Celebration screen with confetti, bouncing trophy, and star rating.
+
+## Tech Stack
+
+- **React + TypeScript + Vite** — Fast, modern web development
+- **Tailwind CSS** — Utility-first styling
+- **Capacitor** — Native Android/iOS app wrapper
+- **Custom Game Engine** — State management, question generation, progress tracking
+
+## Curriculum Alignment
+
+This game covers all topics from:
+- **Cambridge Primary Mathematics Stage 5** (Checkpoints, Numbers, Geometry, Measure, Handling Data)
+- **NCERT Class 5 Mathematics** (The Fish Tale, Shapes and Angles, How Many Squares, Parts and Wholes, etc.)
+
+## Development
+
+### Prerequisites
+- Node.js 18+
+- npm or yarn
+
+### Install dependencies
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Run development server
+```bash
+npm run dev
 ```
+
+### Build for production
+```bash
+npm run build
+```
+
+### Build Android APK
+```bash
+npm run build
+npx cap sync android
+cd android
+./gradlew assembleDebug
+```
+
+The APK will be at `android/app/build/outputs/apk/debug/app-debug.apk`
+
+## License
+
+This project is open source and free to use for educational purposes.

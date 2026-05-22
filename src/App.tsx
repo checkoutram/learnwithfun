@@ -1,10 +1,44 @@
-import { Routes, Route } from 'react-router'
-import Home from './pages/Home'
+import { useEffect, useState } from 'react';
+import { gameStore, type GameScreen } from './game/gameStore';
+import MenuScreen from './screens/MenuScreen';
+import WorldSelectScreen from './screens/WorldSelectScreen';
+import QuestionScreen from './screens/QuestionScreen';
+import WorldCompleteScreen from './screens/WorldCompleteScreen';
+import AllCompleteScreen from './screens/AllCompleteScreen';
+import './game.css';
 
-export default function App() {
+function App() {
+  const [screen, setScreen] = useState<GameScreen>(gameStore.screen);
+  const [transition, setTransition] = useState<'in' | 'out'>('in');
+
+  useEffect(() => {
+    return gameStore.subscribe(() => {
+      setTransition('out');
+      setTimeout(() => {
+        setScreen(gameStore.screen);
+        setTransition('in');
+      }, 200);
+    });
+  }, []);
+
+  const renderScreen = () => {
+    switch (screen) {
+      case 'menu': return <MenuScreen />;
+      case 'worlds': return <WorldSelectScreen />;
+      case 'question': return <QuestionScreen />;
+      case 'worldComplete': return <WorldCompleteScreen />;
+      case 'allComplete': return <AllCompleteScreen />;
+      default: return <MenuScreen />;
+    }
+  };
+
   return (
-    <Routes>
-      <Route path="/" element={<Home />} />
-    </Routes>
-  )
+    <div className="game-container">
+      <div className={`screen-wrapper ${transition === 'in' ? 'screen-in' : 'screen-out'}`}>
+        {renderScreen()}
+      </div>
+    </div>
+  );
 }
+
+export default App;
