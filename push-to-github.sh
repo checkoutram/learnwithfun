@@ -1,60 +1,68 @@
 #!/bin/bash
-# Push Math Quest to GitHub
-# Usage: ./push-to-github.sh <your-github-username>
-
 set -e
 
-if [ -z "$1" ]; then
-  echo "Usage: ./push-to-github.sh <your-github-username>"
-  echo "Example: ./push-to-github.sh johndoe"
-  exit 1
-fi
+echo "=========================================="
+echo "  Push Subjects of Fun to GitHub"
+echo "=========================================="
+echo ""
+echo "This script will push the code to your GitHub repo."
+echo ""
 
-USERNAME=$1
-REPO_NAME="math-quest-grade5"
-
-echo "Setting up GitHub repository..."
-echo "Username: $USERNAME"
-echo "Repo: $REPO_NAME"
-
-# Check if gh CLI is installed
+# Check if gh is installed, if not provide instructions
 if ! command -v gh &> /dev/null; then
-  echo ""
-  echo "GitHub CLI (gh) not found. Installing..."
-  # Try to install gh
-  if command -v apt &> /dev/null; then
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-    sudo apt update -qq && sudo apt install -y gh
-  elif command -v brew &> /dev/null; then
-    brew install gh
-  else
-    echo "Please install GitHub CLI manually: https://cli.github.com/"
-    exit 1
-  fi
+    echo "⚠️  GitHub CLI (gh) is not installed."
+    echo ""
+    echo "Please install it first:"
+    echo "  - On Ubuntu/Debian: sudo apt install gh"
+    echo "  - On macOS: brew install gh"
+    echo "  - On Windows: winget install --id GitHub.cli"
+    echo ""
+    echo "Then login: gh auth login"
+    echo ""
 fi
 
-# Check authentication
-if ! gh auth status &> /dev/null; then
-  echo ""
-  echo "Please login to GitHub:"
-  gh auth login
+# Check if logged in to gh
+if command -v gh &> /dev/null; then
+    if ! gh auth status &> /dev/null; then
+        echo "⚠️  Not logged in to GitHub CLI."
+        echo "Please run: gh auth login"
+        echo ""
+        exit 1
+    fi
+    
+    echo "✅ GitHub CLI authenticated"
+    
+    # Check if repo exists
+    if gh repo view checkoutram/learnwithfun &> /dev/null; then
+        echo "⚠️  Repo checkoutram/learnwithfun already exists!"
+        read -p "Do you want to force push and overwrite? (y/N): " confirm
+        if [[ $confirm != [yY] ]]; then
+            echo "Cancelled."
+            exit 1
+        fi
+    else
+        echo "Creating repo checkoutram/learnwithfun..."
+        gh repo create checkoutram/learnwithfun --public --source=. --description "Subjects of Fun - Interactive learning game for 5th grade students" --push
+        echo ""
+        echo "✅ Successfully created and pushed to checkoutram/learnwithfun!"
+        echo ""
+        echo "🌐 View your repo at: https://github.com/checkoutram/learnwithfun"
+        exit 0
+    fi
 fi
 
-# Create repository
+# Fallback - manual instructions
+echo "Since gh CLI is not available, here are the manual steps:"
 echo ""
-echo "Creating GitHub repository..."
-gh repo create "$REPO_NAME" --public --source=. --remote=origin --push || {
-  echo ""
-  echo "Repo may already exist. Trying to add remote and push..."
-  git remote add origin "https://github.com/$USERNAME/$REPO_NAME.git" 2>/dev/null || true
-  git branch -M main
-  git push -u origin main
-}
-
+echo "1. Go to https://github.com/new"
+echo "2. Enter 'learnwithfun' as the Repository name"
+echo "3. Set it to Public (or Private if you prefer)"
+echo "4. Click 'Create repository' (DO NOT initialize with README)"
+echo "5. Run these commands in your project folder:"
 echo ""
-echo "Done! Your repository is at:"
-echo "https://github.com/$USERNAME/$REPO_NAME"
+echo "   cd /path/to/your/project"
+echo "   git remote add origin https://github.com/checkoutram/learnwithfun.git"
+echo "   git branch -M main"
+echo "   git push -u origin main"
 echo ""
-echo "GitHub Actions will automatically build the APK on each push."
-echo "You can also download the APK from the Actions tab."
+echo "Done! Your code will be at: https://github.com/checkoutram/learnwithfun"
