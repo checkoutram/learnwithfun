@@ -1,54 +1,40 @@
-// Game State Store - manages all game state with a simple pub-sub pattern
 import { QuestionGenerator } from './QuestionGenerator';
 import type { MathQuestion } from './QuestionGenerator';
+import { SUBJECTS } from './subjects';
+import type { SubjectData, BookData, WorldData } from './subjects';
 
-export type GameScreen = 'menu' | 'worlds' | 'question' | 'worldComplete' | 'allComplete';
+export type GameScreen = 'menu' | 'nameInput' | 'subjects' | 'books' | 'worlds' | 'question' | 'worldComplete' | 'allComplete';
 
-export interface WorldData {
-  id: number;
-  name: string;
-  topic: string;
-  color: string;
-  icon: string;
+export interface QuestionAttempt {
+  retries: number;
+  gotCorrect: boolean;
 }
 
-export const WORLDS: WorldData[] = [
-  { id: 1, name: 'Number Kingdom', topic: 'Place Value', color: '#4CAF50', icon: '/assets/world1.png' },
-  { id: 2, name: 'Multiplication Forest', topic: 'Multiplication', color: '#2E7D32', icon: '/assets/world2.png' },
-  { id: 3, name: 'Division Desert', topic: 'Division', color: '#FF8F00', icon: '/assets/world3.png' },
-  { id: 4, name: 'Factor Farm', topic: 'Factors & Multiples', color: '#8BC34A', icon: '/assets/world4.png' },
-  { id: 5, name: 'Lake Fraction', topic: 'Fractions', color: '#00ACC1', icon: '/assets/world5.png' },
-  { id: 6, name: 'Decimal City', topic: 'Decimals', color: '#7B1FA2', icon: '/assets/world6.png' },
-  { id: 7, name: 'Percentage Park', topic: 'Percentages', color: '#E91E63', icon: '/assets/world7.png' },
-  { id: 8, name: 'Geometry Mountain', topic: 'Geometry', color: '#5D4037', icon: '/assets/world8.png' },
-  { id: 9, name: 'Measurement Meadows', topic: 'Measurement', color: '#F9A825', icon: '/assets/world9.png' },
-  { id: 10, name: 'Data Castle', topic: 'Data Handling', color: '#3F51B5', icon: '/assets/world10.png' },
-];
-
 export interface GameProgress {
-  unlockedWorlds: number[];
-  completedWorlds: number[];
-  worldStars: Record<number, number>;
+  playerName: string;
+  subjectProgress: Record<string, Record<number, Record<number, number>>>; // stars (can be 0.5)
 }
 
 function loadProgress(): GameProgress {
   try {
-    const saved = localStorage.getItem('mathQuestProgress_v2');
+    const saved = localStorage.getItem('subjectsOfFun_v1');
     if (saved) return JSON.parse(saved);
   } catch { /* ignore */ }
-  return { unlockedWorlds: [1], completedWorlds: [], worldStars: {} };
+  return { playerName: '', subjectProgress: {} };
 }
 
 function saveProgress(p: GameProgress) {
-  localStorage.setItem('mathQuestProgress_v2', JSON.stringify(p));
+  localStorage.setItem('subjectsOfFun_v1', JSON.stringify(p));
 }
 
 type Listener = () => void;
 
 class GameStore {
   private listeners: Listener[] = [];
-  
+
   screen: GameScreen = 'menu';
+  currentSubject: SubjectData | null = null;
+  currentBook: BookData | null = null;
   currentWorld: WorldData | null = null;
   questions: MathQuestion[] = [];
   currentQuestionIndex = 0;
@@ -57,37 +43,66 @@ class GameStore {
   selectedAnswer: number | null = null;
   showResult = false;
   isCorrect = false;
+  isRetry = false;
+  retryCount = 0;
+  questionAttempts: QuestionAttempt[] = [];
   progress: GameProgress = loadProgress();
-  transitionDirection: 'in' | 'out' = 'in';
 
   subscribe(listener: Listener) {
     this.listeners.push(listener);
-    return () => {
-      this.listeners = this.listeners.filter(l => l !== listener);
-    };
+    return () => { this.listeners = this.listeners.filter(l => l !== listener); };
   }
 
-  private notify() {
-    this.listeners.forEach(l => l());
+  private notify() { this.listeners.forEach(l => l()); }
+
+  setScreen(screen: GameScreen) { this.screen = screen; this.notify(); }
+
+  setPlayerName(name: string) {
+    this.progress.playerName = name.trim();
+    saveProgress(this.progress);
+    this.notify();
   }
 
-  setScreen(screen: GameScreen) {
-    this.screen = screen;
+  selectSubject(subjectId: string) {
+    const subject = SUBJECTS.find(s => s.id === subjectId);
+    if (!subject) return;
+    this.currentSubject = subject;
+    const activeBooks = subject.books.filter(b => !b.disabled);
+    if (activeBooks.length === 1) {
+      this.currentBook = activeBooks[0];
+      this.screen = 'worlds';
+    } else {
+      this.screen = 'books';
+    }
+    this.currentWorld = null;
+    this.notify();
+  }
+
+  selectBook(bookId: number) {
+    if (!this.currentSubject) return;
+    const book = this.currentSubject.books.find(b => b.id === bookId);
+    if (!book || book.disabled) return;
+    this.currentBook = book;
+    this.currentWorld = null;
+    this.screen = 'worlds';
     this.notify();
   }
 
   startWorld(worldId: number) {
-    const world = WORLDS.find(w => w.id === worldId);
+    if (!this.currentSubject || !this.currentBook) return;
+    const world = this.currentBook.worlds.find(w => w.id === worldId);
     if (!world) return;
-    
     this.currentWorld = world;
-    this.questions = QuestionGenerator.getQuestionsForWorld(worldId, 5);
+    this.questions = QuestionGenerator.getQuestions(this.currentSubject.id, this.currentBook.id, worldId, 10);
     this.currentQuestionIndex = 0;
     this.correctCount = 0;
     this.wrongCount = 0;
     this.selectedAnswer = null;
     this.showResult = false;
     this.isCorrect = false;
+    this.isRetry = false;
+    this.retryCount = 0;
+    this.questionAttempts = this.questions.map(() => ({ retries: 0, gotCorrect: false }));
     this.screen = 'question';
     this.notify();
   }
@@ -98,13 +113,31 @@ class GameStore {
     const currentQ = this.questions[this.currentQuestionIndex];
     this.isCorrect = index === currentQ.correctIndex;
     this.showResult = true;
-    
+
+    const attempt = this.questionAttempts[this.currentQuestionIndex];
+    attempt.gotCorrect = this.isCorrect;
+
     if (this.isCorrect) {
-      this.correctCount++;
+      // First try = 1 star, Retry = 0.5 star
+      const starsEarned = this.isRetry ? 0.5 : 1;
+      this.correctCount += starsEarned;
     } else {
       this.wrongCount++;
     }
-    
+
+    this.notify();
+  }
+
+  retryQuestion() {
+    // Reset for retry
+    this.isRetry = true;
+    this.retryCount++;
+    this.selectedAnswer = null;
+    this.showResult = false;
+    this.isCorrect = false;
+    // Remove wrong answer penalty
+    if (this.wrongCount > 0) this.wrongCount--;
+    this.questionAttempts[this.currentQuestionIndex].retries++;
     this.notify();
   }
 
@@ -114,63 +147,45 @@ class GameStore {
       this.selectedAnswer = null;
       this.showResult = false;
       this.isCorrect = false;
+      this.isRetry = false;
       this.notify();
     } else {
-      // World complete
       this.completeWorld();
     }
   }
 
   private completeWorld() {
-    if (!this.currentWorld) return;
-    
-    const worldId = this.currentWorld.id;
-    
-    if (!this.progress.completedWorlds.includes(worldId)) {
-      this.progress.completedWorlds.push(worldId);
-    }
-    
-    this.progress.worldStars[worldId] = Math.max(
-      this.progress.worldStars[worldId] || 0,
-      this.correctCount
-    );
-    
-    const nextWorldId = worldId + 1;
-    if (nextWorldId <= 10 && !this.progress.unlockedWorlds.includes(nextWorldId)) {
-      this.progress.unlockedWorlds.push(nextWorldId);
-    }
-    
+    if (!this.currentSubject || !this.currentBook || !this.currentWorld) return;
+    const sid = this.currentSubject.id, bid = this.currentBook.id, wid = this.currentWorld.id;
+    if (!this.progress.subjectProgress[sid]) this.progress.subjectProgress[sid] = {};
+    if (!this.progress.subjectProgress[sid][bid]) this.progress.subjectProgress[sid][bid] = {};
+    const prevStars = this.progress.subjectProgress[sid][bid][wid] || 0;
+    this.progress.subjectProgress[sid][bid][wid] = Math.max(prevStars, this.correctCount);
     saveProgress(this.progress);
-    
-    if (worldId === 10) {
-      this.screen = 'allComplete';
-    } else {
-      this.screen = 'worldComplete';
-    }
+    this.screen = 'worldComplete';
     this.notify();
   }
 
-  goToMenu() {
-    this.screen = 'menu';
-    this.currentWorld = null;
-    this.notify();
-  }
-
-  goToWorlds() {
-    this.screen = 'worlds';
-    this.currentWorld = null;
-    this.notify();
-  }
+  goToMenu() { this.screen = 'menu'; this.notify(); }
+  goToSubjects() { this.screen = 'subjects'; this.notify(); }
+  goToBooks() { this.screen = 'books'; this.notify(); }
+  goToWorlds() { this.screen = 'worlds'; this.notify(); }
 
   resetProgress() {
-    this.progress = { unlockedWorlds: [1], completedWorlds: [], worldStars: {} };
+    this.progress = { playerName: this.progress.playerName, subjectProgress: {} };
     saveProgress(this.progress);
     this.notify();
+  }
+
+  getStarsForWorld(subjectId: string, bookId: number, worldId: number): number {
+    return this.progress.subjectProgress[subjectId]?.[bookId]?.[worldId] || 0;
   }
 
   getState() {
     return {
       screen: this.screen,
+      currentSubject: this.currentSubject,
+      currentBook: this.currentBook,
       currentWorld: this.currentWorld,
       questions: this.questions,
       currentQuestionIndex: this.currentQuestionIndex,
@@ -179,9 +194,14 @@ class GameStore {
       selectedAnswer: this.selectedAnswer,
       showResult: this.showResult,
       isCorrect: this.isCorrect,
+      isRetry: this.isRetry,
+      retryCount: this.retryCount,
+      questionAttempts: this.questionAttempts,
       progress: this.progress,
     };
   }
 }
 
 export const gameStore = new GameStore();
+export { SUBJECTS };
+export type { SubjectData, BookData, WorldData };
