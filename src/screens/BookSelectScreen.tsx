@@ -35,7 +35,7 @@ export default function BookSelectScreen() {
                 onClick={() => { if (!isDisabled) gameStore.selectBook(book.id); }}
                 style={isDisabled ? {} : { borderColor: subject.color + '60', background: subject.color + '12' }}
               >
-                <div className="book-icon" style={{ background: isDisabled ? '#555' : subject.color + '30' }}>
+                <div className="book-icon" style={{ background: isDisabled ? '#555' : subject.color + '25' }}>
                   <img src={subject.icon} alt={subject.name} className="book-icon-img" />
                 </div>
                 <div className="book-info">

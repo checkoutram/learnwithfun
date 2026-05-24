@@ -56,7 +56,7 @@ export default function WorldSelectScreen() {
               onClick={() => handleWorldClick(world.id)}
               style={{ borderColor: world.color + '40' }}
             >
-              <div className="world-icon-wrap" style={{ background: world.color + '20', border: `3px solid ${world.color}40` }}>
+              <div className="world-icon-wrap" style={{ background: world.color + '18', border: `1.5px solid ${world.color}40` }}>
                 <img src={world.icon} alt={world.name} className="world-icon-img" />
               </div>
               <div className="world-info">

@@ -54,7 +54,7 @@ class QG {
     return f.sort((a, b) => a - b);
   }
 
-  // ============ MATH (existing + fixed) ============
+  // ============ MATH (12 chapters - Cambridge Primary Maths / NCERT Grade 5) ============
   static mathPlaceValue(n = 5): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
@@ -69,6 +69,15 @@ class QG {
       } else {
         q.push({ question: `What is the place value of digit ${digit} in ${num.toLocaleString()}?`, ...this.makeOptions(value.toString(), [() => (value * 10).toString(), () => (value / 10).toString(), () => (value * 2).toString()]), explanation: `The digit ${digit} is in the ${place} place, so its value is ${value}.` });
       }
+    }
+    return q;
+  }
+
+  static mathAddSubtract(n = 5): MathQuestion[] {
+    const q: MathQuestion[] = [];
+    for (let i = 0; i < n; i++) {
+      if (i % 2 === 0) { const a = this.getRandomInt(1000, 9999), b = this.getRandomInt(1000, 9999), s = a + b; q.push({ question: `What is ${a.toLocaleString()} + ${b.toLocaleString()}?`, ...this.makeOptions(s.toLocaleString(), [() => (s + this.getRandomInt(1, 50)).toLocaleString(), () => (s - this.getRandomInt(1, 50)).toLocaleString(), () => (a + b + this.getRandomInt(100, 500)).toLocaleString()]), explanation: `${a.toLocaleString()} + ${b.toLocaleString()} = ${s.toLocaleString()}.` }); }
+      else { const a = this.getRandomInt(1000, 9999), b = this.getRandomInt(100, a - 1), diff = a - b; q.push({ question: `What is ${a.toLocaleString()} - ${b.toLocaleString()}?`, ...this.makeOptions(diff.toLocaleString(), [() => (diff + this.getRandomInt(1, 50)).toLocaleString(), () => (diff - this.getRandomInt(1, 50)).toLocaleString(), () => (a + b).toLocaleString()]), explanation: `${a.toLocaleString()} - ${b.toLocaleString()} = ${diff.toLocaleString()}.` }); }
     }
     return q;
   }
@@ -169,7 +178,17 @@ class QG {
     return q;
   }
 
-  // ============ ENGLISH GRAMMAR ============
+  static mathMoney(n = 5): MathQuestion[] {
+    const q: MathQuestion[] = [];
+    for (let i = 0; i < n; i++) {
+      if (i % 3 === 0) { const p = this.getRandomInt(10, 500), r = this.getRandomInt(5, p - 1); q.push({ question: `An item costs ₹${p}. You pay ₹${p + r}. What is the change?`, ...this.makeOptions(`₹${r}`, [() => `₹${r + this.getRandomInt(1, 10)}`, () => `₹${Math.max(1, r - this.getRandomInt(1, 5))}`, () => `₹${p}`]), explanation: `Change = Amount paid - Cost = ₹${p + r} - ₹${p} = ₹${r}.` }); }
+      else if (i % 3 === 1) { const a = this.getRandomInt(5, 50), b = this.getRandomInt(5, 50), c = this.getRandomInt(5, 50), s = a + b + c; q.push({ question: `You buy items for ₹${a}, ₹${b}, and ₹${c}. What is the total?`, ...this.makeOptions(`₹${s}`, [() => `₹${s + this.getRandomInt(1, 10)}`, () => `₹${s - this.getRandomInt(1, 5)}`, () => `₹${a + b}`]), explanation: `Total = ₹${a} + ₹${b} + ₹${c} = ₹${s}.` }); }
+      else { const r = this.getRandomInt(2, 10), qty = this.getRandomInt(2, 12), tot = r * qty; q.push({ question: `1 pen costs ₹${r}. What is the cost of ${qty} pens?`, ...this.makeOptions(`₹${tot}`, [() => `₹${tot + this.getRandomInt(1, 10)}`, () => `₹${r + qty}`, () => `₹${Math.max(1, tot - this.getRandomInt(1, 5))}`]), explanation: `Cost = ₹${r} x ${qty} = ₹${tot}.` }); }
+    }
+    return q;
+  }
+
+  // ============ ENGLISH GRAMMAR (Communicate with Cambridge Grade 5 Grammar) ============
   static engGrammar(worldId: number, n = 5): MathQuestion[] {
     switch (worldId) {
       case 1: return this.engNouns(n);
@@ -273,184 +292,258 @@ class QG {
     const m: Record<string, string> = { un: 'not', dis: 'not', re: 'again', mis: 'wrongly', pre: 'before' }; return m[p] || 'not';
   }
 
-
-  // ============ ENGLISH TEXTBOOK ============
+  // ============ ENGLISH TEXTBOOK (Communicate with Cambridge Grade 5) ============
+  // 10 chapters: Chuskit, Thunder Cake, Peter Pan, Coral Reef, Inspiring Women,
+  // Go Green, Midsummer Night's Dream, Immigrant Experience, The Umbrella, Explorers
   static engTextbook(worldId: number, n = 10): MathQuestion[] {
     const passages: any[] = [
-      { title: 'The Wise Crow', i: '/assets/img_wise_crow.png', questions: [
-        { q: 'What problem did the crow face?', a: 'He could not reach the water.', w: ['The pitcher was too heavy', 'The water was dirty', 'He was too tired to fly'], e: 'The pitcher had very little water.' },
-        { q: 'How did the crow solve the problem?', a: 'By dropping pebbles into the pitcher.', w: ['By breaking the pitcher', 'By asking another bird for help', 'By drinking from a different place'], e: 'The pebbles raised the water level.' },
-        { q: 'What does this story teach us?', a: 'Intelligence can solve problems.', w: ['Always give up when things are hard', 'Ask others to do your work', 'Water is always hard to find'], e: 'The crow used his brain to find a solution.' },
-        { q: 'What kind of bird was in the story?', a: 'A crow', w: ['A parrot', 'An eagle', 'A sparrow'], e: 'The main character was a clever crow.' },
-        { q: 'What did the crow drop into the pitcher?', a: 'Pebbles', w: ['Leaves', 'Stones too big to fit', 'Sand'], e: 'The crow dropped small stones (pebbles).' },
-        { q: 'Why did the water rise?', a: 'The pebbles displaced the water', w: ['The water magically grew', 'The sun evaporated the water', 'Another bird added water'], e: 'Pebbles took up space and pushed water up.' },
-        { q: 'What was the crow trying to do?', a: 'Drink water', w: ['Take a bath', 'Fill the pitcher', 'Play with the pebbles'], e: 'The crow was thirsty and wanted water.' },
-        { q: 'Was the pitcher full of water?', a: 'No', w: ['Yes, completely full', 'Only at the top', 'It was overflowing'], e: 'The pitcher had very little water in it.' },
-        { q: 'How did the crow feel at the end?', a: 'Satisfied and happy', w: ['Angry and frustrated', 'Scared and worried', 'Tired and sleepy'], e: 'The crow finally got to drink water.' },
-        { q: 'What quality of the crow helped him?', a: 'Cleverness', w: ['Strength', 'Speed', 'Beauty'], e: 'The crow used intelligence to solve the problem.' },
+      // World 1: Chuskit Goes to School (Chapter 1) - Courage & Inclusion
+      { questions: [
+        { q: "A girl who uses a wheelchair wants to go to school. What is her biggest challenge?", a: "There are no proper roads for her wheelchair", w: ["She has no books", "She has no friends", "She does not want to study"], e: "The village paths are not suitable for a wheelchair, making it hard for her to reach school." },
+        { q: "Who can help someone with a disability reach their goals?", a: "The whole community working together", w: ["Only a magic genie can help", "Nobody can help", "Only famous people"], e: "When communities come together, they can remove barriers for people with disabilities." },
+        { q: "What does the story of a girl overcoming obstacles teach us?", a: "Determination and support can overcome difficulties", w: ["School is not important", "It is better to stay home", "Only rich children can study"], e: "With determination and community help, any obstacle can be overcome." },
+        { q: "How can we show kindness to someone who faces physical challenges?", a: "By building accessible paths and including them", w: ["By ignoring them", "By telling them to stay home", "By giving them money only"], e: "Building ramps, accessible paths, and including everyone shows true kindness." },
+        { q: "What does a mountain village in India look like?", a: "High mountains with cold dry land", w: ["Beaches and palm trees", "Tall buildings everywhere", "Dense rainforests"], e: "Mountain regions in northern India have high altitudes and cold desert landscapes." },
+        { q: "Why is education important for every child?", a: "Every child deserves a chance to learn and grow", w: ["Only some children should study", "School is boring", "Education is not useful"], e: "Education is a fundamental right for every child, regardless of their situation." },
+        { q: "What quality does a person who never gives up show?", a: "Determination and courage", w: ["Fear and weakness", "Laziness", "Selfishness"], e: "Never giving up despite difficulties shows determination and courage." },
+        { q: "How can friends and neighbours help someone in need?", a: "By working together to solve problems", w: ["By pretending not to see", "By laughing at them", "By avoiding them"], e: "Working together as a community can create positive change for everyone." },
+        { q: "What is inclusion?", a: "Making sure everyone can participate equally", w: ["Keeping some people out", "Only helping yourself", "Ignoring differences"], e: "Inclusion means ensuring everyone, regardless of ability, can participate in all activities." },
+        { q: "What is the main theme of stories about overcoming challenges?", a: "Courage, inclusion, and the power of community", w: ["War and victory", "Magic and fantasy", "Wealth and success"], e: "Stories about overcoming challenges teach us about courage, inclusion, and community support." },
       ]},
-      { title: 'The Ant and the Grasshopper', questions: [
-        { q: 'What was the ant doing?', a: 'Carrying a heavy grain.', w: ['Sleeping under a tree', 'Playing with friends', 'Eating the grain'], e: 'The ant was storing food for winter.' },
-        { q: 'What was the grasshopper doing?', a: 'Singing and hopping about.', w: ['Working hard', 'Sleeping all day', 'Building a house'], e: 'The grasshopper was playing instead of working.' },
-        { q: 'Why was the ant storing food?', a: 'For the winter.', w: ['To sell at the market', 'For a big party', 'Because he was hungry right now'], e: 'Winter food would be scarce.' },
-        { q: 'What season was it?', a: 'Summer', w: ['Winter', 'Rainy season', 'Spring'], e: 'The story takes place on a summer day.' },
-        { q: 'What did the grasshopper invite the ant to do?', a: 'Sing with him', w: ['Work together', 'Go swimming', 'Build a house'], e: 'The grasshopper wanted the ant to stop working.' },
-        { q: 'Was the ant being lazy?', a: 'No', w: ['Yes, very lazy', 'Sometimes', 'Only in the morning'], e: 'The ant was hard at work storing food.' },
-        { q: 'What lesson does this story teach?', a: 'Work hard for the future', w: ['Always play and have fun', 'Ignore your friends', 'Never share your food'], e: 'We should prepare for difficult times.' },
-        { q: 'Who was working hard?', a: 'The ant', w: ['The grasshopper', 'The spider', 'The butterfly'], e: 'The ant was carrying grains to store.' },
-        { q: 'Who was playing and singing?', a: 'The grasshopper', w: ['The ant', 'The cricket', 'The bee'], e: 'The grasshopper was enjoying summer.' },
-        { q: 'When would food be scarce?', a: 'In winter', w: ['In summer', 'During spring', 'On sunny days'], e: 'The ant knew winter food would be hard to find.' },
+      // World 2: Thunder Cake (Chapter 2) - Family & Overcoming Fear
+      { questions: [
+        { q: "A young girl is scared of thunderstorms. Who helps her overcome this fear?", a: "Her grandmother", w: ["A police officer", "A stranger", "Nobody helps her"], e: "Family members, especially grandparents, often help children overcome their fears with love and patience." },
+        { q: "How can a grandparent help a child who is afraid?", a: "By keeping them busy with a fun activity", w: ["By scolding them", "By ignoring their fear", "By forcing them outside"], e: "Distracting a child with a fun, engaging activity helps them forget their fear." },
+        { q: "What does a grandmother's love represent?", a: "Wisdom, comfort, and unconditional care", w: ["Fear and worry", "Anger and punishment", "Silence and distance"], e: "Grandmothers often symbolize wisdom, comfort, and unconditional love in stories." },
+        { q: "What is a good way to face your fears?", a: "With the support of loved ones around you", w: ["By running away", "By hiding forever", "By getting angry"], e: "Having supportive people around makes facing fears much easier." },
+        { q: "Why do grandparents play an important role in families?", a: "They share wisdom and provide emotional support", w: ["They just cook food", "They are not important", "They only tell stories"], e: "Grandparents offer wisdom, emotional support, and a loving presence in families." },
+        { q: "What can baking or cooking together teach children?", a: "Family bonding and teamwork", w: ["Nothing useful", "How to make a mess", "That cooking is boring"], e: "Cooking together strengthens family bonds and teaches teamwork." },
+        { q: "What emotion does a child feel when a loved one comforts them?", a: "Safe and secure", w: ["More scared", "Angry", "Lonely"], e: "Comfort from loved ones makes children feel safe and secure." },
+        { q: "What is the opposite of fear?", a: "Courage", w: ["Sadness", "Happiness", "Anger"], e: "Courage is the ability to face fear despite feeling afraid." },
+        { q: "Why are family bonds important?", a: "They give us love, support, and strength", w: ["They are not important", "They only cause problems", "They are temporary"], e: "Strong family bonds provide emotional support and help us grow." },
+        { q: "What lesson do stories about family teach us?", a: "Love and patience help overcome any fear", w: ["Fear is permanent", "Family cannot help", "Running away is best"], e: "Stories about family show how love and patience conquer all fears." },
       ]},
-      { title: 'Rainbow Colors', i: '/assets/img_rainbow.png', questions: [
-        { q: 'How many colors does a rainbow have?', a: 'Seven', w: ['Five', 'Eight', 'Ten'], e: 'Violet, indigo, blue, green, yellow, orange, red.' },
-        { q: 'When does a rainbow appear?', a: 'After rain', w: ['At midnight', 'During a storm', 'On a cloudy day'], e: 'Rainbow forms when sunlight passes through raindrops.' },
-        { q: 'What causes a rainbow?', a: 'Sunlight passing through raindrops', w: ['Paint in the sky', 'A giant flashlight', 'Reflection from the moon'], e: 'Light bends (refracts) through water droplets.' },
-        { q: 'What is the first color of the rainbow?', a: 'Violet', w: ['Red', 'Blue', 'Green'], e: 'VIBGYOR starts with Violet.' },
-        { q: 'What is the last color of the rainbow?', a: 'Red', w: ['Violet', 'Orange', 'Yellow'], e: 'Red is the outermost color of the rainbow.' },
-        { q: 'Do rainbow colors always appear in the same order?', a: 'Yes', w: ['No, they change daily', 'Only on Tuesdays', 'It depends on the weather'], e: 'The colors always appear in VIBGYOR order.' },
-        { q: 'What is needed to form a rainbow?', a: 'Sunlight and raindrops', w: ['Only sunlight', 'Only clouds', 'Moonlight and stars'], e: 'Both sunlight and water droplets are needed.' },
-        { q: 'What color comes between blue and yellow?', a: 'Green', w: ['Orange', 'Red', 'Purple'], e: 'The order is violet, indigo, blue, green, yellow...' },
-        { q: 'Is a rainbow a real object you can touch?', a: 'No', w: ['Yes, it is solid', 'Only if you climb high', 'Yes, it is made of paint'], e: 'A rainbow is an optical illusion caused by light.' },
-        { q: 'What does sunlight do in raindrops?', a: 'Bends or refracts', w: ['Gets absorbed completely', 'Changes to darkness', 'Makes the rain warm'], e: 'Light bends (refracts) when passing through water.' },
+      // World 3: Peter Pan (Chapter 3) - Imagination & Adventure
+      { questions: [
+        { q: "In a story about a boy who never grows up, where does he live?", a: "In a magical faraway island", w: ["In a big city", "Under the ocean", "On the moon"], e: "Stories of eternal childhood often take place in magical, imaginary lands." },
+        { q: "What is special about a boy who never wants to grow up?", a: "He represents the innocence and joy of childhood", w: ["He is lazy", "He is afraid", "He is selfish"], e: "The idea of never growing up symbolizes preserving childhood innocence and imagination." },
+        { q: "Who helps the children fly in a magical adventure story?", a: "A tiny magical being", w: ["A giant bird", "A rocket ship", "A magic carpet"], e: "Magical adventure stories often feature tiny magical helpers like fairies." },
+        { q: "What is the main villain often like in adventure stories?", a: "A feared enemy with a distinguishing feature", w: ["A friendly helper", "A wise teacher", "A caring parent"], e: "Villains in adventure stories have unique traits that make them memorable." },
+        { q: "What is a fairy?", a: "A tiny magical being with wings", w: ["A type of bird", "A large animal", "A flower"], e: "Fairies are mythical, magical creatures often depicted with wings." },
+        { q: "What do adventure stories teach children?", a: "To use imagination and be brave", w: ["To be afraid of everything", "To never try new things", "To stay indoors"], e: "Adventure stories encourage children to be imaginative and courageous." },
+        { q: "What is the 'lost children' theme about?", a: "Children who create their own family together", w: ["Children who are permanently lost", "Children who are bad", "Children who sleep all day"], e: "The theme of lost children banding together shows resilience and friendship." },
+        { q: "How do characters in fantasy stories usually fly?", a: "With magical help and happy thoughts", w: ["With airplanes only", "They cannot fly", "With balloons"], e: "Fantasy stories use magic and positive thinking as ways to achieve the impossible." },
+        { q: "What is the main theme of magical adventure stories?", a: "The joy and innocence of childhood imagination", w: ["War and revenge", "Money and power", "Science and technology"], e: "Magical adventures celebrate childhood wonder and imagination." },
+        { q: "Why do children enjoy fantasy stories?", a: "They spark imagination and creativity", w: ["They are scary", "They are boring", "They have no purpose"], e: "Fantasy stories inspire children to think creatively and dream big." },
       ]},
-      { title: 'The Tortoise and the Hare', questions: [
-        { q: 'Who won the race?', a: 'The tortoise', w: ['The hare', 'Both together', 'Neither of them'], e: 'The tortoise crossed the finish line first.' },
-        { q: 'Why did the hare lose?', a: 'He took a nap', w: ['He was too slow', 'He got lost', 'He broke his leg'], e: 'The hare was overconfident and fell asleep.' },
-        { q: 'What is the moral of this story?', a: 'Slow and steady wins the race', w: ['Fast runners always win', 'Sleeping helps you win', 'Never race with others'], e: 'Consistent effort leads to success.' },
-        { q: 'Who challenged whom to a race?', a: 'The tortoise challenged the hare', w: ['The hare challenged the tortoise', 'A fox challenged them', 'They were forced to race'], e: 'The tortoise was tired of being mocked.' },
-        { q: 'Why did the hare make fun of the tortoise?', a: 'For being slow', w: ['For being ugly', 'For being small', 'For being loud'], e: 'The tortoise walked very slowly.' },
-        { q: 'Did the hare run fast at first?', a: 'Yes', w: ['No, he walked', 'He stayed still', 'He ran backwards'], e: 'The hare was very fast and got far ahead.' },
-        { q: 'What did the hare do during the race?', a: 'Took a nap', w: ['Kept running', 'Ate some food', 'Helped the tortoise'], e: 'He thought he would win easily.' },
-        { q: 'How did the tortoise walk?', a: 'Slowly but steadily', w: ['Very fast', 'He stopped often', 'He ran in circles'], e: 'The tortoise never stopped walking.' },
-        { q: 'Was the hare overconfident?', a: 'Yes', w: ['No, he was careful', 'He was scared', 'He was tired'], e: 'The hare underestimated the tortoise.' },
-        { q: 'What lesson do we learn?', a: 'Never give up', w: ['Always sleep during work', 'Fast is always better', 'Do not try hard things'], e: 'Persistence is more important than speed.' },
+      // World 4: The Coral Reef (Chapter 4) - Ocean & Environment
+      { questions: [
+        { q: "What are coral reefs made of?", a: "Tiny living animals called coral polyps", w: ["Plants only", "Rocks and sand", "Plastic waste"], e: "Coral reefs are built by millions of tiny coral polyps over thousands of years." },
+        { q: "Where are coral reefs found?", a: "In warm, shallow ocean waters", w: ["In deep dark oceans", "In cold polar regions", "In freshwater lakes"], e: "Coral reefs need warm, clear, shallow water to grow." },
+        { q: "Which is the largest coral reef system in the world?", a: "The Great Barrier Reef", w: ["The Red Sea Reef", "The Caribbean Reef", "The Maldives Reef"], e: "The Great Barrier Reef in Australia is the world's largest coral reef." },
+        { q: "Why are coral reefs called the 'rainforests of the sea'?", a: "Because they support a huge variety of sea life", w: ["Because they have trees", "Because they are on land", "Because they produce rain"], e: "Like rainforests, coral reefs are home to an incredible diversity of species." },
+        { q: "What do coral polyps eat?", a: "Tiny plankton and algae", w: ["Large fish", "Seaweed", "Rocks"], e: "Coral polyps catch tiny organisms floating in the water." },
+        { q: "What gives coral its beautiful colours?", a: "Symbiotic algae living inside the coral", w: ["Paint", "Sunlight only", "Rocks"], e: "Tiny algae called zooxanthellae live inside coral and give it colour." },
+        { q: "Why are coral reefs in danger?", a: "Due to climate change and pollution", w: ["Because they are too big", "Because fish eat them", "Because they move"], e: "Rising ocean temperatures cause coral bleaching and pollution harms reefs." },
+        { q: "What is 'coral bleaching'?", a: "When coral turns white due to stress", w: ["When coral grows fast", "When coral changes shape", "When coral produces flowers"], e: "Bleaching happens when warm water causes coral to expel the colourful algae." },
+        { q: "Why should we protect coral reefs?", a: "They protect coastlines and support marine life", w: ["They are just for decoration", "They are not important", "They are easy to replace"], e: "Reefs protect shores from waves and provide homes for fish." },
+        { q: "Which animals live in coral reefs?", a: "Fish, sea turtles, octopus, and many more", w: ["Only sharks", "No animals", "Only plants"], e: "Coral reefs support thousands of marine species." },
       ]},
-      { title: 'The Sun and the Wind', questions: [
-        { q: 'Who removed the traveller\'s coat in the end?', a: 'The Sun', w: ['The Wind', 'The traveller himself', 'The rain'], e: 'The Sun\'s warmth made the traveller remove his coat.' },
-        { q: 'What did the Wind do?', a: 'Blew hard', w: ['Shone brightly', 'Made it rain', 'Did nothing'], e: 'The Wind tried to blow the coat off.' },
-        { q: 'What is the moral of the story?', a: 'Kindness is more powerful than force', w: ['Force always wins', 'Never help anyone', 'Wind is stronger than Sun'], e: 'Gentle persuasion works better than force.' },
-        { q: 'What did the traveller do when the Wind blew?', a: 'Held his coat tighter', w: ['Removed his coat', 'Ran away', 'Thanked the Wind'], e: 'The harder the Wind blew, the tighter he held on.' },
-        { q: 'How did the Sun make the traveller remove his coat?', a: 'By shining warmly', w: ['By making it cold', 'By creating a storm', 'By asking politely'], e: 'The warmth made the traveller comfortable.' },
-        { q: 'Who were arguing about strength?', a: 'The Sun and the Wind', w: ['The Moon and the Stars', 'Two travellers', 'The clouds and rain'], e: 'They wanted to know who was stronger.' },
-        { q: 'What was the bet about?', a: 'Who could make the traveller remove his coat', w: ['Who could make it rain', 'Who was bigger', 'Who could run faster'], e: 'This was their test of strength.' },
-        { q: 'Did force work in this story?', a: 'No', w: ['Yes, perfectly', 'Only at first', 'It worked halfway'], e: 'The Wind\'s force only made things worse.' },
-        { q: 'What approach worked better?', a: 'Gentleness and warmth', w: ['Shouting and pushing', 'Being rude', 'Ignoring the problem'], e: 'The Sun\'s gentle warmth succeeded.' },
-        { q: 'What do we learn from this story?', a: 'Gentle ways are often more effective', w: ['Always use force', 'Never argue', 'Wind is useless'], e: 'Kindness can achieve what force cannot.' },
+      // World 5: Inspiring Women (Chapter 5) - Biographies of Great Women
+      { questions: [
+        { q: "What do inspiring stories about real women teach us?", a: "That anyone can achieve great things with determination", w: ["Only queens can be great", "Only scientists matter", "Girls cannot be leaders"], e: "Real-life stories show that determination can help anyone achieve their dreams." },
+        { q: "Why is it important to learn about inspiring people?", a: "They give us role models to look up to", w: ["They are not important", "They make us feel bad", "They are boring"], e: "Learning about inspiring people motivates us to pursue our own dreams." },
+        { q: "What quality do all inspiring people share?", a: "They never give up despite challenges", w: ["They were all rich", "They never faced problems", "They were all famous from birth"], e: "All inspiring people persevered through difficulties to achieve their goals." },
+        { q: "What did a famous scientist discover that helps in medicine?", a: "Radium, which is used to treat diseases", w: ["A new planet", "A type of food", "A way to fly"], e: "Marie Curie discovered radium and polonium, winning two Nobel Prizes." },
+        { q: "Why did a young girl from Pakistan speak up for education?", a: "Because every child deserves to go to school", w: ["She wanted to be famous", "She did not like school", "She wanted money"], e: "She believed education is a fundamental right for every child." },
+        { q: "What can we learn from people who fought for education?", a: "Education is a powerful tool for change", w: ["Education does not matter", "Only some should study", "School is a waste of time"], e: "Education empowers people and transforms societies." },
+        { q: "What does it mean to 'break barriers'?", a: "To overcome obstacles that limit progress", w: ["To build walls", "To give up easily", "To follow the crowd"], e: "Breaking barriers means challenging limitations to achieve something new." },
+        { q: "Why should we learn about women who changed the world?", a: "To understand that everyone can make a difference", w: ["Only men matter in history", "Women cannot achieve much", "History is not important"], e: "Stories of achievement inspire all children regardless of gender." },
+        { q: "What qualities make someone inspiring?", a: "Courage, determination, and resilience", w: ["Fear and laziness", "Dishonesty", "Selfishness"], e: "Inspiring people show courage, determination, and the ability to bounce back." },
+        { q: "What message do inspiring life stories convey?", a: "Believe in yourself and never stop trying", w: ["Give up when things are hard", "Only famous people matter", "Dreams are useless"], e: "Inspiring stories teach us to believe in ourselves and keep trying." },
+      ]},
+      // World 6: Go Green! (Chapter 6) - Environment & Conservation
+      { questions: [
+        { q: "What does 'going green' mean?", a: "Adopting environmentally friendly practices", w: ["Painting everything green", "Planting only one tree", "Wearing green clothes"], e: "Going green means making choices that protect the environment." },
+        { q: "What is the 'Three R's' of going green?", a: "Reduce, Reuse, Recycle", w: ["Read, Write, Recite", "Run, Rest, Relax", "Rain, River, Sea"], e: "Reduce waste, Reuse items, and Recycle materials to protect the environment." },
+        { q: "Why is it important to save electricity?", a: "It reduces pollution and conserves resources", w: ["It is expensive", "It is fun", "It is boring"], e: "Most electricity comes from burning fossil fuels which cause pollution." },
+        { q: "What should we use instead of plastic bags?", a: "Cloth or jute bags", w: ["More plastic", "Paper bags only", "No bags at all"], e: "Reusable cloth or jute bags are eco-friendly alternatives to plastic." },
+        { q: "How can we save water at home?", a: "By fixing leaks and turning off taps when not in use", w: ["By using more water", "By leaving taps running", "By ignoring leaks"], e: "Small habits like turning off the tap while brushing save lots of water." },
+        { q: "What is recycling?", a: "Converting waste into reusable material", w: ["Throwing everything away", "Burning waste", "Burying waste"], e: "Recycling processes used materials into new products." },
+        { q: "Why should we plant more trees?", a: "Trees absorb carbon dioxide and give us oxygen", w: ["Trees look pretty only", "Trees block roads", "Trees are not useful"], e: "Trees are essential for clean air and combating climate change." },
+        { q: "What is renewable energy?", a: "Energy from natural sources like sun and wind", w: ["Energy from coal", "Energy from petrol", "Energy from plastic"], e: "Solar and wind energy are renewable and do not pollute." },
+        { q: "How can students help the environment at school?", a: "By saving paper and using both sides", w: ["By wasting paper", "By leaving lights on", "By using plastic bottles"], e: "Using both sides of paper and reducing waste helps the environment." },
+        { q: "What is the main message of environmental conservation?", a: "Everyone can help protect the environment", w: ["Only adults can help", "Only the government can help", "The environment is not important"], e: "Every small action counts in protecting our planet." },
+      ]},
+      // World 7: A Midsummer Night's Dream (Chapter 7) - Classic Literature
+      { questions: [
+        { q: "A famous English playwright wrote comedies and tragedies. Who was he?", a: "William Shakespeare", w: ["Charles Dickens", "Jane Austen", "Oscar Wilde"], e: "Shakespeare is widely considered the greatest writer in the English language." },
+        { q: "What is a 'comedy' play?", a: "A play with humour and a happy ending", w: ["A sad play", "A scary play", "A play about history"], e: "Comedies are designed to amuse the audience with humour." },
+        { q: "In classic plays about fairies, where does the story usually take place?", a: "In a magical forest", w: ["In a desert", "On a ship", "In a shopping mall"], e: "Magical forests are common settings for fairy tales and fantasy plays." },
+        { q: "What is a fairy in classic literature?", a: "A magical being with supernatural powers", w: ["A human child", "A large animal", "A type of flower"], e: "Fairies in literature are magical creatures with special powers." },
+        { q: "What is a 'mischievous sprite' in fairy tales?", a: "A playful magical being who causes trouble", w: ["A serious teacher", "A royal king", "A dangerous monster"], e: "Sprites are small magical beings known for their playful troublemaking." },
+        { q: "In a famous comedy, a magical flower makes people fall in love. What is this?", a: "A fairy tale plot device", w: ["A real scientific fact", "A cooking recipe", "A type of medicine"], e: "Magical flowers that cause love are common fairy tale plot devices." },
+        { q: "What is a 'play within a play'?", a: "A smaller play performed during the main play", w: ["A real fight", "A magic spell", "A commercial break"], e: "It is a theatrical device where characters put on a play inside the main story." },
+        { q: "What do fairy tales and fantasy plays teach us?", a: "That imagination and love are powerful forces", w: ["That magic is real", "That we should fear fairies", "That logic does not matter"], e: "These stories celebrate imagination, love, and the power of dreams." },
+        { q: "Why do we still read classic plays today?", a: "Because their themes about love and life are universal", w: ["They are required by law", "They are boring but famous", "Only old people read them"], e: "Classic plays explore universal human themes that remain relevant." },
+        { q: "What is the main theme of romantic comedies?", a: "The confusion and magic of love", w: ["War and revenge", "Money and power", "Science and logic"], e: "Romantic comedies explore how love can be confusing yet magical." },
+      ]},
+      // World 8: The Immigrant Experience (Chapter 8) - Journeys & Homes
+      { questions: [
+        { q: "Why do people sometimes leave their home countries?", a: "To find better opportunities and safety", w: ["For a holiday", "To go shopping", "To watch movies"], e: "People often leave to escape hardship and find better lives." },
+        { q: "What challenges do people face on long sea journeys?", a: "Storms, limited food, and seasickness", w: ["Too much space", "Too much food", "No challenges"], e: "Sea journeys are difficult with harsh weather and limited supplies." },
+        { q: "What mixed emotions do people feel when leaving home?", a: "Hope mixed with fear and sadness", w: ["Only happiness", "Only anger", "Nothing at all"], e: "Leaving home brings mixed emotions of hope and fear." },
+        { q: "What does the sea symbolize in journey stories?", a: "Both danger and hope for a new beginning", w: ["Just a road", "Just water", "Nothing important"], e: "The sea represents both the dangers and hopes of starting over." },
+        { q: "How do people support each other during difficult journeys?", a: "By sharing food and comforting one another", w: ["By fighting", "By ignoring each other", "By stealing"], e: "Community support helps everyone survive difficult journeys." },
+        { q: "What does arriving at a new land symbolize?", a: "A fresh start and new opportunities", w: ["The end of the journey only", "Going back home", "Nothing special"], e: "Reaching a destination means hope for a better future." },
+        { q: "What is home?", a: "A place where you feel safe and loved", w: ["Only where you were born", "A building with walls", "A hotel room"], e: "Home is where you build a life, not just where you were born." },
+        { q: "What does it take to start over in a new place?", a: "Bravery and determination", w: ["Fear and laziness", "Dishonesty", "Only money"], e: "Starting over takes courage and the will to keep going." },
+        { q: "What values do journey stories teach?", a: "Hope, resilience, and friendship", w: ["Greed and selfishness", "Laziness and fear", "Dishonesty and cheating"], e: "Journey stories celebrate hope, perseverance, and helping each other." },
+        { q: "Why is it important to welcome newcomers?", a: "Everyone deserves a chance to build a better life", w: ["Newcomers are not welcome", "Only some people deserve help", "Immigration is bad"], e: "Welcoming newcomers helps build stronger, more diverse communities." },
+      ]},
+      // World 9: The Umbrella (Chapter 9) - Kindness & Giving
+      { questions: [
+        { q: "A girl wants a beautiful umbrella she sees in a shop. What does she do?", a: "She trades something precious to get it", w: ["She steals it", "She breaks it", "She ignores it"], e: "She works hard and trades something valuable to get what she wants." },
+        { q: "Why does everyone admire beautiful things?", a: "Because they bring joy to our eyes", w: ["Because they are old", "Because they are broken", "Because they are invisible"], e: "Beauty in objects, nature, and people brings us joy." },
+        { q: "What does the girl do with her prized possession at the end?", a: "She gives it to someone who needs it more", w: ["She loses it", "She breaks it", "She sells it for profit"], e: "The story teaches that true kindness means giving to those in need." },
+        { q: "Where are many Indian stories set?", a: "In small towns in the hills", w: ["Only in big cities", "Only in deserts", "Only on islands"], e: "Many Indian stories are set in the beautiful hill towns of India." },
+        { q: "What does a beautiful object symbolize in stories?", a: "Beauty, desire, and the joy of giving", w: ["Fear", "Anger", "Danger"], e: "Beautiful objects in stories often represent deeper lessons about kindness." },
+        { q: "What lesson do stories about giving teach?", a: "True happiness comes from giving to others", w: ["Always keep what you have", "Never share", "Buy everything you want"], e: "Stories about giving teach that generosity brings true happiness." },
+        { q: "Why is kindness important?", a: "It makes both the giver and receiver happy", w: ["It is a sign of weakness", "It is not important", "It is only for rich people"], e: "Kindness creates happiness for everyone involved." },
+        { q: "What is the opposite of selfishness?", a: "Generosity", w: ["Greed", "Fear", "Anger"], e: "Generosity means thinking of others before yourself." },
+        { q: "How can children practice kindness?", a: "By sharing and helping others in need", w: ["By keeping everything for themselves", "By ignoring others", "By being mean"], e: "Sharing and helping others are simple ways children can be kind." },
+        { q: "What is the main theme of stories about kindness?", a: "Giving brings more joy than receiving", w: ["We should never give anything", "Only take from others", "Material things matter most"], e: "Stories about kindness show that giving is more rewarding than receiving." },
+      ]},
+      // World 10: Explorers (Chapter 10) - Discovery & Exploration
+      { questions: [
+        { q: "What motivated early explorers to sail into unknown waters?", a: "To find new trade routes and lands", w: ["To go on holiday", "To escape school", "To watch movies"], e: "Explorers sought new trade routes, wealth, and knowledge." },
+        { q: "Which European explorer reached the Americas in 1492?", a: "Christopher Columbus", w: ["Vasco da Gama", "Marco Polo", "Magellan"], e: "Columbus sailed across the Atlantic and reached the Americas." },
+        { q: "Which explorer was the first European to reach India by sea?", a: "Vasco da Gama", w: ["Columbus", "Captain Cook", "Nelson"], e: "Vasco da Gama sailed around Africa to reach India." },
+        { q: "What were the small ships used by early explorers called?", a: "Caravels", w: ["Steamships", "Submarines", "Aircraft carriers"], e: "Caravels were small, fast ships used for exploration." },
+        { q: "What dangers did sailors face on long voyages?", a: "Storms, diseases, and running out of food", w: ["No dangers", "Too much food", "Perfect weather"], e: "Sailors faced scurvy, storms, starvation, and unknown waters." },
+        { q: "What is navigation?", a: "The skill of finding direction at sea", w: ["Swimming", "Cooking", "Painting"], e: "Navigation is the art of steering a ship using stars, compass, and maps." },
+        { q: "What did early explorers bring back from their voyages?", a: "Spices, gold, and new knowledge", w: ["Nothing", "Only maps", "Only clothes"], e: "They brought valuable spices, treasures, and knowledge of new lands." },
+        { q: "How did exploration change the world?", a: "It connected different parts of the world", w: ["It isolated countries", "It stopped trade", "It ended travel"], e: "Exploration led to cultural exchange and global connections." },
+        { q: "What qualities did successful explorers need?", a: "Courage, determination, and curiosity", w: ["Fear and laziness", "Dishonesty", "Only money"], e: "Explorers needed bravery and perseverance to face unknown dangers." },
+        { q: "What can we learn from explorers today?", a: "To be curious and brave when facing the unknown", w: ["To never try new things", "To stay where we are", "To fear everything"], e: "The spirit of exploration teaches us to be curious and courageous." },
       ]},
     ];
     const selected = passages[worldId - 1] || passages[0];
     return (selected.questions as any[]).slice(0, n).map((item: any) => {
       const opts = this.shuffleArray([item.a, item.w[0], item.w[1], item.w[2]]);
-      return { question: `From "${selected.title}": ${item.q}`, options: opts, correctIndex: opts.indexOf(item.a), explanation: item.e, image: item.i || selected.i };
+      return { question: item.q, options: opts, correctIndex: opts.indexOf(item.a), explanation: item.e, image: item.i };
     });
   }
 
-  // ============ SCIENCE ============
+  // ============ SCIENCE (Splendid Science Level 5 by Lali John - Cambridge) ============
+  // 5 Units, 14 Chapters total:
+  // Unit 1: Living Things (4 ch) | Unit 2: Plants (3 ch) | Unit 3: Ecosystems (2 ch)
+  // Unit 4: Materials (3 ch) | Unit 5: Forces (2 ch)
   static science(worldId: number, n = 10): MathQuestion[] {
     const questions: any[][] = [
-      // Plants
+      // World 1: Unit 1 - Living Things (Ch1-2: Characteristics of Living Things & Vertebrates)
       [
-        { q: 'Look at the diagram. What is the process by which plants make their own food?', a: 'Photosynthesis', w: ['Respiration', 'Digestion', 'Fermentation'], e: 'Plants use sunlight, water, and CO2 to make food.', i: '/assets/img_photosynthesis.png' },
-        { q: 'Which part of the plant absorbs water?', a: 'Roots', w: ['Leaves', 'Stem', 'Flowers'], e: 'Roots absorb water and minerals from the soil.' },
-        { q: 'What gas do plants take in during photosynthesis?', a: 'Carbon dioxide', w: ['Oxygen', 'Nitrogen', 'Hydrogen'], e: 'Plants take in CO2 and release oxygen.' },
-        { q: 'Which part of the flower produces pollen?', a: 'Anther', w: ['Petal', 'Sepal', 'Stigma'], e: 'The anther produces pollen for reproduction.' },
-        { q: 'What is the female part of a flower called?', a: 'Pistil', w: ['Stamen', 'Petal', 'Calyx'], e: 'The pistil includes the stigma, style, and ovary.' },
-        { q: 'What do plants release during photosynthesis?', a: 'Oxygen', w: ['Carbon dioxide', 'Nitrogen', 'Methane'], e: 'Plants release oxygen as a byproduct of photosynthesis.' },
-        { q: 'What is the green pigment in plants called?', a: 'Chlorophyll', w: ['Melanin', 'Hemoglobin', 'Keratin'], e: 'Chlorophyll captures light energy from the sun.' },
-        { q: 'Which part of the plant carries food and water?', a: 'Stem', w: ['Roots', 'Leaves', 'Flowers'], e: 'The stem transports water and nutrients throughout the plant.' },
-        { q: 'What are the tiny openings on leaves called?', a: 'Stomata', w: ['Thorns', 'Roots', 'Veins'], e: 'Stomata allow gas exchange in plants.' },
-        { q: 'What is the process of a seed growing into a plant?', a: 'Germination', w: ['Pollination', 'Photosynthesis', 'Fertilization'], e: 'Germination begins when a seed gets water, air, and warmth.' },
+        { q: "What are the seven life processes that all living things do?", a: "Movement, respiration, sensitivity, growth, reproduction, excretion, nutrition", w: ["Running, jumping, sleeping, eating, drinking, playing, talking", "Flying, swimming, crawling, walking, hopping, climbing, rolling", "Reading, writing, singing, dancing, drawing, cooking, building"], e: "MRS GREN helps us remember: Movement, Respiration, Sensitivity, Growth, Reproduction, Excretion, Nutrition." },
+        { q: "Why do living things need food?", a: "To get energy for life processes", w: ["To become heavier", "To make noise", "To change colour"], e: "Food provides energy for all life processes like movement and growth." },
+        { q: "How do fish breathe underwater?", a: "Through gills", w: ["Through lungs", "Through skin", "Through their fins"], e: "Fish have gills that extract oxygen dissolved in water." },
+        { q: "What is the backbone made of?", a: "Small bones called vertebrae", w: ["One long bone", "Muscles only", "Cartilage only"], e: "The backbone (spine) is made of many small bones called vertebrae." },
+        { q: "Which group of vertebrates has feathers and lays eggs with hard shells?", a: "Birds", w: ["Mammals", "Reptiles", "Amphibians"], e: "Birds are the only vertebrates with feathers and beaks." },
+        { q: "Which group of vertebrates feeds milk to their young?", a: "Mammals", w: ["Fish", "Birds", "Reptiles"], e: "All mammals feed their young with milk produced by the mother's body." },
+        { q: "Which group of vertebrates has dry, scaly skin?", a: "Reptiles", w: ["Amphibians", "Fish", "Mammals"], e: "Reptiles like snakes and lizards have dry, scaly skin." },
+        { q: "Which group of vertebrates lives both in water and on land?", a: "Amphibians", w: ["Birds", "Mammals", "Reptiles"], e: "Amphibians like frogs begin life in water and later live on land." },
+        { q: "Which vertebrate group has fins and lives entirely in water?", a: "Fish", w: ["Amphibians", "Reptiles", "Mammals"], e: "Fish are aquatic vertebrates that breathe through gills." },
+        { q: "How do mammals keep their body warm?", a: "They have hair or fur on their bodies", w: ["They bask in the sun", "They wear clothes", "They have scales"], e: "Mammals are warm-blooded and have hair or fur to keep warm." },
       ],
-      // Animals
+      // World 2: Unit 1 - Living Things (Ch3-4: Invertebrates & Classification Keys)
       [
-        { q: 'What is a group of lions called?', a: 'Pride', w: ['Herd', 'Pack', 'Flock'], e: 'A group of lions is called a pride.', i: '/assets/img_animals.png' },
-        { q: 'Which animal is known as the ship of the desert?', a: 'Camel', w: ['Elephant', 'Horse', 'Buffalo'], e: 'Camels can survive long periods without water.' },
-        { q: 'What do we call animals that eat only plants?', a: 'Herbivores', w: ['Carnivores', 'Omnivores', 'Insectivores'], e: 'Herbivores eat plants; carnivores eat meat.' },
-        { q: 'Which bird cannot fly?', a: 'Ostrich', w: ['Penguin', 'Emu', 'Kiwi'], e: 'The ostrich is the largest flightless bird.' },
-        { q: 'What is the process of shedding skin called?', a: 'Molting', w: ['Hibernating', 'Migrating', 'Breeding'], e: 'Many animals molt to grow new skin or feathers.' },
-        { q: 'What do we call animals that eat only meat?', a: 'Carnivores', w: ['Herbivores', 'Omnivores', 'Frugivores'], e: 'Carnivores hunt and eat other animals.' },
-        { q: 'Which is the largest land animal?', a: 'African elephant', w: ['Giraffe', 'Hippopotamus', 'Rhinoceros'], e: 'African elephants are the largest land animals.' },
-        { q: 'What is the fastest land animal?', a: 'Cheetah', w: ['Lion', 'Leopard', 'Tiger'], e: 'A cheetah can run up to 70 km/h.' },
-        { q: 'Which mammal can fly?', a: 'Bat', w: ['Flying squirrel', 'Eagle', 'Owl'], e: 'Bats are the only mammals capable of true flight.' },
-        { q: 'What do we call animals that eat both plants and meat?', a: 'Omnivores', w: ['Herbivores', 'Carnivores', 'Scavengers'], e: 'Omnivores eat both plant and animal matter.' },
+        { q: "What is an invertebrate?", a: "An animal without a backbone", w: ["An animal with a backbone", "A type of plant", "A type of rock"], e: "Invertebrates are animals that do NOT have a backbone inside their body." },
+        { q: "Which invertebrate has a soft body and often a hard shell?", a: "Mollusc", w: ["Insect", "Spider", "Worm"], e: "Snails, slugs, and clams are molluscs with soft bodies." },
+        { q: "Which invertebrate has eight legs and two body parts?", a: "Arachnid (spider)", w: ["Insect", "Crustacean", "Worm"], e: "Spiders, scorpions, and ticks are arachnids with eight legs." },
+        { q: "Which invertebrate has six legs and three body parts?", a: "Insect", w: ["Spider", "Worm", "Snail"], e: "All insects have six legs and bodies divided into head, thorax, and abdomen." },
+        { q: "Which invertebrate has a hard outer shell and lives in water?", a: "Crustacean (crab)", w: ["Butterfly", "Earthworm", "Spider"], e: "Crabs, lobsters, and shrimp are crustaceans with hard shells." },
+        { q: "What is a classification key used for?", a: "To identify and sort living things into groups", w: ["To count animals", "To measure plants", "To colour animals"], e: "A classification key uses yes/no questions to identify unknown organisms." },
+        { q: "How do earthworms help the soil?", a: "They make tunnels that aerate the soil", w: ["They eat plants", "They destroy roots", "They make the soil hard"], e: "Earthworms improve soil by creating tunnels for air and water." },
+        { q: "Which invertebrate has tentacles and stinging cells?", a: "Jellyfish (cnidarian)", w: ["Butterfly", "Spider", "Snail"], e: "Jellyfish and sea anemones are cnidarians with stinging tentacles." },
+        { q: "What is an exoskeleton?", a: "A hard covering on the outside of an animal's body", w: ["Bones inside the body", "Soft skin", "No covering at all"], e: "Insects and crustaceans have exoskeletons for protection and support." },
+        { q: "How many legs does a centipede have?", a: "Many legs (one pair per body segment)", w: ["Exactly six legs", "Exactly eight legs", "No legs at all"], e: "Centipedes have one pair of legs per body segment, so they have many legs." },
       ],
-      // Human Body
+      // World 3: Unit 2 - Plants (Ch1-2: Parts of a Plant & Plant Growth)
       [
-        { q: 'How many bones does an adult human have?', a: '206', w: ['180', '250', '300'], e: 'An adult has 206 bones; babies have about 300.', i: '/assets/img_human_body.png' },
-        { q: 'Which organ pumps blood in our body?', a: 'Heart', w: ['Lungs', 'Liver', 'Kidneys'], e: 'The heart is a muscular organ that pumps blood.' },
-        { q: 'What is the largest organ of the human body?', a: 'Skin', w: ['Liver', 'Brain', 'Heart'], e: 'The skin protects our body from germs and heat.' },
-        { q: 'How many teeth does an adult human have?', a: '32', w: ['28', '36', '24'], e: 'Adults have 32 teeth including wisdom teeth.' },
-        { q: 'Which part of the brain controls balance?', a: 'Cerebellum', w: ['Cerebrum', 'Medulla', 'Hypothalamus'], e: 'The cerebellum is at the back of the brain.' },
-        { q: 'What is the liquid part of blood called?', a: 'Plasma', w: ['Serum', 'Lymph', 'Mucus'], e: 'Plasma makes up about 55% of blood volume.' },
-        { q: 'How many chambers does the human heart have?', a: 'Four', w: ['Two', 'Three', 'Five'], e: 'The heart has two atria and two ventricles.' },
-        { q: 'What is the tube that carries food to the stomach?', a: 'Oesophagus', w: ['Trachea', 'Intestine', 'Vein'], e: 'The oesophagus carries food from mouth to stomach.' },
-        { q: 'What gives blood its red colour?', a: 'Haemoglobin', w: ['Chlorophyll', 'Melanin', 'Calcium'], e: 'Haemoglobin is a protein that carries oxygen.' },
-        { q: 'Which organ helps us breathe?', a: 'Lungs', w: ['Heart', 'Stomach', 'Brain'], e: 'The lungs take in oxygen and remove carbon dioxide.' },
+        { q: "What are the main parts of a flowering plant?", a: "Roots, stem, leaves, and flowers", w: ["Head, arms, legs, and body", "Bark, trunk, branches, and leaves", "Soil, water, sun, and air"], e: "Flowering plants have roots, stem, leaves, flowers, and fruits." },
+        { q: "What do roots do for a plant?", a: "Anchor the plant and absorb water and minerals", w: ["Make food using sunlight", "Attract insects", "Produce seeds"], e: "Roots hold the plant firmly in soil and absorb water and nutrients." },
+        { q: "What do leaves use to make food?", a: "Sunlight, water, and carbon dioxide", w: ["Soil and rocks", "Moonlight and stars", "Rain and wind only"], e: "Leaves make food through photosynthesis using sunlight, water, and CO2." },
+        { q: "What is the green pigment in leaves called?", a: "Chlorophyll", w: ["Melanin", "Haemoglobin", "Carotene"], e: "Chlorophyll is the green pigment that captures light energy for photosynthesis." },
+        { q: "What does the stem do?", a: "Transports water and food, and supports the plant", w: ["Only makes seeds", "Only absorbs water", "Only stores food"], e: "The stem carries water and nutrients between roots and leaves." },
+        { q: "What do flowers produce?", a: "Seeds and fruits", w: ["Roots", "Water", "Soil"], e: "After pollination, flowers develop into fruits containing seeds." },
+        { q: "What does a plant need to grow?", a: "Water, sunlight, air, nutrients, and suitable temperature", w: ["Only water", "Only soil", "Only sunlight"], e: "Plants need water, light, air, nutrients, and warmth to grow well." },
+        { q: "What is germination?", a: "When a seed begins to grow into a new plant", w: ["When a plant makes flowers", "When a plant dies", "When a plant sheds leaves"], e: "Germination is the process where a seed starts to grow into a seedling." },
+        { q: "What do seeds need to germinate?", a: "Water, warmth, and oxygen", w: ["Sunlight only", "Cold temperature", "Darkness only"], e: "Seeds need water, warmth (heat), and air (oxygen) to germinate." },
+        { q: "What carries water from the roots to the leaves?", a: "The xylem vessels in the stem", w: ["The phloem", "The petals", "The stomata"], e: "Xylem are tiny tubes in the stem that transport water from roots to leaves." },
       ],
-      // Matter
+      // World 4: Unit 2 - Plants (Ch3: Seed Dispersal)
       [
-        { q: 'What are the three states of matter?', a: 'Solid, liquid, gas', w: ['Earth, wind, fire', 'Hot, warm, cold', 'Big, medium, small'], e: 'Matter exists as solid, liquid, or gas.', i: '/assets/img_water_cycle.png' },
-        { q: 'At what temperature does water boil?', a: '100 degrees Celsius', w: ['50 degrees Celsius', '150 degrees Celsius', '0 degrees Celsius'], e: 'Water boils at 100 degrees C at sea level.' },
-        { q: 'What is the process of liquid turning to gas called?', a: 'Evaporation', w: ['Condensation', 'Freezing', 'Melting'], e: 'Evaporation happens when liquid is heated.' },
-        { q: 'What is the process of gas turning to liquid called?', a: 'Condensation', w: ['Evaporation', 'Sublimation', 'Fusion'], e: 'Condensation is when gas cools and becomes liquid.' },
-        { q: 'What is the freezing point of water?', a: '0 degrees Celsius', w: ['10 degrees Celsius', 'Minus 10 degrees Celsius', '50 degrees Celsius'], e: 'Water freezes at 0 degrees C.' },
-        { q: 'What is the process of solid turning directly to gas?', a: 'Sublimation', w: ['Evaporation', 'Condensation', 'Melting'], e: 'Dry ice (solid CO2) sublimates directly to gas.' },
-        { q: 'Which state of matter has a fixed shape and volume?', a: 'Solid', w: ['Liquid', 'Gas', 'Plasma'], e: 'Solids have tightly packed particles.' },
-        { q: 'What do we call a mixture of two or more metals?', a: 'Alloy', w: ['Compound', 'Solution', 'Element'], e: 'Brass and bronze are examples of alloys.' },
-        { q: 'Which metal is liquid at room temperature?', a: 'Mercury', w: ['Gold', 'Iron', 'Copper'], e: 'Mercury is the only metal that is liquid at room temp.' },
-        { q: 'What is the chemical formula of water?', a: 'H2O', w: ['CO2', 'NaCl', 'O2'], e: 'Water is made of two hydrogen atoms and one oxygen atom.' },
+        { q: "Why do plants need to disperse their seeds?", a: "To reduce competition for space, light, and nutrients", w: ["To make more flowers", "To change colour", "To grow bigger roots"], e: "Dispersal prevents overcrowding and gives seeds a better chance to grow." },
+        { q: "Which seeds are dispersed by wind?", a: "Light seeds with wings or parachutes", w: ["Heavy seeds", "Seeds with hooks", "Seeds inside fleshy fruits"], e: "Dandelions and maple seeds are light and have wings for wind dispersal." },
+        { q: "Which seeds are dispersed by water?", a: "Seeds that can float", w: ["Seeds that sink immediately", "Very heavy seeds", "Seeds that are sticky"], e: "Coconut seeds have a waterproof coating and can float on water." },
+        { q: "How do some seeds stick to animals?", a: "They have hooks, spines, or burrs", w: ["They have glue", "They are magnetic", "They are very heavy"], e: "Burdock and Xanthium seeds have hooks that stick to animal fur." },
+        { q: "Which seeds are dispersed by explosion?", a: "Seeds from pods that burst open", w: ["Seeds in fleshy fruits", "Seeds with wings", "Seeds that float"], e: "Balsam and pea plants burst their pods to scatter seeds." },
+        { q: "Which seeds are dispersed by animals eating fruits?", a: "Seeds inside fleshy, tasty fruits", w: ["Seeds with hooks", "Light, wind-blown seeds", "Explosive pods"], e: "Birds and mammals eat fruits and later drop seeds in their droppings." },
+        { q: "What is a seed dispersal method for coconut?", a: "Water dispersal", w: ["Wind dispersal", "Animal dispersal", "Explosion"], e: "Coconut seeds can float and are carried by water to new places." },
+        { q: "What feature helps dandelion seeds fly?", a: "A feathery parachute (pappus)", w: ["Hard shell", "Sticky surface", "Heavy weight"], e: "Dandelion seeds have fluffy hairs that act like a parachute." },
+        { q: "Why is seed dispersal important for survival?", a: "It helps plants colonise new areas and avoid overcrowding", w: ["It makes plants look pretty", "It changes the weather", "It prevents animals from eating them"], e: "Dispersal helps plant species survive by spreading to suitable habitats." },
+        { q: "Which plant scatters seeds by bursting its pod?", a: "Balsam plant", w: ["Coconut tree", "Dandelion", "Strawberry"], e: "Balsam pods dry up and burst open, throwing seeds in all directions." },
       ],
-      // Force & Motion
+      // World 5: Unit 3 - Ecosystems (Ch1-2: Food Chains, Food Webs & Human Impact)
       [
-        { q: 'What force pulls objects toward the Earth?', a: 'Gravity', w: ['Magnetism', 'Friction', 'Electricity'], e: 'Gravity is the force of attraction between objects.', i: '/assets/img_3d_shapes.png' },
-        { q: 'What is the unit of force?', a: 'Newton', w: ['Watt', 'Volt', 'Gram'], e: 'Force is measured in Newtons (N).' },
-        { q: 'What is a push or a pull called?', a: 'Force', w: ['Energy', 'Motion', 'Speed'], e: 'Force can change the motion of an object.' },
-        { q: 'Which simple machine is a sloping surface?', a: 'Inclined plane', w: ['Lever', 'Pulley', 'Wheel'], e: 'An inclined plane makes it easier to lift objects.' },
-        { q: 'What is the pivot point of a lever called?', a: 'Fulcrum', w: ['Axle', 'Gear', 'Shaft'], e: 'The fulcrum is the fixed point a lever rotates around.' },
-        { q: 'What is the force that opposes motion?', a: 'Friction', w: ['Gravity', 'Magnetism', 'Tension'], e: 'Friction slows down moving objects.' },
-        { q: 'Which simple machine is a wheel with a groove?', a: 'Pulley', w: ['Gear', 'Lever', 'Wedge'], e: 'A pulley helps lift heavy objects easily.' },
-        { q: 'What is the tendency of an object to resist motion change?', a: 'Inertia', w: ['Momentum', 'Velocity', 'Acceleration'], e: 'Inertia keeps objects moving or at rest.' },
-        { q: 'What force slows a parachute down?', a: 'Air resistance', w: ['Gravity', 'Friction', 'Magnetism'], e: 'Air resistance pushes against falling objects.' },
-        { q: 'What is the speeding up of an object called?', a: 'Acceleration', w: ['Velocity', 'Speed', 'Deceleration'], e: 'Acceleration is the rate of change of velocity.' },
+        { q: "What is an ecosystem?", a: "A community of living things and their environment", w: ["Only plants in a garden", "Only animals in a zoo", "Only water in a lake"], e: "An ecosystem includes all living organisms and their physical environment." },
+        { q: "What is a producer in a food chain?", a: "A green plant that makes its own food", w: ["An animal that eats plants", "A fungus that grows on wood", "A bird that eats insects"], e: "Producers like plants make food through photosynthesis." },
+        { q: "What is a consumer in a food chain?", a: "An animal that eats other organisms for food", w: ["A plant that makes food", "A rock in a river", "A cloud in the sky"], e: "Consumers are animals that cannot make their own food and must eat other organisms." },
+        { q: "What is a herbivore?", a: "An animal that eats only plants", w: ["An animal that eats only meat", "An animal that eats both plants and meat", "A plant that eats insects"], e: "Herbivores like rabbits and cows feed only on plants." },
+        { q: "What is a carnivore?", a: "An animal that eats other animals", w: ["An animal that eats only plants", "A plant-eating animal", "A decomposer"], e: "Carnivores like lions and tigers hunt and eat other animals." },
+        { q: "What is an omnivore?", a: "An animal that eats both plants and animals", w: ["An animal that eats only plants", "An animal that eats only meat", "A fungus"], e: "Humans, bears, and crows are omnivores that eat both plants and animals." },
+        { q: "What is a food web?", a: "Many connected food chains in an ecosystem", w: ["A spider's web", "A single food chain", "A plant's root system"], e: "A food web shows how different food chains are linked together." },
+        { q: "How do humans harm the environment?", a: "By cutting forests, polluting, and hunting animals", w: ["By planting more trees", "By reducing pollution", "By protecting wildlife"], e: "Deforestation, pollution, and overhunting damage ecosystems." },
+        { q: "What happens if one species disappears from a food web?", a: "It affects many other species in the ecosystem", w: ["Nothing happens", "Only that species is affected", "The ecosystem becomes stronger"], e: "All species are connected, so removing one affects the whole food web." },
+        { q: "How can humans protect ecosystems?", a: "By reducing pollution and preserving habitats", w: ["By cutting more trees", "By building more factories", "By overfishing lakes"], e: "Conservation efforts help protect ecosystems and biodiversity." },
       ],
-      // Energy
+      // World 6: Unit 4 - Materials (Ch1-2: Properties of Materials & Changing States)
       [
-        { q: 'What is the main source of energy for Earth?', a: 'The Sun', w: ['The Moon', 'Volcanoes', 'Lightning'], e: 'The Sun provides light and heat energy.' },
-        { q: 'What type of energy is in a battery?', a: 'Chemical energy', w: ['Solar energy', 'Wind energy', 'Nuclear energy'], e: 'Batteries store chemical energy that converts to electrical.' },
-        { q: 'What do we call materials that allow electricity to flow?', a: 'Conductors', w: ['Insulators', 'Resistors', 'Semiconductors'], e: 'Metals like copper are good conductors.' },
-        { q: 'What do we call materials that block electricity?', a: 'Insulators', w: ['Conductors', 'Magnets', 'Electrodes'], e: 'Rubber and plastic are good insulators.' },
-        { q: 'What type of circuit has only one path for electricity?', a: 'Series circuit', w: ['Parallel circuit', 'Open circuit', 'Short circuit'], e: 'In a series circuit, current flows through one path.' },
-        { q: 'What is energy of motion called?', a: 'Kinetic energy', w: ['Potential energy', 'Thermal energy', 'Solar energy'], e: 'Moving objects have kinetic energy.' },
-        { q: 'What is stored energy called?', a: 'Potential energy', w: ['Kinetic energy', 'Heat energy', 'Light energy'], e: 'A stretched spring has potential energy.' },
-        { q: 'Which metal is the best conductor of electricity?', a: 'Silver', w: ['Gold', 'Aluminium', 'Lead'], e: 'Silver is the best conductor, followed by copper.' },
-        { q: 'What converts electrical energy to light?', a: 'Bulb', w: ['Fan', 'Battery', 'Motor'], e: 'A bulb or lamp converts electricity to light.' },
-        { q: 'What is a circuit with multiple paths called?', a: 'Parallel circuit', w: ['Series circuit', 'Closed circuit', 'Direct circuit'], e: 'In parallel circuits, current can flow through multiple paths.' },
+        { q: "What is a solid?", a: "Matter with a fixed shape and volume", w: ["Matter that flows and takes shape of container", "Matter that spreads to fill space", "Matter with no shape at all"], e: "Solids have a definite shape because their particles are tightly packed." },
+        { q: "What is a liquid?", a: "Matter that flows and takes the shape of its container", w: ["Matter with fixed shape", "Matter that spreads to fill room", "Matter that is very hard"], e: "Liquids flow because their particles can move past each other." },
+        { q: "What is a gas?", a: "Matter that spreads out to fill its container", w: ["Matter with fixed shape", "Matter that stays at bottom of container", "Matter that cannot move"], e: "Gas particles move freely and spread to fill available space." },
+        { q: "Which material conducts heat well: metal or plastic?", a: "Metal", w: ["Plastic", "Wood", "Rubber"], e: "Metals are good conductors of heat and electricity." },
+        { q: "Which material is transparent: glass or wood?", a: "Glass", w: ["Wood", "Metal", "Cardboard"], e: "Transparent materials like glass let light pass through clearly." },
+        { q: "What is melting?", a: "When a solid changes into a liquid by heating", w: ["When a liquid changes into a gas", "When a gas changes into a liquid", "When a liquid changes into a solid"], e: "Melting happens when heat energy breaks the bonds in a solid." },
+        { q: "What is freezing?", a: "When a liquid changes into a solid by cooling", w: ["When a solid changes into a liquid", "When a liquid changes into a gas", "When a gas changes into a solid"], e: "Freezing happens when a liquid loses heat energy and becomes solid." },
+        { q: "What is boiling?", a: "When a liquid changes into a gas by heating", w: ["When a solid changes into a liquid", "When a gas changes into a liquid", "When a solid changes directly to gas"], e: "Boiling occurs when a liquid is heated to its boiling point." },
+        { q: "What temperature does water freeze at?", a: "0 degrees Celsius", w: ["100 degrees Celsius", "50 degrees Celsius", "10 degrees Celsius"], e: "Water freezes at 0 degrees C and boils at 100 degrees C." },
+        { q: "Which material is a good insulator: wool or iron?", a: "Wool", w: ["Iron", "Copper", "Aluminium"], e: "Wool traps air and is a poor conductor, making it a good insulator." },
       ],
-      // Earth
+      // World 7: Unit 4 - Materials (Ch3: The Water Cycle)
       [
-        { q: 'What are the three types of rocks?', a: 'Igneous, sedimentary, metamorphic', w: ['Hard, soft, medium', 'Gold, silver, iron', 'Big, small, medium'], e: 'Rocks are classified into these three types.', i: '/assets/img_earth_globe.png' },
-        { q: 'What is a fossil?', a: 'Remains of ancient living things', w: ['A type of rock', 'A precious stone', 'A type of soil'], e: 'Fossils are preserved remains of plants and animals.' },
-        { q: 'What is the hardest natural mineral?', a: 'Diamond', w: ['Quartz', 'Granite', 'Marble'], e: 'Diamond is rated 10 on the Mohs hardness scale.' },
-        { q: 'What are the three layers of the Earth?', a: 'Crust, mantle, core', w: ['Sky, land, water', 'Top, middle, bottom', 'Soil, sand, clay'], e: 'The Earth has a crust, mantle, and core.' },
-        { q: 'What is molten rock inside the Earth called?', a: 'Magma', w: ['Lava', 'Obsidian', 'Granite'], e: 'Magma is molten rock beneath the Earth\'s surface.' },
-        { q: 'What is molten rock that reaches the surface?', a: 'Lava', w: ['Magma', 'Basalt', 'Sand'], e: 'Lava is magma that erupts from a volcano.' },
-        { q: 'What is the study of rocks called?', a: 'Geology', w: ['Biology', 'Archaeology', 'Geography'], e: 'Geologists study rocks and the Earth.' },
-        { q: 'Which is the tallest mountain on Earth?', a: 'Mount Everest', w: ['K2', 'Kilimanjaro', 'Makalu'], e: 'Mount Everest is 8,849 meters tall.' },
-        { q: 'What is the outermost layer of the Earth called?', a: 'Crust', w: ['Core', 'Mantle', 'Atmosphere'], e: 'The crust is the thin, solid outermost layer.' },
-        { q: 'What are broken pieces of rock called?', a: 'Sediments', w: ['Fossils', 'Minerals', 'Crystals'], e: 'Sediments pile up and form sedimentary rocks.' },
+        { q: "What is evaporation?", a: "When the sun heats water and it turns into water vapour", w: ["When water falls from clouds as rain", "When water freezes into ice", "When plants absorb water"], e: "Evaporation is the process where liquid water changes to water vapour gas." },
+        { q: "What is condensation?", a: "When water vapour cools and changes back into liquid droplets", w: ["When water turns into ice", "When ice melts into water", "When water flows into the sea"], e: "Condensation forms clouds when water vapour cools in the atmosphere." },
+        { q: "What is precipitation?", a: "When water falls from clouds as rain, snow, sleet, or hail", w: ["When water evaporates from a lake", "When water flows in a river", "When plants release water"], e: "Precipitation includes rain, snow, sleet, and hail falling from clouds." },
+        { q: "What is collection in the water cycle?", a: "When water gathers in rivers, lakes, and oceans", w: ["When water turns into vapour", "When clouds form in the sky", "When rain falls from clouds"], e: "Collection is when water collects in oceans, rivers, lakes, and groundwater." },
+        { q: "What causes water to evaporate?", a: "Heat from the sun", w: ["Cold from ice", "Wind from fans", "Darkness at night"], e: "The Sun provides heat energy that causes water to evaporate." },
+        { q: "What are clouds made of?", a: "Tiny water droplets or ice crystals", w: ["Cotton wool", "Smoke from factories", "Dust only"], e: "Clouds are formed by millions of tiny water droplets from condensation." },
+        { q: "What is transpiration?", a: "When plants release water vapour from their leaves", w: ["When plants absorb sunlight", "When plants make food", "When plants grow roots"], e: "Transpiration is the loss of water vapour from plant leaves." },
+        { q: "Why is the water cycle important?", a: "It provides fresh water for all living things", w: ["It makes the weather hot", "It creates new water", "It only helps plants"], e: "The water cycle continuously recycles water, providing fresh water for life." },
+        { q: "Where does most evaporation on Earth happen?", a: "From oceans and seas", w: ["From rivers only", "From lakes only", "From plants only"], e: "The vast surface of oceans provides the most water for evaporation." },
+        { q: "What type of precipitation is frozen water crystals?", a: "Snow", w: ["Rain", "Dew", "Fog"], e: "Snow forms when water vapour in clouds freezes into ice crystals." },
       ],
-      // Weather
+      // World 8: Unit 5 - Forces (Ch1-2: Types of Forces & Gravity & Friction)
       [
-        { q: 'What instrument measures temperature?', a: 'Thermometer', w: ['Barometer', 'Hygrometer', 'Anemometer'], e: 'A thermometer measures hot and cold.', i: '/assets/img_rainbow.png' },
-        { q: 'What is water falling from clouds called?', a: 'Precipitation', w: ['Evaporation', 'Condensation', 'Transpiration'], e: 'Rain, snow, sleet, and hail are all precipitation.' },
-        { q: 'What are clouds made of?', a: 'Tiny water droplets', w: ['Cotton', 'Smoke', 'Dust only'], e: 'Clouds form when water vapor condenses.' },
-        { q: 'What do we call the average weather of a place over time?', a: 'Climate', w: ['Temperature', 'Season', 'Forecast'], e: 'Climate is long-term weather patterns.' },
-        { q: 'What is the center of a hurricane called?', a: 'Eye', w: ['Nose', 'Heart', 'Mouth'], e: 'The eye is the calm center of a hurricane.' },
-        { q: 'What instrument measures rainfall?', a: 'Rain gauge', w: ['Wind vane', 'Thermometer', 'Compass'], e: 'A rain gauge collects and measures rain.' },
-        { q: 'What is a violent rotating column of air?', a: 'Tornado', w: ['Hurricane', 'Typhoon', 'Cyclone'], e: 'Tornadoes have very strong spinning winds.' },
-        { q: 'What do we call frozen raindrops?', a: 'Hail', w: ['Snow', 'Sleet', 'Frost'], e: 'Hail forms when raindrops freeze in storm clouds.' },
-        { q: 'Which gas in the air do we need to breathe?', a: 'Oxygen', w: ['Carbon dioxide', 'Nitrogen', 'Helium'], e: 'Air contains about 21% oxygen.' },
-        { q: 'What is the boundary between two air masses?', a: 'Front', w: ['Zone', 'Line', 'Wall'], e: 'Weather fronts bring changes in temperature and precipitation.' },
+        { q: "What is a force?", a: "A push or a pull on an object", w: ["A type of energy", "A kind of food", "A form of light"], e: "Forces are pushes or pulls that can change how an object moves." },
+        { q: "What does a force do to an object?", a: "It can change its speed, direction, or shape", w: ["It always destroys it", "It makes it disappear", "It changes its colour"], e: "Forces can start, stop, speed up, slow down, or change the direction of movement." },
+        { q: "What is gravity?", a: "A force that pulls objects towards each other", w: ["A force that pushes objects apart", "A type of magnet", "A form of electricity"], e: "Gravity pulls everything towards the centre of the Earth." },
+        { q: "Why do things fall down when dropped?", a: "Gravity pulls them towards the Earth", w: ["The air pushes them down", "The Earth pushes them away", "They are too heavy to stay up"], e: "Gravity is the force that pulls objects down towards the ground." },
+        { q: "What is friction?", a: "A force that opposes motion between two surfaces", w: ["A force that speeds things up", "A type of lubricant", "A form of heat energy"], e: "Friction acts between touching surfaces and slows down movement." },
+        { q: "Which surface has more friction: rough or smooth?", a: "Rough surface", w: ["Smooth surface", "Both have same friction", "Neither has friction"], e: "Rough surfaces have more friction because they have more bumps and ridges." },
+        { q: "How can we reduce friction?", a: "By using lubricants like oil or grease", w: ["By making surfaces rougher", "By adding more weight", "By removing air"], e: "Oil and grease fill gaps between surfaces, making them slide more easily." },
+        { q: "What is air resistance?", a: "Friction between an object and the air as it moves", w: ["The weight of air", "The temperature of air", "The colour of air"], e: "Air resistance (drag) is a type of friction that slows moving objects." },
+        { q: "Why does a parachute fall slowly?", a: "It has a large surface area that creates air resistance", w: ["It is very heavy", "It is made of heavy material", "It has no gravity acting on it"], e: "Parachutes have large surface areas that create lots of air resistance." },
+        { q: "What is magnetic force?", a: "A force that pulls iron and steel objects towards a magnet", w: ["A force that pushes all metals away", "A force that only works on wood", "A force that affects plastic"], e: "Magnets attract iron, nickel, cobalt, and some steel objects." },
       ],
     ];
     const selected = questions[worldId - 1] || questions[0];
@@ -460,86 +553,89 @@ class QG {
     });
   }
 
-  // ============ SOCIAL SCIENCE ============
+  // ============ SOCIAL SCIENCE (The World Around Us - Cambridge) ============
+  // 6 Units, 19 Chapters total:
+  // Unit 1: Early Humans (3 ch) | Unit 2: Ancient Civilizations (3 ch) | Unit 3: Medieval World (3 ch)
+  // Unit 4: Renaissance & Exploration (2 ch) | Unit 5: Government & Citizenship (3 ch) | Unit 6: Trade & Economics (3 ch)
   static social(worldId: number, n = 10): MathQuestion[] {
     const questions: any[][] = [
-      // Ancient Civilizations
+      // World 1: Unit 1 - Early Humans (Ch1: Stone Age, Ch2: Bronze Age, Ch3: Iron Age)
       [
-        { q: 'Which ancient civilization built the pyramids?', a: 'Egyptians', w: ['Romans', 'Greeks', 'Persians'], e: 'The Great Pyramids of Giza were built by ancient Egyptians.', i: '/assets/img_pyramid.png' },
-        { q: 'Which river was the cradle of ancient Indian civilization?', a: 'Indus River', w: ['Ganga River', 'Yamuna River', 'Brahmaputra River'], e: 'The Indus Valley Civilization flourished along the Indus River.' },
-        { q: 'Who was the first emperor of unified China?', a: 'Qin Shi Huang', w: ['Genghis Khan', 'Kublai Khan', 'Sun Tzu'], e: 'He united China and built the Great Wall.' },
-        { q: 'What was the writing system of ancient Egypt called?', a: 'Hieroglyphics', w: ['Cuneiform', 'Sanskrit', 'Latin'], e: 'Hieroglyphics used picture symbols to represent words.' },
-        { q: 'Which ancient city is known as the lost city of the Incas?', a: 'Machu Picchu', w: ['Petra', 'Tikal', 'Angkor Wat'], e: 'Machu Picchu is in Peru, built in the 15th century.' },
-        { q: 'Which civilization invented the wheel?', a: 'Sumerians', w: ['Egyptians', 'Chinese', 'Indians'], e: 'The Sumerians of Mesopotamia invented the wheel.' },
-        { q: 'What was the Great Wall of China built for?', a: 'Protection from invaders', w: ['For decoration', 'To keep animals in', 'For trading goods'], e: 'The wall protected China from northern invasions.' },
-        { q: 'Which river was crucial to ancient Egyptian civilization?', a: 'Nile River', w: ['Amazon River', 'Tigris River', 'Euphrates River'], e: 'The Nile provided water and fertile soil for farming.' },
-        { q: 'What were ancient Egyptian rulers called?', a: 'Pharaohs', w: ['Kings', 'Emperors', 'Sultans'], e: 'Pharaohs were the kings and religious leaders of Egypt.' },
-        { q: 'Which ancient civilization created the decimal system?', a: 'Indians', w: ['Arabs', 'Romans', 'Chinese'], e: 'Ancient Indians developed the decimal numeral system.' },
+        { q: "What period of early human history is known for stone tools?", a: "The Stone Age", w: ["The Bronze Age", "The Iron Age", "The Industrial Age"], e: "The Stone Age is the earliest period when humans made tools from stone." },
+        { q: "What were the two main periods of the Stone Age?", a: "Paleolithic and Neolithic", w: ["Old and New", "Early and Late", "Ancient and Modern"], e: "Paleolithic (Old Stone Age) and Neolithic (New Stone Age)." },
+        { q: "How did early humans get food in the Paleolithic Age?", a: "By hunting animals and gathering plants", w: ["By farming crops", "By buying from shops", "By ordering online"], e: "Paleolithic people were hunter-gatherers who hunted and collected wild food." },
+        { q: "What important discovery did humans make in the Neolithic Age?", a: "Farming and agriculture", w: ["How to fly", "How to use computers", "How to make plastic"], e: "The Neolithic Age saw the beginning of farming and settled communities." },
+        { q: "What is the Bronze Age known for?", a: "Making tools and weapons from bronze", w: ["Making tools from iron", "Making tools from plastic", "Making tools from wood only"], e: "Bronze is a metal made by mixing copper and tin." },
+        { q: "What metal is mixed with copper to make bronze?", a: "Tin", w: ["Iron", "Gold", "Silver"], e: "Bronze is an alloy (mixture) of copper and tin." },
+        { q: "What did people in the Bronze Age build for burial?", a: "Stone circles and burial mounds", w: ["Skyscrapers", "Bridges", "Tunnels"], e: "Stonehenge and other stone structures were built during the Bronze Age." },
+        { q: "What marked the beginning of the Iron Age?", a: "The discovery of iron smelting", w: ["The discovery of bronze", "The invention of wheels", "The first writing"], e: "The Iron Age began when humans learned to extract iron from ore." },
+        { q: "Why was iron better than bronze for tools?", a: "Iron was stronger, more abundant, and kept sharp longer", w: ["Iron was prettier", "Iron was lighter", "Iron was easier to melt"], e: "Iron is stronger and more durable than bronze for tools and weapons." },
+        { q: "What type of houses did Iron Age people build?", a: "Roundhouses with thatched roofs", w: ["Brick apartments", "Glass buildings", "Metal sheds"], e: "Iron Age people in Europe lived in roundhouses made of wood and mud." },
       ],
-      // Freedom Movement
+      // World 2: Unit 2 - Ancient Civilizations (Ch1: Mesopotamia, Ch2: Egypt, Ch3: Indus Valley)
       [
-        { q: 'Who is known as the Father of the Nation in India?', a: 'Mahatma Gandhi', w: ['Jawaharlal Nehru', 'Sardar Patel', 'Bhagat Singh'], e: 'Gandhi led India\'s non-violent independence movement.', i: '/assets/img_indian_flag.png' },
-        { q: 'In which year did India gain independence?', a: '1947', w: ['1942', '1950', '1935'], e: 'India became independent on August 15, 1947.' },
-        { q: 'What was the non-cooperation movement about?', a: 'Boycotting British goods', w: ['Helping the British', 'Trading with British', 'Learning English'], e: 'Indians boycotted British goods and institutions.' },
-        { q: 'Who gave the slogan "Jai Hind"?', a: 'Subhas Chandra Bose', w: ['Mahatma Gandhi', 'Jawaharlal Nehru', 'Lal Bahadur Shastri'], e: 'Netaji Bose used this slogan for the INA.' },
-        { q: 'What is the national flag of India called?', a: 'Tiranga', w: ['Tricolour', 'Jhanda', 'Dhwaj'], e: 'The Tiranga has three colors: saffron, white, and green.' },
-        { q: 'Who was the first Prime Minister of India?', a: 'Jawaharlal Nehru', w: ['Mahatma Gandhi', 'Sardar Patel', 'Rajendra Prasad'], e: 'Nehru served as PM from 1947 to 1964.' },
-        { q: 'What is the Dandi March famous for?', a: 'Salt protest', w: ['Cotton protest', 'Sugar protest', 'Rice protest'], e: 'Gandhi protested the British salt tax by making salt.' },
-        { q: 'When is Independence Day celebrated?', a: '15th August', w: ['26th January', '2nd October', '14th November'], e: 'India gained independence on August 15, 1947.' },
-        { q: 'Who wrote the national anthem of India?', a: 'Rabindranath Tagore', w: ['Bankim Chandra Chatterjee', 'Sarojini Naidu', 'Muhammad Iqbal'], e: 'Tagore wrote Jana Gana Mana.' },
-        { q: 'What colour represents courage on the Indian flag?', a: 'Saffron', w: ['White', 'Green', 'Blue'], e: 'The top saffron stripe stands for courage.' },
+        { q: "Where was Mesopotamia located?", a: "Between the Tigris and Euphrates rivers", w: ["Between the Nile and Amazon", "Between the Ganges and Indus", "Between the Thames and Seine"], e: "Mesopotamia means 'land between the rivers' in Greek." },
+        { q: "What is Mesopotamia called in the Bible?", a: "The Fertile Crescent", w: ["The Sahara Desert", "The Amazon Basin", "The Tibetan Plateau"], e: "The Fertile Crescent was ideal for farming due to rich soil and water." },
+        { q: "What was the earliest form of writing developed in Mesopotamia?", a: "Cuneiform", w: ["Hieroglyphics", "Alphabet", "Braille"], e: "Cuneiform was written by pressing wedge-shaped marks into clay tablets." },
+        { q: "What did ancient Egyptians build as tombs for their pharaohs?", a: "Pyramids", w: ["Castles", "Temples", "Palaces"], e: "The Great Pyramid of Giza is one of the Seven Wonders of the Ancient World." },
+        { q: "What is hieroglyphics?", a: "The writing system of ancient Egypt using pictures", w: ["The writing system of China", "The Greek alphabet", "The Roman numbering system"], e: "Hieroglyphics used pictures and symbols to represent words and sounds." },
+        { q: "Why was the River Nile important to ancient Egypt?", a: "It provided water for farming and transport", w: ["It was used for swimming only", "It had no importance", "It was used for fishing only"], e: "The Nile's annual floods deposited fertile soil for agriculture." },
+        { q: "Where was the Indus Valley Civilization located?", a: "In present-day Pakistan and northwest India", w: ["In South India", "In Africa", "In South America"], e: "The Indus Valley was centred around the Indus River in South Asia." },
+        { q: "What were the two largest cities of the Indus Valley Civilization?", a: "Mohenjo-daro and Harappa", w: ["Delhi and Mumbai", "Cairo and Alexandria", "Athens and Rome"], e: "These cities had advanced urban planning and drainage systems." },
+        { q: "What was special about Indus Valley city planning?", a: "Grid-pattern streets and advanced drainage", w: ["Narrow winding roads", "No drainage system", "Random building layout"], e: "Indus cities had well-planned grids and covered drainage channels." },
+        { q: "Which ancient civilization invented the wheel?", a: "Mesopotamia", w: ["Egypt", "Indus Valley", "China"], e: "The wheel was invented in Mesopotamia around 3500 BCE." },
       ],
-      // Maps & Geography
+      // World 3: Unit 3 - The Medieval World (Ch1: Byzantine Empire, Ch2: Islamic Golden Age, Ch3: Crusades)
       [
-        { q: 'What does a map\'s scale show?', a: 'The ratio of distance on map to real distance', w: ['The size of the map', 'The colour of places', 'The weather of places'], e: 'Scale helps measure real distances on a map.', i: '/assets/img_compass.png' },
-        { q: 'Which lines run horizontally on a globe?', a: 'Latitude lines', w: ['Longitude lines', 'Equator lines', 'Polar lines'], e: 'Latitudes run east-west, parallel to the equator.' },
-        { q: 'What is the line at 0 degrees latitude called?', a: 'Equator', w: ['Prime Meridian', 'Tropic of Cancer', 'Arctic Circle'], e: 'The Equator divides Earth into Northern and Southern Hemispheres.' },
-        { q: 'Which color is usually used for water on maps?', a: 'Blue', w: ['Green', 'Brown', 'Red'], e: 'Maps use blue to show oceans, rivers, and lakes.' },
-        { q: 'What does a compass rose show?', a: 'Directions', w: ['Distances', 'Heights', 'Temperatures'], e: 'A compass rose shows North, South, East, and West.' },
-        { q: 'Which lines run vertically on a globe?', a: 'Longitude lines', w: ['Latitude lines', 'Time zone lines', 'Border lines'], e: 'Longitudes run north-south from pole to pole.' },
-        { q: 'What does green usually represent on a map?', a: 'Low land or plains', w: ['Mountains', 'Water bodies', 'Deserts'], e: 'Green shows low-lying areas suitable for farming.' },
-        { q: 'What is a map key also called?', a: 'Legend', w: ['Index', 'Scale', 'Title'], e: 'A legend explains the symbols used on a map.' },
-        { q: 'What is a globe a model of?', a: 'Earth', w: ['The Moon', 'The Sun', 'Mars'], e: 'A globe is a spherical model of Earth.' },
-        { q: 'What do brown lines on a map usually show?', a: 'Mountains or high land', w: ['Rivers', 'Roads', 'Railways'], e: 'Brown indicates higher elevation areas.' },
+        { q: "What was the capital of the Byzantine Empire?", a: "Constantinople", w: ["Rome", "Athens", "Cairo"], e: "Constantinople (now Istanbul) was founded by Emperor Constantine." },
+        { q: "What religion was central to the Byzantine Empire?", a: "Eastern Orthodox Christianity", w: ["Islam", "Buddhism", "Hinduism"], e: "The Byzantine Empire was a centre of Eastern Orthodox Christianity." },
+        { q: "What is the Hagia Sophia?", a: "A famous Byzantine cathedral (church)", w: ["A Roman temple", "An Egyptian pyramid", "A Chinese palace"], e: "Hagia Sophia in Istanbul is an architectural marvel of the Byzantine era." },
+        { q: "When did the Islamic Golden Age occur?", a: "Approximately 8th to 13th century", w: ["1st to 5th century", "15th to 18th century", "19th to 20th century"], e: "The Islamic Golden Age was a period of great scientific and cultural progress." },
+        { q: "What important scientific advances came from the Islamic Golden Age?", a: "Algebra, astronomy, and medicine", w: ["Nuclear physics", "Computer science", "Genetic engineering"], e: "Muslim scholars made major contributions to mathematics, astronomy, and medicine." },
+        { q: "What is algebra?", a: "A branch of mathematics using symbols and equations", w: ["A type of poetry", "A musical instrument", "A style of architecture"], e: "The word 'algebra' comes from the Arabic 'al-jabr' meaning reunion of parts." },
+        { q: "What were the Crusades?", a: "A series of religious wars between Christians and Muslims", w: ["Trade expeditions to Asia", "Scientific conferences", "Peaceful pilgrimages"], e: "The Crusades were military campaigns to control the Holy Land." },
+        { q: "What was the Holy Land that Crusaders wanted to capture?", a: "Jerusalem and surrounding areas", w: ["Rome", "Mecca", "Constantinople"], e: "Jerusalem is sacred to Christians, Muslims, and Jews." },
+        { q: "What impact did the Crusades have on Europe?", a: "Increased trade and cultural exchange with the East", w: ["No impact at all", "Complete isolation", "Economic collapse"], e: "The Crusades opened trade routes and exposed Europeans to Eastern goods and ideas." },
+        { q: "Which Muslim leader recaptured Jerusalem from the Crusaders?", a: "Saladin", w: ["Genghis Khan", "Alexander the Great", "Napoleon"], e: "Saladin was a respected Kurdish Muslim leader known for his chivalry." },
       ],
-      // Continents & Oceans
+      // World 4: Unit 4 - Renaissance & Exploration (Ch1: Renaissance, Ch2: Age of Exploration)
       [
-        { q: 'How many continents are there?', a: 'Seven', w: ['Five', 'Eight', 'Six'], e: 'Asia, Africa, North America, South America, Antarctica, Europe, Australia.', i: '/assets/img_earth_globe.png' },
-        { q: 'Which is the largest ocean?', a: 'Pacific Ocean', w: ['Atlantic Ocean', 'Indian Ocean', 'Arctic Ocean'], e: 'The Pacific Ocean covers about 30% of Earth\'s surface.' },
-        { q: 'Which is the smallest continent?', a: 'Australia', w: ['Europe', 'Antarctica', 'South America'], e: 'Australia is both a continent and a country.' },
-        { q: 'Which continent is known as the Frozen Continent?', a: 'Antarctica', w: ['Asia', 'Europe', 'North America'], e: 'Antarctica is covered in ice and is the coldest place.' },
-        { q: 'Which ocean is named after a country?', a: 'Indian Ocean', w: ['Pacific Ocean', 'Atlantic Ocean', 'Arctic Ocean'], e: 'The Indian Ocean is named after India.' },
-        { q: 'Which is the largest continent?', a: 'Asia', w: ['Africa', 'North America', 'Europe'], e: 'Asia covers about 30% of Earth\'s land area.' },
-        { q: 'Which ocean is the smallest?', a: 'Arctic Ocean', w: ['Indian Ocean', 'Atlantic Ocean', 'Southern Ocean'], e: 'The Arctic Ocean is around the North Pole.' },
-        { q: 'Which continent has the most countries?', a: 'Africa', w: ['Asia', 'Europe', 'South America'], e: 'Africa has 54 recognized countries.' },
-        { q: 'What separates Europe from Africa?', a: 'Mediterranean Sea', w: ['Atlantic Ocean', 'Red Sea', 'Black Sea'], e: 'The Mediterranean Sea lies between them.' },
-        { q: 'Which ocean lies between Africa and Australia?', a: 'Indian Ocean', w: ['Pacific Ocean', 'Atlantic Ocean', 'Southern Ocean'], e: 'The Indian Ocean borders Africa, Asia, and Australia.' },
+        { q: "What does 'Renaissance' mean?", a: "Rebirth", w: ["Destruction", "Isolation", "Revolution"], e: "The Renaissance was a rebirth of interest in art, science, and learning." },
+        { q: "Where did the Renaissance begin?", a: "Italy", w: ["France", "England", "Germany"], e: "The Renaissance began in Italian city-states like Florence and Venice." },
+        { q: "Who painted the Mona Lisa?", a: "Leonardo da Vinci", w: ["Michelangelo", "Raphael", "Van Gogh"], e: "Leonardo da Vinci painted the Mona Lisa around 1503-1519." },
+        { q: "What did Renaissance artists focus on?", a: "Realism, perspective, and human form", w: ["Abstract shapes", "Random colours", "Flat patterns only"], e: "Renaissance artists studied human anatomy and used mathematical perspective." },
+        { q: "Who invented the printing press with movable type?", a: "Johannes Gutenberg", w: ["Leonardo da Vinci", "Galileo Galilei", "William Shakespeare"], e: "Gutenberg's printing press (c. 1440) revolutionised the spread of knowledge." },
+        { q: "Which explorer reached the Americas in 1492?", a: "Christopher Columbus", w: ["Vasco da Gama", "Marco Polo", "Ferdinand Magellan"], e: "Columbus sailed for India but reached the Caribbean islands." },
+        { q: "Which explorer first sailed around the world?", a: "Ferdinand Magellan", w: ["Columbus", "Vasco da Gama", "James Cook"], e: "Magellan's expedition (1519-1522) was the first to circumnavigate the globe." },
+        { q: "What were explorers looking for on their voyages?", a: "New trade routes, gold, and spices", w: ["New animals", "New recipes", "New games"], e: "European explorers sought wealth and direct trade routes to Asia." },
+        { q: "What was the Columbian Exchange?", a: "The transfer of plants, animals, and diseases between Old and New Worlds", w: ["A currency exchange", "A scientific conference", "A peace treaty"], e: "The Columbian Exchange transformed agriculture and diets worldwide." },
+        { q: "How did exploration change world maps?", a: "Maps became more accurate with new lands added", w: ["Maps became less accurate", "Maps stayed the same", "Maps were no longer needed"], e: "New discoveries led to more complete and accurate world maps." },
       ],
-      // Civics
+      // World 5: Unit 5 - Government & Citizenship (Ch1: Types of Government, Ch2: Citizenship, Ch3: UN)
       [
-        { q: 'What is the highest court in India?', a: 'Supreme Court', w: ['High Court', 'District Court', 'Lok Sabha'], e: 'The Supreme Court is the guardian of the Constitution.', i: '/assets/img_indian_flag.png' },
-        { q: 'How many fundamental rights do Indian citizens have?', a: 'Six', w: ['Four', 'Eight', 'Ten'], e: 'Right to Equality, Freedom, Religion, etc.' },
-        { q: 'Who is called the first citizen of India?', a: 'President', w: ['Prime Minister', 'Chief Justice', 'Speaker'], e: 'The President is the ceremonial head of state.' },
-        { q: 'What is the minimum voting age in India?', a: '18 years', w: ['16 years', '21 years', '25 years'], e: 'Every citizen 18 and above can vote.' },
-        { q: 'What is the national anthem of India?', a: 'Jana Gana Mana', w: ['Vande Mataram', 'Saare Jahan', 'Ae Mere Watan'], e: 'Written by Rabindranath Tagore.' },
-        { q: 'What is the Parliament of India called?', a: 'Sansad', w: ['Panchayat', 'Cabinet', 'Assembly'], e: 'The Indian Parliament consists of Lok Sabha and Rajya Sabha.' },
-        { q: 'How many years is a Lok Sabha term?', a: 'Five', w: ['Three', 'Four', 'Six'], e: 'Members are elected for a five-year term.' },
-        { q: 'What is the written document of rules called?', a: 'Constitution', w: ['Manifesto', 'Law book', 'Register'], e: 'The Constitution is the supreme law of India.' },
-        { q: 'Who is the head of the Indian government?', a: 'Prime Minister', w: ['President', 'Chief Minister', 'Governor'], e: 'The PM leads the executive branch.' },
-        { q: 'What is the national emblem of India?', a: 'Lion Capital of Ashoka', w: ['Peacock', 'Lotus', 'Wheel'], e: 'It features four lions standing back to back.' },
+        { q: "What is a monarchy?", a: "A government ruled by a king or queen", w: ["A government ruled by the people", "A government ruled by the military", "A government with no leader"], e: "In a monarchy, power is inherited by members of a royal family." },
+        { q: "What is a democracy?", a: "A government where people choose their leaders by voting", w: ["A government ruled by one person", "A government ruled by wealthy people", "A government with no laws"], e: "Democracy means 'rule by the people' in Greek." },
+        { q: "What is a dictatorship?", a: "A government controlled by one person with absolute power", w: ["A government with elected leaders", "A government with many political parties", "A government ruled by judges"], e: "In a dictatorship, one person makes all decisions without citizen input." },
+        { q: "What is a citizen?", a: "A legal member of a country with rights and responsibilities", w: ["A visitor to a country", "A tourist", "An illegal immigrant"], e: "Citizens have rights (like voting) and duties (like obeying laws)." },
+        { q: "What are rights?", a: "Freedoms and protections that every person deserves", w: ["Rules to follow", "Punishments for crimes", "Special privileges for the rich"], e: "Rights include freedom of speech, education, and equal treatment." },
+        { q: "What are responsibilities of citizens?", a: "Obeying laws, voting, and helping the community", w: ["Only paying taxes", "Only following laws", "No responsibilities"], e: "Citizens have both rights and responsibilities to their country." },
+        { q: "What does UN stand for?", a: "United Nations", w: ["Union of Nations", "Universal Network", "United Network"], e: "The UN is an international organisation founded in 1945." },
+        { q: "Where is the headquarters of the United Nations?", a: "New York, USA", w: ["London, UK", "Paris, France", "Geneva, Switzerland"], e: "The UN headquarters is located in New York City." },
+        { q: "What is the main goal of the United Nations?", a: "To maintain international peace and security", w: ["To start wars", "To make money", "To build roads"], e: "The UN was created after WWII to prevent future conflicts." },
+        { q: "What is UNESCO?", a: "A UN agency for education, science, and culture", w: ["A military organisation", "A banking system", "A trade union"], e: "UNESCO protects world heritage sites and promotes education." },
       ],
-      // Economics
+      // World 6: Unit 6 - Trade & Economics (Ch1: Trade Routes, Ch2: Economic Systems, Ch3: Globalization)
       [
-        { q: 'What is the system of exchanging goods for goods called?', a: 'Barter system', w: ['Banking system', 'Trade system', 'Money system'], e: 'Before money, people traded goods directly.' },
-        { q: 'What is the main occupation in rural India?', a: 'Agriculture', w: ['Manufacturing', 'Banking', 'Teaching'], e: 'Most rural people depend on farming.' },
-        { q: 'What do we call money earned from work?', a: 'Income', w: ['Expense', 'Savings', 'Loan'], e: 'Income is the money received for work or investments.' },
-        { q: 'What is a person who starts a business called?', a: 'Entrepreneur', w: ['Manager', 'Worker', 'Investor'], e: 'An entrepreneur takes risks to start businesses.' },
-        { q: 'What does GDP stand for?', a: 'Gross Domestic Product', w: ['General Development Plan', 'Global Distribution Point', 'Government Duty Policy'], e: 'GDP is the total value of goods and services produced.' },
-        { q: 'What is money saved in a bank called?', a: 'Savings', w: ['Spending', 'Borrowing', 'Lending'], e: 'Saving money helps for future needs.' },
-        { q: 'What is a tax paid on goods we buy?', a: 'Sales tax', w: ['Income tax', 'Property tax', 'Road tax'], e: 'GST is the goods and services tax in India.' },
-        { q: 'What do we call goods sold to other countries?', a: 'Exports', w: ['Imports', 'Products', 'Stocks'], e: 'Exports bring money into the country.' },
-        { q: 'What is the paper money issued by RBI called?', a: 'Currency', w: ['Bond', 'Cheque', 'Receipt'], e: 'The Indian currency is the Rupee.' },
-        { q: 'What is the place where stocks are traded?', a: 'Stock exchange', w: ['Bank', 'Post office', 'Marketplace'], e: 'BSE and NSE are Indian stock exchanges.' },
+        { q: "What is trade?", a: "The exchange of goods and services between people or countries", w: ["Stealing goods from others", "Making things only for yourself", "Giving away things for free"], e: "Trade allows people to obtain things they cannot produce themselves." },
+        { q: "What was the Silk Road?", a: "An ancient trade route connecting China to Europe", w: ["A road made of silk", "A road in India only", "A modern highway"], e: "The Silk Road traded silk, spices, and ideas between East and West." },
+        { q: "What is barter?", a: "Exchanging goods directly without using money", w: ["Buying with cash", "Using credit cards", "Online banking"], e: "Barter is the oldest form of trade where goods are swapped directly." },
+        { q: "What is an economy?", a: "The system of producing, distributing, and consuming goods and services", w: ["A type of government", "A form of religion", "A style of music"], e: "An economy includes all activities related to making and using resources." },
+        { q: "What is supply and demand?", a: "How much is available vs how much people want", w: ["How much is produced vs how much is wasted", "How much costs vs how much sells", "How much is imported vs exported"], e: "Prices are affected by how much supply there is and how much demand exists." },
+        { q: "What is globalization?", a: "The increasing connection between countries through trade and technology", w: ["Isolation of countries", "Closing of borders", "Stopping all trade"], e: "Globalization means the world is becoming more connected and interdependent." },
+        { q: "What are imports?", a: "Goods brought into a country from another country", w: ["Goods sent out of a country", "Goods made locally", "Goods thrown away"], e: "Countries import goods they need but cannot produce efficiently." },
+        { q: "What are exports?", a: "Goods sent out of a country to another country", w: ["Goods brought into a country", "Goods kept for local use", "Goods that are recycled"], e: "Countries export goods they produce well to earn money." },
+        { q: "What is fair trade?", a: "Trade that ensures producers get fair prices for their goods", w: ["Trade that is free for all", "Trade with no rules", "Trade that only helps rich countries"], e: "Fair trade aims to give fair wages and better conditions to producers." },
+        { q: "How has technology changed trade?", a: "Made it faster and easier to trade globally", w: ["Made trade impossible", "Slowed down trade", "Only helped local trade"], e: "The internet and modern transport have made global trade much easier." },
       ],
     ];
     const selected = questions[worldId - 1] || questions[0];
@@ -549,86 +645,93 @@ class QG {
     });
   }
 
-  // ============ TAMIL GRAMMAR ============
+  // ============ TAMIL GRAMMAR (My Tamil Grammar Ver 3 by Language House) ============
+  // 36 topics covered across 6 worlds:
+  // World 1: Parts of Speech (பெயர்ச்சொல், வினைச்சொல், இடைச்சொல், உரிச்சொல்)
+  // World 2: Plurals, Pronouns, Conjunctions & Compound Sentences
+  // World 3: Compound Words, Onomatopoeia & Proverbs
+  // World 4: Case Suffixes, Adverbs & Antonyms
+  // World 5: Question Words, Tenses & Interrogatives
+  // World 6: Sentence Types (Exclamatory, Imperative, Proverbs)
   static tamilGrammar(worldId: number, n = 10): MathQuestion[] {
     const questions: any[][] = [
-      // Alphabets
+      // World 1: பெயர்ச்சொல், வினைச்சொல், சொற்றொடர் (Nouns, Verbs, Phrases)
       [
-        { q: 'How many Uyir (vowel) letters are in Tamil?', a: '12', w: ['10', '16', '18'], e: 'Tamil has 12 Uyir letters: அ, ஆ, இ, ஈ, உ, ஊ, எ, ஏ, ஐ, ஒ, ஓ, ஔ' },
-        { q: 'How many Mei (consonant) letters are in Tamil?', a: '18', w: ['12', '24', '216'], e: 'Tamil has 18 Mei consonant letters.' },
-        { q: 'How many Uyirmei letters are there?', a: '216', w: ['108', '324', '18'], e: 'Uyirmei = combination of Uyir and Mei (12 x 18).' },
-        { q: 'What is the first letter of Tamil alphabet?', a: 'அ', w: ['ஆ', 'இ', 'ஔ'], e: 'அ (A) is the first Uyir letter.' },
-        { q: 'Which letter group contains க, ங, ச?', a: 'Vallinam', w: ['Mellinam', 'Idaiyinam', 'Uyirmei'], e: 'Vallinam letters are hard consonants.' },
-        { q: 'Which letter is the last Uyir letter?', a: 'ஔ', w: ['ஓ', 'ஐ', 'ஆ'], e: 'ஔ is the 12th and last Uyir letter.' },
-        { q: 'What are மெய் letters also called?', a: 'Consonants', w: ['Vowels', 'Numbers', 'Symbols'], e: 'மெய் (Mei) letters are consonant sounds.' },
-        { q: 'How many vowel sounds are in Tamil?', a: '12', w: ['8', '18', '24'], e: 'Tamil has 12 primary vowel sounds.' },
-        { q: 'What is the combination of Uyir and Mei called?', a: 'Uyirmei', w: ['Sandhi', 'Vibhakti', 'Alankaram'], e: 'Uyirmei letters combine vowels and consonants.' },
-        { q: 'Which group contains ந, ன, ண?', a: 'Nedil', w: ['Vallinam', 'Mellinam', 'Idaiyinam'], e: 'These are nasal consonant sounds in Tamil.' },
+        { q: "'அழகு' என்ற சொல் எந்த வகைச் சொல்?", a: "பெயர்ச்சொல்", w: ["வினைச்சொல்", "இடைச்சொல்", "உரிச்சொல்"], e: "அழகு என்பது பெயர்ச்சொல் (Noun). பெயர்ச்சொல் என்பது பொருளைக் குறிக்கும் சொல்." },
+        { q: "'ஓடு' என்ற சொல் எந்த வகைச் சொல்?", a: "வினைச்சொல்", w: ["பெயர்ச்சொல்", "இடைச்சொல்", "உரிச்சொல்"], e: "ஓடு என்பது வினைச்சொல் (Verb). வினைச்சொல் என்பது செயலைக் குறிக்கும் சொல்." },
+        { q: "'மலர்' என்ற சொல்லின் பன்மைச் சொல் எது?", a: "மலர்கள்", w: ["மலரை", "மலரின்", "மலருக்கு"], e: "பன்மை = ஒன்றுக்கு மேற்பட்டது. மலர் → மலர்கள் (பன்மை)." },
+        { q: "'பசு' என்ற சொல்லின் ஒருமைச் சொல் எது?", a: "ஒரு பசு", w: ["பசுக்கள்", "பசுகள்", "பசுக்களை"], e: "ஒருமை = ஒன்று மட்டும். பசுக்கள் (பன்மை) → பசு (ஒருமை)." },
+        { q: "'அழகான மலர்' - இது எந்த வகைச் சொற்றொடர்?", a: "பெயர்ச்சொற்றொடர்", w: ["வினைச்சொற்றொடர்", "அடுக்குத் தொடர்", "எதிர்மறைத் தொடர்"], e: "பெயர்ச்சொல் + பெயரடை = பெயர்ச்சொற்றொடர். அழகான (பெயரடை) + மலர் (பெயர்ச்சொல்)." },
+        { q: "'மாணவன் படிக்கிறான்' - இது எந்த வகைச் சொற்றொடர்?", a: "வினைச்சொற்றொடர்", w: ["பெயர்ச்சொற்றொடர்", "அடுக்குத் தொடர்", "மரபுத்தொடர்"], e: "மாணவன் (எழுவாய்) + படிக்கிறான் (வினைச்சொல்) = வினைச்சொற்றொடர்." },
+        { q: "'நல்ல பழம்' - இது எந்த வகைச் சொற்றொடர்?", a: "பெயர்ச்சொற்றொடர்", w: ["வினைச்சொற்றொடர்", "இணைப்புத் தொடர்", "மரபுத்தொடர்"], e: "நல்ல (பெயரடை) + பழம் (பெயர்ச்சொல்) = பெயர்ச்சொற்றொடர்." },
+        { q: "'குழந்தை விளையாடுகிறது' - இது எந்த வகைச் சொற்றொடர்?", a: "வினைச்சொற்றொடர்", w: ["பெயர்ச்சொற்றொடர்", "இணைப்புத் தொடர்", "மரபுத்தொடர்"], e: "குழந்தை (எழுவாய்) + விளையாடுகிறது (வினைச்சொல்) = வினைச்சொற்றொடர்." },
+        { q: "'சிவப்பு' என்ற சொல் எந்த வகைச் சொல்?", a: "பெயர்ச்சொல் (பெயரடை)", w: ["வினைச்சொல்", "இடைச்சொல்", "முன்னிலைச் சொல்"], e: "சிவப்பு = பெயர்ச்சொல் / பெயரடை. நிறத்தைக் குறிக்கும் பெயர்ச்சொல்." },
+        { q: "'பெண்' என்ற சொல் எந்த வகைப் பெயர்ச்சொல்?", a: "ஒருமைப் பெயர்ச்சொல்", w: ["பன்மைப் பெயர்ச்சொல்", "வினைச்சொல்", "இடைச்சொல்"], e: "பெண் = ஒருமைப் பெயர்ச்சொல் (Singular Noun). பெண்கள் = பன்மை." },
       ],
-      // Word Formation
+      // World 2: மூவிடப்பெயர்கள், இணைப்புச்சொற்கள், அடுக்குத் தொடர்
       [
-        { q: 'What is "நல்ல" (nalla) in English?', a: 'Good', w: ['Bad', 'Happy', 'Beautiful'], e: 'நல்ல means good.' },
-        { q: 'What is "பள்ளி" (palli) in English?', a: 'School', w: ['Temple', 'College', 'Hospital'], e: 'பள்ளி means school.' },
-        { q: 'What is the plural of "மரம்" (maram)?', a: 'மரங்கள் (marangal)', w: ['மரம்gal', 'மரங்க', 'மரம்kal'], e: 'Add கள் for plural in Tamil.' },
-        { q: 'What is "நீர்" (neer) in English?', a: 'Water', w: ['Milk', 'Juice', 'River'], e: 'நீர் means water.' },
-        { q: 'What type of word is "மகிழ்ச்சி" (magizhchi)?', a: 'Abstract noun', w: ['Proper noun', 'Verb', 'Adjective'], e: 'மகிழ்ச்சி (happiness) is an abstract noun.' },
-        { q: 'What is "வீடு" (veedu) in English?', a: 'House', w: ['Door', 'Window', 'Roof'], e: 'வீடு means house.' },
-        { q: 'What is "அம்மா" (amma) in English?', a: 'Mother', w: ['Sister', 'Grandmother', 'Aunt'], e: 'அம்மா means mother.' },
-        { q: 'What is "நண்பன்" (nanban) in English?', a: 'Friend', w: ['Brother', 'Student', 'Teacher'], e: 'நண்பன் means friend (male).' },
-        { q: 'What is "புத்தகம்" (puthagam) in English?', a: 'Book', w: ['Paper', 'Pen', 'Note'], e: 'புத்தகம் means book.' },
-        { q: 'What is "மழை" (malai) in English?', a: 'Rain', w: ['Cloud', 'Thunder', 'Lightning'], e: 'மழை means rain.' },
+        { q: "'நான்' என்ற சொல் எந்த வகை மூவிடப்பெயர்?", a: "உடம்படுமை மூவிடப்பெயர்", w: ["படர்மை மூவிடப்பெயர்", "சுட்டுமை மூவிடப்பெயர்", "வினா மூவிடப்பெயர்"], e: "நான், நீ, அவன் = உடம்படுமை மூவிடப்பெயர்கள் (First/Second/Third person pronouns)." },
+        { q: "'இவன்' என்ற சொல் எந்த வகை மூவிடப்பெயர்?", a: "சுட்டுமை மூவிடப்பெயர்", w: ["உடம்படுமை மூவிடப்பெயர்", "படர்மை மூவிடப்பெயர்", "வினா மூவிடப்பெயர்"], e: "இவன், இவள், இது = சுட்டுமை மூவிடப்பெயர்கள் (Demonstrative pronouns - near)." },
+        { q: "'யார்' என்ற சொல் எந்த வகை மூவிடப்பெயர்?", a: "வினா மூவிடப்பெயர்", w: ["உடம்படுமை மூவிடப்பெயர்", "சுட்டுமை மூவிடப்பெயர்", "படர்மை மூவிடப்பெயர்"], e: "யார், எது, எவன் = வினா மூவிடப்பெயர்கள் (Interrogative pronouns)." },
+        { q: "'மற்றும்' என்ற சொல் எந்த வகை இணைப்புச்சொல்?", a: "இணைப்புச்சொல்", w: ["பெயர்ச்சொல்", "வினைச்சொல்", "இடைச்சொல்"], e: "மற்றும், ஆனால், அல்லது = இணைப்புச்சொற்கள் (Conjunctions)." },
+        { q: "'ஆனால்' என்ற சொல் என்ன செய்கிறது?", a: "இரண்டு தொடர்களை இணைக்கிறது", w: ["பெயரைக் குறிக்கிறது", "செயலைக் குறிக்கிறது", "எண்ணைக் குறிக்கிறது"], e: "ஆனால் என்பது இணைப்புச்சொல். இது இரண்டு தொடர்களை இணைக்கிறது." },
+        { q: "'அவன் படித்தான் மற்றும் விளையாடினான்' - இது எந்த வகைத் தொடர்?", a: "அடுக்குத் தொடர்", w: ["எதிர்மறைத் தொடர்", "வினாத் தொடர்", "உணர்ச்சித் தொடர்"], e: "அடுக்குத் தொடர் = இரண்டு தொடர்கள் இணைப்புச்சொல்லால் இணைக்கப்படும்." },
+        { q: "'அவள் பாடினாள் ஆனால் நடக்கவில்லை' - இது எந்த வகைத் தொடர்?", a: "அடுக்குத் தொடர்", w: ["உணர்ச்சித் தொடர்", "வினாத் தொடர்", "கட்டளைத் தொடர்"], e: "அவள் பாடினாள் + ஆனால் + நடக்கவில்லை = அடுக்குத் தொடர்." },
+        { q: "'அவர்கள்' என்ற சொல் எந்த வகை மூவிடப்பெயர்?", a: "படர்மை மூவிடப்பெயர்", w: ["உடம்படுமை மூவிடப்பெயர்", "சுட்டுமை மூவிடப்பெயர்", "வினா மூவிடப்பெயர்"], e: "அவர்கள், அவை = படர்மை மூவிடப்பெயர்கள் (Third person plural - distant)." },
+        { q: "'அல்லது' என்ற சொல் என்ன செய்கிறது?", a: "தேர்வு செய்ய உதவுகிறது", w: ["எண்ணிக்கை சொல்கிறது", "நிறத்தைக் குறிக்கிறது", "இடத்தைக் குறிக்கிறது"], e: "அல்லது = இணைப்புச்சொல். இரண்டில் ஒன்றைத் தேர்ந்தெடுக்க உதவுகிறது." },
+        { q: "'நான் வந்தேன் அவன் போனான்' - இதை இணைக்கும் சொல் எது?", a: "மற்றும்", w: ["ஆனால்", "அல்லது", "எனவே"], e: "'நான் வந்தேன் மற்றும் அவன் போனான்' = அடுக்குத் தொடர்." },
       ],
-      // Sentence Types
+      // World 3: இணைச்சொற்கள், மயங்கொலிச் சொற்கள், மரபுத்தொடர்கள்
       [
-        { q: 'What is a statement sentence called?', a: 'அறிவித்தல் வாக்கியம்', w: ['வினா வாக்கியம்', 'கட்டளை வாக்கியம்', 'மறுப்பு வாக்கியம்'], e: 'Statement sentences give information.' },
-        { q: 'What is a question sentence called?', a: 'வினா வாக்கியம்', w: ['அறிவித்தல் வாக்கியம்', 'உணர்ச்சி வாக்கியம்', 'சேர்க்கை வாக்கியம்'], e: 'Question sentences ask for information.' },
-        { q: 'What is an order/command sentence called?', a: 'கட்டளை வாக்கியம்', w: ['வேண்டுகோள் வாக்கியம்', 'வினா வாக்கியம்', 'மறுப்பு வாக்கியம்'], e: 'Command sentences tell someone to do something.' },
-        { q: 'What punctuation ends a question in Tamil?', a: '?', w: ['!', '.', ','], e: 'Questions end with a question mark.' },
-        { q: 'Which sentence type expresses strong feeling?', a: 'உணர்ச்சி வாக்கியம்', w: ['அறிவித்தல் வாக்கியம்', 'வினா வாக்கியம்', 'கட்டளை வாக்கியம்'], e: 'Exclamatory sentences show emotion.' },
-        { q: 'What is a sentence that makes a request called?', a: 'வேண்டுகோள் வாக்கியம்', w: ['கட்டளை வாக்கியம்', 'அறிவித்தல் வாக்கியம்', 'சேர்க்கை வாக்கியம்'], e: 'Request sentences ask politely for something.' },
-        { q: 'What is the subject of a sentence called?', a: 'எழுவாய்', w: ['பயனிலை', 'வினைச்சொல்', 'பெயர்ச்சொல்'], e: 'The subject performs the action.' },
-        { q: 'What is the predicate of a sentence called?', a: 'பயனிலை', w: ['எழுவாய்', 'பெயரடை', 'வினாப்பெயர்'], e: 'The predicate tells what the subject does.' },
-        { q: 'What is a compound sentence called?', a: 'சேர்க்கை வாக்கியம்', w: ['எளிய வாக்கியம்', 'வினா வாக்கியம்', 'கட்டளை வாக்கியம்'], e: 'It joins two independent clauses.' },
-        { q: 'What is a negative sentence called?', a: 'மறுப்பு வாக்கியம்', w: ['அறிவித்தல் வாக்கியம்', 'வினா வாக்கியம்', 'உணர்ச்சி வாக்கியம்'], e: 'Negative sentences say "no" or "not".' },
+        { q: "'நல்லது + அழகு = நல்லழகு' - இது எந்த வகைச் சொல்?", a: "இணைச்சொல்", w: ["பெயர்ச்சொல்", "வினைச்சொல்", "இடைச்சொல்"], e: "இரண்டு சொற்கள் சேர்ந்து ஒரு புதிய சொல் உருவாகும் = இணைச்சொல்." },
+        { q: "'பொன் + நிறம் = பொன்னிறம்' - இது எந்த வகைச் சொல்?", a: "இணைச்சொல்", w: ["பெயர்ச்சொல்", "வினைச்சொல்", "இடைச்சொல்"], e: "பொன் + நிறம் = பொன்னிறம். இரண்டு சொற்கள் இணைந்து ஒரு புதிய சொல்." },
+        { q: "'கா + கா = காக்கா' - இது எந்த வகைச் சொல்?", a: "மயங்கொலிச் சொல்", w: ["இணைச்சொல்", "பெயர்ச்சொல்", "வினைச்சொல்"], e: "மயங்கொலிச் சொல் = ஒரே எழுத்து அல்லது ஒலி மீண்டும் மீண்டும் வரும்." },
+        { q: "'தா + தா = தாத்தா' - இது எந்த வகைச் சொல்?", a: "மயங்கொலிச் சொல்", w: ["இணைச்சொல்", "பெயர்ச்சொல்", "வினைச்சொல்"], e: "தா + தா = தாத்தா. ஒரே ஒலி மீண்டும் வருவதால் மயங்கொலிச் சொல்." },
+        { q: "'கண் உறுதி மூன்று' என்ற மரபுத்தொடரின் பொருள் என்ன?", a: "பார்ப்பதை நம்பலாம்", w: ["கேட்பதை நம்பலாம்", "பேசுவது முக்கியம்", "எழுதுவது முக்கியம்"], e: "கண் உறுதி மூன்று = பார்ப்பதை விட உறுதியான சாட்சி வேறில்லை." },
+        { q: "'சிறு துளி பெரு வெள்ளம்' என்ற மரபுத்தொடரின் பொருள் என்ன?", a: "சிறியது பெரிதாக மாறும்", w: ["பெரியது சிறியதாக மாறும்", "நீர் முக்கியம்", "வெள்ளம் அபாயம்"], e: "சிறு துளி பெரு வெள்ளம் = சிறிய தொடக்கம் பெரிய மாற்றத்தை உருவாக்கும்." },
+        { q: "'பழையன கழிதலும் புதியன பிறத்தலும்' - இதன் பொருள் என்ன?", a: "பழையது மறைந்து புதியது வரும்", w: ["பழையதை வைத்துக்கொள்", "புதியதை நிராகரி", "காலம் நிற்கிறது"], e: "பழையன கழிதலும் புதியன பிறத்தலும் = Change is constant (திருக்குறள்)." },
+        { q: "'பளிச்' என்ற சொல் எந்த வகைச் சொல்?", a: "ஒலிக்குறிப்புச் சொல்", w: ["பெயர்ச்சொல்", "வினைச்சொல்", "மயங்கொலிச் சொல்"], e: "பளிச் = ஒலிக்குறிப்புச் சொல் (Onomatopoeia). ஒரு ஒலியைக் குறிக்கும்." },
+        { q: "'கிலுகிலு' என்ற சொல் எந்த வகைச் சொல்?", a: "ஒலிக்குறிப்புச் சொல்", w: ["இணைச்சொல்", "பெயர்ச்சொல்", "மரபுத்தொடர்"], e: "கிலுகிலு = ஒலிக்குறிப்புச் சொல். நகைச்சுவையான ஒலியைக் குறிக்கும்." },
+        { q: "'அழகு + மலர் = அழகுமலர்' - இது எந்த வகைச் சொல்?", a: "இணைச்சொல்", w: ["மயங்கொலிச் சொல்", "பெயர்ச்சொல்", "ஒலிக்குறிப்புச் சொல்"], e: "அழகு + மலர் = அழகுமலர். இரண்டு பெயர்ச்சொற்கள் இணைந்தது = இணைச்சொல்." },
       ],
-      // Nouns & Pronouns
+      // World 4: உரிச்சொல், இடைச்சொல், எதிர்ச்சொல், தொடர்புச்சொல்
       [
-        { q: 'What is "பெயர்ச்சொல்"?', a: 'Noun', w: ['Verb', 'Adjective', 'Adverb'], e: 'பெயர்ச்சொல் = noun (naming word).' },
-        { q: 'What is "பெயரடை"?', a: 'Adjective', w: ['Noun', 'Verb', 'Preposition'], e: 'பெயரடை describes a noun.' },
-        { q: 'What is "வினைச்சொல்"?', a: 'Verb', w: ['Noun', 'Adjective', 'Conjunction'], e: 'வினைச்சொல் = verb (action word).' },
-        { q: 'What is "இடப்பெயர்"?', a: 'Place noun', w: ['Person noun', 'Thing noun', 'Animal noun'], e: 'இடப்பெயர் = proper noun for places.' },
-        { q: 'What is "செயப்பாடு"?', a: 'Verb', w: ['Noun', 'Pronoun', 'Adverb'], e: 'செயப்பாடு = action (verb).' },
-        { q: 'What is "எண்ணுப்பெயர்"?', a: 'Numeral', w: ['Pronoun', 'Verb', 'Adjective'], e: 'Numbers used as nouns.' },
-        { q: 'What is "வினாப்பெயர்"?', a: 'Interrogative noun', w: ['Demonstrative noun', 'Proper noun', 'Collective noun'], e: 'Words like யார் (who), என்ன (what).' },
-        { q: 'What is "சுட்டுப்பெயர்"?', a: 'Demonstrative pronoun', w: ['Personal pronoun', 'Reflexive pronoun', 'Relative pronoun'], e: 'Words like இவன், அவன் (this/that person).' },
-        { q: 'What is "ஒலிப்பெயர்"?', a: 'Onomatopoeia', w: ['Synonym', 'Antonym', 'Homonym'], e: 'Words that imitate sounds.' },
-        { q: 'What is "காலப்பெயர்"?', a: 'Temporal noun', w: ['Spatial noun', 'Material noun', 'Abstract noun'], e: 'Nouns related to time like today, yesterday.' },
+        { q: "'மரத்தில்' என்ற சொல்லில் 'இல்' என்பது என்ன?", a: "உரிச்சொல் (இடப்பொருள் உரி)", w: ["பெயர்ச்சொல்", "வினைச்சொல்", "இணைச்சொல்"], e: "'இல்' = இடத்தைக் குறிக்கும் உரிச்சொல். மரத்தில், வீட்டில்." },
+        { q: "'மரத்தை' என்ற சொல்லில் 'ஐ' என்பது என்ன?", a: "உரிச்சொல் (கருமை உரி)", w: ["எழுவாய் உரி", "இடப்பொருள் உரி", "கொடை உரி"], e: "'ஐ' = கருமை (object) உரிச்சொல். பழத்தை, புத்தகத்தை." },
+        { q: "'அவனுக்கு' என்ற சொல்லில் 'க்கு' என்பது என்ன?", a: "உரிச்சொல் (கொடை உரி)", w: ["இடப்பொருள் உரி", "கருமை உரி", "உடைமை உரி"], e: "'க்கு' = கொடை (dative) உரிச்சொல். அவனுக்கு, பையனுக்கு." },
+        { q: "'மேல்' என்ற சொல் எந்த வகை இடைச்சொல்?", a: "இடவிளிக்கை இடைச்சொல்", w: ["சான்றிடை இடைச்சொல்", "உடனிலை இடைச்சொல்", "வினவிடை இடைச்சொல்"], e: "மேல், கீழ், முன் = இடவிளிக்கை இடைச்சொற்கள் (Adverbs of place)." },
+        { q: "'நல்ல + கெட்ட = எதிர்ச்சொல்' - 'நல்ல' இன் எதிர்ச்சொல் எது?", a: "கெட்ட", w: ["சிறந்த", "அழகான", "புதிய"], e: "நல்ல → கெட்ட (Antonyms/எதிர்ச்சொற்கள்)." },
+        { q: "'அழகு' என்ற சொல்லின் தொடர்புச்சொல் எது?", a: "அழகான (அழகிய)", w: ["அழகில்லாத", "அழகுடைய", "அழகுக்கு"], e: "தொடர்புச்சொல் = Related word. அழகு → அழகான, அழகிய, அழகுள்ள." },
+        { q: "'இன்று' என்ற சொல் எந்த வகை இடைச்சொல்?", a: "காலவிளிக்கை இடைச்சொல்", w: ["இடவிளிக்கை", "பண்பு விளிக்கை", "எண்ணிடை"], e: "இன்று, நேற்று, நாளை = காலவிளிக்கை இடைச்சொற்கள் (Adverbs of time)." },
+        { q: "'மிகவும்' என்ற சொல் எந்த வகை இடைச்சொல்?", a: "பண்பு விளிக்கை இடைச்சொல்", w: ["காலவிளிக்கை", "இடவிளிக்கை", "எண்ணிடை"], e: "மிகவும், மிக, அதிகம் = பண்பு விளிக்கை இடைச்சொற்கள் (Adverbs of degree)." },
+        { q: "'அன்று' என்ற சொல்லின் எதிர்ச்சொல் எது?", a: "இன்று", w: ["நேற்று", "நாளை", "இன்றைக்கு"], e: "அன்று (that day) → இன்று (today) = எதிர்ச்சொற்கள்." },
+        { q: "'மேல்' என்ற சொல்லின் எதிர்ச்சொல் எது?", a: "கீழ்", w: ["முன்", "பின்", "உள்"], e: "மேல் (up) → கீழ் (down) = எதிர்ச்சொற்கள்." },
       ],
-      // Verbs & Tenses
+      // World 5: வேற்றுமை உருபுகள், வினாச்சொற்கள், காலம்
       [
-        { q: 'What is present tense called in Tamil?', a: 'நிகழ்காலம்', w: ['இறந்தகாலம்', 'எதிர்காலம்', 'காலமில்லை'], e: 'நிகழ்காலம் = present tense.' },
-        { q: 'What is past tense called in Tamil?', a: 'இறந்தகாலம்', w: ['நிகழ்காலம்', 'எதிர்காலம்', 'இன்றியமையா'], e: 'இறந்தகாலம் = past tense.' },
-        { q: 'What is future tense called in Tamil?', a: 'எதிர்காலம்', w: ['நிகழ்காலம்', 'இறந்தகாலம்', 'நடப்பு'], e: 'எதிர்காலம் = future tense.' },
-        { q: 'What is the verb "to go" in Tamil?', a: 'செல்', w: ['வரு', 'ஓடு', 'படி'], e: 'செல் = go.' },
-        { q: 'What is "ஓடு" in English?', a: 'Run', w: ['Walk', 'Jump', 'Sit'], e: 'ஓடு = run.' },
-        { q: 'What is "வரு" in English?', a: 'Come', w: ['Go', 'Stay', 'Leave'], e: 'வரு = come.' },
-        { q: 'What is "படி" in English?', a: 'Read/Study', w: ['Write', 'Speak', 'Listen'], e: 'படி = read or study.' },
-        { q: 'What is "எழுது" in English?', a: 'Write', w: ['Read', 'Speak', 'Sing'], e: 'எழுது = write.' },
-        { q: 'What is a transitive verb called?', a: 'செயப்பாட்டு வினை', w: ['செயப்படு வினை', 'இடைச்சொல்', 'பெயர்ச்சொல்'], e: 'A verb that takes an object.' },
-        { q: 'What is an intransitive verb called?', a: 'செயப்படு வினை', w: ['செயப்பாட்டு வினை', 'உரிச்சொல்', 'இடைச்சொல்'], e: 'A verb that does not need an object.' },
+        { q: "'பள்ளிக்கு' என்ற சொல்லில் 'க்கு' என்ற உருபு எந்த வேற்றுமையைக் குறிக்கிறது?", a: "நான்காம் வேற்றுமை (கொடை)", w: ["முதல் வேற்றுமை", "இரண்டாம் வேற்றுமை", "மூன்றாம் வேற்றுமை"], e: "நான்காம் வேற்றுமை = கொடை/இலக்கம். பள்ளிக்கு, வீட்டுக்கு." },
+        { q: "'புத்தகத்தால்' என்ற சொல்லில் 'ஆல்' எந்த வேற்றுமை உருபு?", a: "மூன்றாம் வேற்றுமை (கரணம்)", w: ["முதல் வேற்றுமை", "இரண்டாம் வேற்றுமை", "ஐந்தாம் வேற்றுமை"], e: "மூன்றாம் வேற்றுமை = கரணம் (by/with). பென்னால், புத்தகத்தால்." },
+        { q: "'எங்கே' என்ற சொல் எந்த வகை வினாச்சொல்?", a: "இட வினாச்சொல்", w: ["கால வினாச்சொல்", "பொருள் வினாச்சொல்", "எண் வினாச்சொல்"], e: "எங்கே = இடத்தைக் கேட்கும் வினாச்சொல் (Where?)." },
+        { q: "'எப்போது' என்ற சொல் எந்த வகை வினாச்சொல்?", a: "கால வினாச்சொல்", w: ["இட வினாச்சொல்", "பொருள் வினாச்சொல்", "எண் வினாச்சொல்"], e: "எப்போது = காலத்தைக் கேட்கும் வினாச்சொல் (When?)." },
+        { q: "'எத்தனை' என்ற சொல் எந்த வகை வினாச்சொல்?", a: "எண் வினாச்சொல்", w: ["இட வினாச்சொல்", "கால வினாச்சொல்", "பொருள் வினாச்சொல்"], e: "எத்தனை = எண்ணிக்கையைக் கேட்கும் வினாச்சொல் (How many?)." },
+        { q: "'எழுந்தான்' என்ற சொல் எந்த காலம்?", a: "இறந்த காலம் (Past tense)", w: ["நிகழ் காலம்", "எதிர் காலம்", "எதிர்காலம்"], e: "எழுந்தான் = Past tense. எழுகிறான் = Present. எழுவான் = Future." },
+        { q: "'ஓடுகிறான்' என்ற சொல் எந்த காலம்?", a: "நிகழ் காலம் (Present tense)", w: ["இறந்த காலம்", "எதிர் காலம்", "எதிர்காலம்"], e: "ஓடுகிறான் = Present tense. ஓடினான் = Past. ஓடுவான் = Future." },
+        { q: "'பாடுவாள்' என்ற சொல் எந்த காலம்?", a: "எதிர் காலம் (Future tense)", w: ["நிகழ் காலம்", "இறந்த காலம்", "எதிர்காலம்"], e: "பாடுவாள் = Future tense. பாடுகிறாள் = Present. பாடினாள் = Past." },
+        { q: "'எவ்வளவு' என்ற சொல் எந்த வகை வினாச்சொல்?", a: "அளவு வினாச்சொல்", w: ["இட வினாச்சொல்", "கால வினாச்சொல்", "எண் வினாச்சொல்"], e: "எவ்வளவு = அளவைக் கேட்கும் வினாச்சொல் (How much?)." },
+        { q: "'மரத்தின்' என்ற சொல்லில் 'இன்' எந்த வேற்றுமை உருபு?", a: "ஆறாம் வேற்றுமை (உடைமை)", w: ["ஐந்தாம் வேற்றுமை", "ஏழாம் வேற்றுமை", "ஒன்றாம் வேற்றுமை"], e: "ஆறாம் வேற்றுமை = உடைமை/சார்வு (of/'s). மரத்தின், பள்ளியின்." },
       ],
-      // Grammar Rules
+      // World 6: தொடர் வகைகள், உணர்ச்சித் தொடர், கட்டளைத் தொடர், பழமொழித் தொடர்
       [
-        { q: 'What is "வேற்றுமை"?', a: 'Vibhakti (case ending)', w: ['Sandhi', 'Alankaram', 'Tinai'], e: 'Vibhakti shows the relationship between words.' },
-        { q: 'How many types of Vibhakti are there?', a: '8', w: ['6', '10', '12'], e: 'Tamil has 8 Vibhakti (case endings).' },
-        { q: 'What is "சந்தி"?', a: 'Sandhi (joining rule)', w: ['Vibhakti', 'Punarchi', 'Alankaram'], e: 'Sandhi is the rule for joining words together.' },
-        { q: 'What is "ஒற்றுமை" in grammar?', a: 'Agreement', w: ['Disagreement', 'Harmony', ['Balance']], e: 'Words must agree in gender, number, and person.' },
-        { q: 'What is "எதுகை"?', a: 'Opposite words', w: ['Rhyming words', 'Similar words', 'Descriptive words'], e: 'எதுகை = opposite/antonym in Tamil.' },
-        { q: 'What is "மோனை"?', a: 'Alliteration', w: ['Rhyme', 'Metaphor', 'Simile'], e: 'Repeated first consonant sounds.' },
-        { q: 'What is "எதுகை" in poetry?', a: 'Rhyming opposite', w: ['Alliteration', 'Metaphor', 'Personification'], e: 'Words with opposite meanings that rhyme.' },
-        { q: 'How many grammatical cases are in Tamil?', a: '8', w: ['5', '7', '10'], e: 'Tamil uses 8 cases (வேற்றுமை உருபுகள்).' },
-        { q: 'What is "இயல்பு" in grammar?', a: 'Natural form', w: ['Changed form', 'Plural form', 'Past form'], e: 'The natural or unchanged form of a word.' },
-        { q: 'What is "புணர்ச்சி"?', a: 'Combination', w: ['Separation', 'Division', 'Exclusion'], e: 'When two words join together.' },
+        { q: "'அடி முட்கால் மேல் முட்கால்' - இது எந்த வகைத் தொடர்?", a: "உணர்ச்சித் தொடர் (Exclamatory)", w: ["வினாத் தொடர்", "கட்டளைத் தொடர்", "அடுக்குத் தொடர்"], e: "உணர்ச்சித் தொடர் = Exclamatory sentence. உணர்ச்சியை வெளிப்படுத்தும்." },
+        { q: "'வகுப்பறைக்குச் செல்லுங்கள்' - இது எந்த வகைத் தொடர்?", a: "கட்டளைத் தொடர் (Imperative)", w: ["வினாத் தொடர்", "உணர்ச்சித் தொடர்", "அடுக்குத் தொடர்"], e: "கட்டளைத் தொடர் = Imperative sentence. ஒரு கட்டளை/வேண்டுகோள்." },
+        { q: "'நீ எங்கே செல்கிறாய்?' - இது எந்த வகைத் தொடர்?", a: "வினாத் தொடர் (Interrogative)", w: ["கட்டளைத் தொடர்", "உணர்ச்சித் தொடர்", "தொகைத் தொடர்"], e: "வினாத் தொடர் = Interrogative sentence. கேள்வி கேட்கும்." },
+        { q: "'மழை பெய்கிறது' - இது எந்த வகைத் தொடர்?", a: "எளிய வினைத்தொடர்", w: ["அடுக்குத் தொடர்", "கட்டளைத் தொடர்", "உணர்ச்சித் தொடர்"], e: "எளிய வினைத்தொடர் = Simple sentence with subject + verb." },
+        { q: "'என்ன அழகு!' - இது எந்த வகைத் தொடர்?", a: "உணர்ச்சித் தொடர்", w: ["வினாத் தொடர்", "கட்டளைத் தொடர்", "எதிர்மறைத் தொடர்"], e: "உணர்ச்சித் தொடர் = Exclamatory. வியப்பு/உணர்ச்சி தெரிவிக்கும்." },
+        { q: "'அமைதியாக இரு' - இது எந்த வகைத் தொடர்?", a: "கட்டளைத் தொடர்", w: ["வினாத் தொடர்", "உணர்ச்சித் தொடர்", "தொகைத் தொடர்"], e: "கட்டளைத் தொடர் = Imperative. 'இரு' = கட்டளை வடிவம்." },
+        { q: "'நீ பள்ளிக்கு வருகிறாயா?' - இது எந்த வகைத் தொடர்?", a: "வினாத் தொடர்", w: ["கட்டளைத் தொடர்", "உணர்ச்சித் தொடர்", "அடுக்குத் தொடர்"], e: "வினாத் தொடர் = Interrogative. வினா வார்த்தைகள்/சின்னங்கள் இருக்கும்." },
+        { q: "'நல்லவன் பிள்ளை' - இது எந்த வகைத் தொடர்?", a: "சொல்லாட்சித் தொடர் (Proverbial)", w: ["வினாத் தொடர்", "கட்டளைத் தொடர்", "எதிர்மறைத் தொடர்"], e: "சொல்லாட்சித் தொடர் = Proverb/wise saying. நல்லவன் பிள்ளை = நல்ல பிள்ளை." },
+        { q: "'கற்றது கைமண்ணளவு, கல்லாதது உலகளவு' - இது எந்த வகைத் தொடர்?", a: "பழமொழித் தொடர் (Proverb)", w: ["வினாத் தொடர்", "கட்டளைத் தொடர்", "அடுக்குத் தொடர்"], e: "பழமொழித் தொடர் = Proverb/wise saying. கற்றது கைமண்ணளவு = What we know is tiny." },
+        { q: "'நீர் இல்லா உலகு இல்லை' - இது எந்த வகைத் தொடர்?", a: "உவமைத் தொடர்", w: ["வினாத் தொடர்", "கட்டளைத் தொடர்", "எதிர்மறைத் தொடர்"], e: "உவமைத் தொடர் = Comparative sentence. நீர் இல்லாமல் உலகம் இல்லை என்று உவமை." },
       ],
     ];
     const selected = questions[worldId - 1] || questions[0];
@@ -638,60 +741,143 @@ class QG {
     });
   }
 
-  // ============ HINDI (3rd Language) ============
+  // ============ HINDI (3rd Language) - Finding Text-Cum Work Book 3 by Madhubun ============
+  // 10 chapters:
+  // 1. मेहनत (Hard work) | 2. पंछी (Birds - poem) | 3. चाँदनी रात (Moonlit night - poem)
+  // 4. दोस्ती (Friendship) | 5. ईमानदारी (Honesty) | 6. बहादुर (Bravery)
+  // 7. बचपन (Childhood - poem) | 8. अक्ल बड़ी या भैंस (Wisdom story)
+  // 9. हमारा भारत (Our India - poem) | 10. प्रकृति (Nature - poem)
   static hindi(worldId: number, n = 10): MathQuestion[] {
     const questions: any[][] = [
-      // Vocabulary
+      // World 1: मेहनत (Hard Work & Perseverance)
       [
-        { q: 'What is "किताब" in English?', a: 'Book', w: ['Pen', 'Paper', 'Bag'], e: 'किताब = book.' },
-        { q: 'What is "पानी" in English?', a: 'Water', w: ['Milk', 'Juice', 'Tea'], e: 'पानी = water.' },
-        { q: 'What is "स्कूल" in English?', a: 'School', w: ['College', 'Hospital', 'Office'], e: 'स्कूल = school.' },
-        { q: 'What is "मित्र" in English?', a: 'Friend', w: ['Enemy', 'Teacher', 'Stranger'], e: 'मित्र = friend.' },
-        { q: 'What is "सूरज" in English?', a: 'Sun', w: ['Moon', 'Star', 'Cloud'], e: 'सूरज = sun.' },
-        { q: 'What is "माँ" in English?', a: 'Mother', w: ['Father', 'Sister', 'Daughter'], e: 'माँ = mother.' },
-        { q: 'What is "घर" in English?', a: 'House', w: ['Room', 'Door', 'Garden'], e: 'घर = house.' },
-        { q: 'What is "खाना" in English?', a: 'Food', w: ['Water', 'Fruit', 'Vegetable'], e: 'खाना = food.' },
-        { q: 'What is "बच्चा" in English?', a: 'Child', w: ['Adult', 'Baby', 'Parent'], e: 'बच्चा = child.' },
-        { q: 'What is "पेड़" in English?', a: 'Tree', w: ['Leaf', 'Flower', 'Plant'], e: 'पेड़ = tree.' },
+        { q: "'मेहनत' शब्द का अर्थ क्या है?", a: "कड़ी मेहनत / Hard work", w: ["आराम", "सोना", "खेलना"], e: "मेहनत = Hard work / Effort." },
+        { q: "एक अच्छा विद्यार्थी कैसा होता है?", a: "जो पढ़ाई पर ध्यान दे", w: ["जो शोर मचाए", "जो सोता रहे", "जो स्कूल न जाए"], e: "A good student pays attention to studies." },
+        { q: "'पढ़ना' शब्द किस वर्ग का है?", a: "क्रिया (Verb)", w: ["संज्ञा (Noun)", "विशेषण (Adjective)", "सर्वनाम (Pronoun)"], e: "पढ़ना = क्रिया (Verb) - यह एक क्रिया/कार्य को दर्शाता है." },
+        { q: "'लड़की' शब्द का पुल्लिंग रूप क्या है?", a: "लड़का", w: ["लड़के", "लड़कियाँ", "बच्चा"], e: "लड़की (स्त्रीलिंग) → लड़का (पुल्लिंग)." },
+        { q: "सफलता कैसे मिलती है?", a: "मेहनत और लगन से", w: ["सोने से", "खेलने से", "कुछ न करने से"], e: "Success comes through hard work and dedication." },
+        { q: "'लड़की' शब्द का बहुवचन रूप क्या है?", a: "लड़कियाँ", w: ["लड़का", "लड़के", "लड़की"], e: "लड़की (एकवचन) → लड़कियाँ (बहुवचन)." },
+        { q: "'होशियार' शब्द का विलोम शब्द क्या है?", a: "मूर्ख", w: ["चालाक", "तेज़", "समझदार"], e: "होशियार → मूर्ख (Smart → Foolish)." },
+        { q: "'पढ़ाई' शब्द का पर्यायवाची शब्द क्या है?", a: "अध्ययन", w: ["खेल", "नाच", "सोना"], e: "पढ़ाई = अध्ययन = Studies." },
+        { q: "घर का काम करके फिर पढ़ना क्या दर्शाता है?", a: "जिम्मेदारी और मेहनत", w: ["आलस", "कामचोरी", "बेकारी"], e: "Doing housework and then studying shows responsibility." },
+        { q: "'होशियार' शब्द का पर्यायवाची शब्द क्या है?", a: "बुद्धिमान", w: ["मूर्ख", "आलसी", "डरपोक"], e: "होशियार = बुद्धिमान = Intelligent." },
       ],
-      // Grammar (Ling, Vachan, Kaal)
+      // World 2: पंछी (Birds - Poem)
       [
-        { q: 'What is the plural of "लड़का"?', a: 'लड़के', w: ['लड़की', 'लड़कों', 'लड़कियाँ'], e: 'लड़का (boy) → लड़के (boys).' },
-        { q: 'What is the feminine of "राजा"?', a: 'रानी', w: ['राजकुमारी', 'महारानी', 'दासी'], e: 'राजा (king) → रानी (queen).' },
-        { q: 'What is the past tense of "खाना"?', a: 'खाया', w: ['खाता', 'खाएगा', 'खा'], e: 'खाना (to eat) → खाया (ate).' },
-        { q: 'What is the feminine gender called in Hindi?', a: 'स्त्रीलिंग', w: ['पुल्लिंग', ' napumsakling', 'ubhayling'], e: 'स्त्रीलिंग = feminine gender.' },
-        { q: 'What is the masculine gender called in Hindi?', a: 'पुल्लिंग', w: ['स्त्रीलिंग', 'वचन', 'कारक'], e: 'पुल्लिंग = masculine gender.' },
-        { q: 'What is the plural of "लड़की"?', a: 'लड़कियाँ', w: ['लड़के', 'लड़कियों', 'लड़का'], e: 'लड़की (girl) → लड़कियाँ (girls).' },
-        { q: 'What is one in Hindi called?', a: 'एकवचन', w: ['बहुवचन', 'पुल्लिंग', 'स्त्रीलिंग'], e: 'एकवचन = singular.' },
-        { q: 'What is many in Hindi called?', a: 'बहुवचन', w: ['एकवचन', 'अनेक', 'कई'], e: 'बहुवचन = plural.' },
-        { q: 'What is the feminine of "भाई"?', a: 'बहन', w: ['माँ', 'पत्नी', 'बेटी'], e: 'भाई (brother) → बहन (sister).' },
-        { q: 'What is the past tense of "जाना"?', a: 'गया', w: ['जाता', 'जाएगा', 'जा'], e: 'जाना (to go) → गया (went).' },
+        { q: "'पंछी' शब्द का बहुवचन क्या है?", a: "पंछी", w: ["पंछिया", "पंछे", "पंछिन"], e: "पंछी = Birds (plural already). एक पंछी = one bird." },
+        { q: "पंछी कैसे उड़ते हैं?", a: "पंख फड़फड़ाकर", w: ["तैरकर", "दौड़कर", "रेंगकर"], e: "Birds flap their wings to fly in the sky." },
+        { q: "'पंख' शब्द का अर्थ क्या है?", a: "Wings", w: ["Legs", "Eyes", "Beak"], e: "पंख = Wings. पंछी पंखों से उड़ते हैं." },
+        { q: "पंछों का घर क्या कहलाता है?", a: "घोंसला (Nest)", w: ["मकान", "दरवाज़ा", "खिड़की"], e: "Birds build nests (घोंसला) to lay eggs and live." },
+        { q: "'आकाश' शब्द का पर्यायवाची शब्द क्या है?", a: "अम्बर / गगन", w: ["पृथ्वी", "ज़मीन", "समुद्र"], e: "आकाश = अम्बर = गगन = Sky." },
+        { q: "पंछी कहाँ रहते हैं?", a: "घोंसले में पेड़ों पर", w: ["ज़मीन के नीचे", "पानी में", "घरों के अंदर"], e: "Birds live in nests built on trees." },
+        { q: "'चहचहाना' शब्द का अर्थ क्या है?", a: "Birds chirping", w: ["Dogs barking", "Cats meowing", "Cows mooing"], e: "चहचहाना = Chirping sound made by birds." },
+        { q: "पंछी सुबह क्या करते हैं?", a: "चहचहाते हैं और उड़ते हैं", w: ["सोते हैं", "रोते हैं", "खेलते हैं"], e: "Birds chirp and fly in the morning." },
+        { q: "'ऊँचा' शब्द का विलोम शब्द क्या है?", a: "नीचा", w: ["बड़ा", "लंबा", "उंचा"], e: "ऊँचा (High) → नीचा (Low)." },
+        { q: "पंछी हमें क्या सिखाते हैं?", a: "स्वतंत्रता और सुबह-सुबह जागने की आदत", w: ["आलस", "डर", "गुस्सा"], e: "Birds symbolise freedom and waking up early." },
       ],
-      // Sentence Formation
+      // World 3: चाँदनी रात (Moonlit Night - Poem)
       [
-        { q: 'What is a "वाक्य"?', a: 'Sentence', w: ['Word', 'Paragraph', 'Letter'], e: 'वाक्य = sentence.' },
-        { q: 'What type of sentence is "राम खाता है"?', a: 'सरल वाक्य', w: ['मिश्र वाक्य', 'संयुक्त वाक्य', 'विस्मयादिबोधक वाक्य'], e: 'सरल वाक्य = simple sentence.' },
-        { q: 'What is the subject of "राम स्कूल जाता है"?', a: 'राम', w: ['स्कूल', 'जाता', 'है'], e: 'राम is doing the action (going).' },
-        { q: 'What is the verb in "वह गाता है"?', a: 'गाता', w: ['वह', 'है', 'गाना'], e: 'गाता = sings (the action).' },
-        { q: 'Which punctuation ends a question in Hindi?', a: '?', w: ['!', '.', ','], e: 'Questions use ? at the end.' },
-        { q: 'What is the object in "मैं किताब पढ़ता हूँ"?', a: 'किताब', w: ['मैं', 'पढ़ता', 'हूँ'], e: 'किताब (book) is being read.' },
-        { q: 'What type of sentence is a question?', a: 'प्रश्नवाचक वाक्य', w: ['सरल वाक्य', 'कथन वाक्य', 'आज्ञार्थक वाक्य'], e: 'Interrogative sentence.' },
-        { q: 'What is a negative sentence called?', a: 'नकारात्मक वाक्य', w: ['सकारात्मक वाक्य', 'सरल वाक्य', 'मिश्र वाक्य'], e: 'Sentences with "no" or "not".' },
-        { q: 'What is the verb "to be" in Hindi?', a: 'होना', w: ['करना', 'जाना', 'देना'], e: 'होना means to be/exist.' },
-        { q: 'What is an exclamatory sentence called?', a: 'विस्मयादिबोधक वाक्य', w: ['संयुक्त वाक्य', 'सरल वाक्य', 'प्रश्नवाचक वाक्य'], e: 'Sentences showing surprise or emotion.' },
+        { q: "'चाँद' किसका उपग्रह (satellite) है?", a: "पृथ्वी (Earth) का", w: ["सूरज का", "मंगल का", "बुध का"], e: "The Moon is Earth's only natural satellite." },
+        { q: "चाँद रात में कैसा दिखता है?", a: "चमकदार और सुनहला", w: ["काला और गंदा", "छोटा और सूखा", "गर्म और लाल"], e: "The moon appears bright and golden at night." },
+        { q: "'चाँदनी' शब्द का अर्थ क्या है?", a: "Moonlight", w: ["Sunlight", "Starlight", "Firelight"], e: "चाँदनी = Moonlight = the light of the moon." },
+        { q: "रात में आसमान में चमकने वाली वस्तुएँ क्या हैं?", a: "चाँद और तारे", w: ["सूरज और बादल", "पक्षी और हवाई जहाज", "गेंद और खिलौने"], e: "The moon and stars shine in the night sky." },
+        { q: "'रात्रि' शब्द का पर्यायवाची शब्द क्या है?", a: "रात", w: ["दिन", "सुबह", "शाम"], e: "रात्रि = रात (Night)." },
+        { q: "चाँद के बारे में कविताएँ क्या दर्शाती हैं?", a: "बच्चों की कल्पना और सपने", w: ["डर और चिंता", "गुस्सा और लड़ाई", "थकान और नींद"], e: "Poems about the moon reflect children's imagination." },
+        { q: "'चाँद' शब्द का विशेषण रूप क्या है?", a: "चाँदनी / चाँद सा", w: ["चाँदवा", "चाँदनीला", "चाँदी"], e: "चाँद सा सुंदर = Beautiful like the moon." },
+        { q: "'तारा' शब्द का बहुवचन क्या है?", a: "तारे", w: ["तारों", "तारी", "तारा"], e: "तारा (Singular) → तारे (Plural)." },
+        { q: "अंतरिक्ष यात्री कहाँ गए हैं?", a: "चाँद पर", w: ["सूरज पर", "तारे पर", "बादल में"], e: "Astronauts have travelled to the Moon." },
+        { q: "'चमकना' शब्द का अर्थ क्या है?", a: "To shine / glow", w: ["To sleep", "To eat", "To cry"], e: "चमकना = To shine / glow." },
       ],
-      // Comprehension
+      // World 4: दोस्ती (Friendship)
       [
-        { q: 'What is "गधा" in English?', a: 'Donkey', w: ['Horse', 'Cow', 'Goat'], e: 'गधा = donkey.' },
-        { q: 'What is "पक्षी" in English?', a: 'Bird', w: ['Animal', 'Insect', 'Fish'], e: 'पक्षी = bird.' },
-        { q: 'What is "खुश" in English?', a: 'Happy', w: ['Sad', 'Angry', 'Tired'], e: 'खुश = happy.' },
-        { q: 'What is "बड़ा" in English?', a: 'Big', w: ['Small', 'Tall', 'Wide'], e: 'बड़ा = big.' },
-        { q: 'What is "चोटी" in English?', a: 'Peak/top', w: ['Bottom', 'Middle', 'Side'], e: 'चोटी = peak or top.' },
-        { q: 'What is "छोटा" in English?', a: 'Small', w: ['Big', 'Tall', 'Long'], e: 'छोटा = small.' },
-        { q: 'What is "तेज" in English?', a: 'Fast', w: ['Slow', 'Weak', 'Quiet'], e: 'तेज = fast.' },
-        { q: 'What is "अच्छा" in English?', a: 'Good', w: ['Bad', 'Okay', 'Fine'], e: 'अच्छा = good.' },
-        { q: 'What is "सच" in English?', a: 'Truth', w: ['Lie', 'Story', 'News'], e: 'सच = truth.' },
-        { q: 'What is "झूठ" in English?', a: 'Lie', w: ['Truth', 'Fact', 'Reality'], e: 'झूठ = lie.' },
+        { q: "सबसे अच्छा मित्र कौन होता है?", a: "जो कठिन समय में साथ दे", w: ["जो मज़े में साथ हो", "जो अमीर हो", "जो ताकतवर हो"], e: "A true friend stands by you in difficult times." },
+        { q: "'मित्र' शब्द का पर्यायवाची शब्द क्या है?", a: "दोस्त", w: ["दुश्मन", "अजनबी", "बड़ा"], e: "मित्र = दोस्त = Friend." },
+        { q: "सच्चा मित्र कैसा होता है?", a: "विश्वासयोग्य और ईमानदार", w: ["झूठा और धोखेबाज़", "आलसी और कामचोर", "गुस्सैल और क्रोधी"], e: "A true friend is trustworthy and honest." },
+        { q: "'अच्छा' शब्द का विलोम शब्द क्या है?", a: "बुरा", w: ["सुंदर", "उत्तम", "बढ़िया"], e: "अच्छा (Good) → बुरा (Bad)." },
+        { q: "मित्रता का महत्व क्या है?", a: "मित्र जीवन का सच्चा साथी है", w: ["मित्र बेकार है", "मित्र से डरना चाहिए", "मित्र को नज़रअंदाज़ करना चाहिए"], e: "A friend is life's true companion." },
+        { q: "'साथ' शब्द का अर्थ क्या है?", a: "Together / साथ में", w: ["अकेला", "दूर", "बिना"], e: "साथ = Together / With." },
+        { q: "दोस्ती किस पर आधारित होनी चाहिए?", a: "विश्वास और समझ", w: ["धोखा और फरेब", "अमीरी और रुतबा", "डर और धमकी"], e: "Friendship should be based on trust and understanding." },
+        { q: "'मित्र' शब्द का विलोम शब्द क्या है?", a: "शत्रु (Enemy)", w: ["भाई", "पिता", "गुरु"], e: "मित्र (Friend) → शत्रु (Enemy)." },
+        { q: "सच्चा दोस्त कब काम आता है?", a: "मुश्किल वक़्त में", w: ["आसान वक़्त में", "कभी नहीं", "सिर्फ खाने में"], e: "A true friend is revealed during difficult times." },
+        { q: "दोस्ती का संदेश क्या है?", a: "अच्छी दोस्ती जीवनभर काम आती है", w: ["दोस्ती बेकार है", "अकेला रहना अच्छा है", "किसी पर भरोसा न करें"], e: "Good friendship lasts a lifetime." },
+      ],
+      // World 5: ईमानदारी (Honesty / Truth & Values)
+      [
+        { q: "'सच्चाई' शब्द का अर्थ क्या है?", a: "Truth / ईमानदारी", w: ["झूठ", "चोरी", "धोखा"], e: "सच्चाई = Truth / Honesty." },
+        { q: "'पैगाम' शब्द का अर्थ क्या है?", a: "संदेश (Message)", w: ["खत", "उपहार", "खेल"], e: "पैगाम = Message / News." },
+        { q: "सच्चा इंसान कैसा होता है?", a: "ईमानदार और भरोसेमंद", w: ["झूठा और चालाक", "आलसी और कामचोर", "गुस्सैल और क्रोधी"], e: "An honest person is trustworthy and reliable." },
+        { q: "'ईमानदार' शब्द का विलोम शब्द क्या है?", a: "बेईमान", w: ["सच्चा", "अच्छा", "मेहनती"], e: "ईमानदार (Honest) → बेईमान (Dishonest)." },
+        { q: "सच्चाई का रास्ता कैसा होता है?", a: "कठिन लेकिन सही", w: ["आसान लेकिन गलत", "छोटा और संकीर्ण", "लंबा और भयानक"], e: "The path of truth may be difficult but it is always right." },
+        { q: "'सच' शब्द का पर्यायवाची शब्द क्या है?", a: "सच्चाई", w: ["झूठ", "फरेब", "धोखा"], e: "सच = सच्चाई = Truth." },
+        { q: "सच्चाई को किससे तुलना की जाती है?", a: "रोशनी (Light) से", w: ["अंधेरे से", "आग से", "पानी से"], e: "Truth is compared to light that removes darkness." },
+        { q: "'संदेश' शब्द का पर्यायवाची शब्द क्या है?", a: "पैगाम", w: ["खत", "उपहार", "खेल"], e: "संदेश = पैगाम = Message." },
+        { q: "कविताएँ हमें क्या सिखाती हैं?", a: "अच्छे संस्कार और नैतिकता", w: ["बुरी आदतें", "झूठ बोलना", "चोरी करना"], e: "Poems about values teach us good morals and ethics." },
+        { q: "'नैतिकता' शब्द का अर्थ क्या है?", a: "Morality / Ethics", w: ["Immorality", "Dishonesty", "Laziness"], e: "नैतिकता = Morality / Ethics." },
+      ],
+      // World 6: बहादुर (Bravery / Courage)
+      [
+        { q: "'वीर' शब्द का अर्थ क्या है?", a: "बहादुर (Brave)", w: ["डरपोक", "आलसी", "कायर"], e: "वीर = Brave / Courageous warrior." },
+        { q: "1857 की क्रांति क्या थी?", a: "अंग्रेज़ों के खिलाफ पहला बड़ा विद्रोह", w: ["1947 की आज़ादी", "पहला विश्व युद्ध", "दूसरा विश्व युद्ध"], e: "The 1857 Revolt was the first major uprising against British rule." },
+        { q: "'क्रांति' शब्द का अर्थ क्या है?", a: "Revolution / विद्रोह", w: ["शांति", "आराम", "मित्रता"], e: "क्रांति = Revolution / Revolt against unjust rule." },
+        { q: "'बहादुर' शब्द का पर्यायवाची शब्द क्या है?", a: "वीर", w: ["डरपोक", "कायर", "आलसी"], e: "बहादुर = वीर = Brave." },
+        { q: "देशभक्ति का अर्थ क्या है?", a: "अपने देश से प्रेम", w: ["देश से नफरत", "दूसरे देश की तारीफ", "कुछ नहीं"], e: "Patriotism means love for one's country." },
+        { q: "'मर्दानी' शब्द का अर्थ क्या है?", a: "जो औरत पुरुषों जैसी बहादुर हो", w: ["जो डरती हो", "जो सोती हो", "जो रोती हो"], e: "मर्दानी = A brave woman who fights courageously." },
+        { q: "'मातृभूमि' शब्द का अर्थ क्या है?", a: "Motherland / अपना देश", w: ["Fatherland", " neighbour", "Enemy"], e: "मातृभूमि = Motherland = One's own country." },
+        { q: "'रानी' शब्द का अर्थ क्या है?", a: "Queen / महारानी", w: ["King", "Soldier", "Farmer"], e: "रानी = Queen." },
+        { q: "हमें वीरों से क्या सीखना चाहिए?", a: "देशभक्ति और बहादुरी", w: ["डर और कायरता", "आलस और सुस्ती", "धोखा और झूठ"], e: "We should learn patriotism and bravery from heroes." },
+        { q: "'स्वतंत्रता' शब्द का अर्थ क्या है?", a: "Freedom / आज़ादी", w: ["Slavery", "Dependence", "Weakness"], e: "स्वतंत्रता = Freedom / Independence." },
+      ],
+      // World 7: बचपन (Childhood - Poem)
+      [
+        { q: "'बचपन' शब्द का अर्थ क्या है?", a: "लड़कपन / शैशव अवस्था", w: ["जवानी", "बूढ़ापा", "मध्यम अवस्था"], e: "बचपन = Childhood / Early years of life." },
+        { q: "बचपन में बच्चे कैसे होते हैं?", a: "मासूम और खुशमिजाज़", w: ["चालाक और धोखेबाज़", "गुस्सैल और क्रोधी", "आलसी और सुस्त"], e: "Children in their early years are innocent and cheerful." },
+        { q: "'मासूम' शब्द का अर्थ क्या है?", a: "निर्दोष / Innocent", w: ["चालाक", "गुस्सैल", "आलसी"], e: "मासूम = Innocent / Pure / Free from guilt." },
+        { q: "बच्चे क्या करना पसंद करते हैं?", a: "खेलना और हँसना", w: ["काम करना", "रोना और गुस्सा करना", "सोना"], e: "Children love to play and laugh." },
+        { q: "'खुशमिज़ाज' शब्द का विलोम शब्द क्या है?", a: "उदास / रूठा हुआ", w: ["प्रसन्न", "आनंदित", "हर्षित"], e: "खुशमिज़ाज (Cheerful) → उदास (Sad)." },
+        { q: "'याद' शब्द का अर्थ क्या है?", a: "Memory / यादें", w: ["भूलना", "अनजान", "वर्तमान"], e: "याद = Memory / Remembering." },
+        { q: "बचपन की सबसे अच्छी बात क्या है?", a: "निर्दोषता और खुशी", w: ["चिंता और डर", "क्रोध और ईर्ष्या", "धोखा और झूठ"], e: "The best thing about childhood is innocence and joy." },
+        { q: "'बचपन' शब्द का पर्यायवाची शब्द क्या है?", a: "शैशव / बाल्यावस्था", w: ["जवानी", "वृद्धावस्था", "किशोरावस्था"], e: "बचपन = शैशव = बाल्यावस्था = Childhood." },
+        { q: "हमें बचपन की यादों को कैसे रखना चाहिए?", a: "संजोकर और याद करके", w: ["भूल जाना चाहिए", "मिटा देना चाहिए", "नज़रअंदाज़ करना चाहिए"], e: "We should cherish the memories of childhood." },
+        { q: "'बाल्यावस्था' शब्द का अर्थ क्या है?", a: "Childhood / बचपन", w: ["Youth", "Old age", "Adulthood"], e: "बाल्यावस्था = Childhood." },
+      ],
+      // World 8: अक्ल बड़ी या भैंस (Wisdom Story - Clever Solutions)
+      [
+        { q: "'होशियार' शब्द का अर्थ क्या है?", a: "बुद्धिमान / Intelligent", w: ["मूर्ख", "आलसी", "डरपोक"], e: "होशियार = Clever / Intelligent / Sharp-minded." },
+        { q: "'बुद्धिमान' शब्द का पर्यायवाची शब्द क्या है?", a: "होशियार", w: ["मूर्ख", "आलसी", "बेकार"], e: "बुद्धिमान = होशियार = Intelligent / Wise." },
+        { q: "समस्याओं का हल कैसे निकालना चाहिए?", a: "बुद्धि और सोच से", w: ["लड़ाई से", "धोखा देकर", "चोरी करके"], e: "Problems should be solved using wit and intelligence." },
+        { q: "'दरबार' शब्द का अर्थ क्या है?", a: "राजा का सभा-स्थल (Court)", w: ["खेत", "बाज़ार", "स्कूल"], e: "दरबार = Royal court where the king holds meetings." },
+        { q: "'समस्या' शब्द का अर्थ क्या है?", a: "Problem", w: ["Solution", "Joy", "Friend"], e: "समस्या = Problem / Difficulty." },
+        { q: "होशियार लोग कैसे होते हैं?", a: "तेज़ दिमाग और चतुर", w: ["धीमे और मूर्ख", "आलसी", "डरपोक"], e: "Clever people are sharp-minded and quick thinkers." },
+        { q: "'चतुर' शब्द का विलोम शब्द क्या है?", a: "मूर्ख", w: ["होशियार", "बुद्धिमान", "तेज़"], e: "चतुर (Clever) → मूर्ख (Foolish)." },
+        { q: "'उपाय' शब्द का अर्थ क्या है?", a: "Solution / तरीका", w: ["Problem", "Fight", "Escape"], e: "उपाय = Solution / Way out." },
+        { q: "हमें होशियार लोगों से क्या सीखना चाहिए?", a: "सोच-समझकर काम करना", w: ["जल्दबाजी करना", "धोखा देना", "कुछ न करना"], e: "We should learn to think before acting." },
+        { q: "'सलाह' शब्द का अर्थ क्या है?", a: "Advice / सुझाव", w: ["Fight", "Anger", "Ignore"], e: "सलाह = Advice / Suggestion." },
+      ],
+      // World 9: हमारा भारत (Our India - Patriotic Poem)
+      [
+        { q: "'भारत' देश का दूसरा नाम क्या है?", a: "हिंदुस्तान / इंडिया", w: ["चीन", "पाकिस्तान", "अमेरिका"], e: "भारत = India = Hindustan." },
+        { q: "भारत की राजधानी क्या है?", a: "नई दिल्ली", w: ["मुंबई", "कोलकाता", "चेन्नई"], e: "New Delhi is the capital of India." },
+        { q: "भारत का राष्ट्रीय पंछी कौन सा है?", a: "मोर (Peacock)", w: ["गिद्ध", "कौआ", "तोता"], e: "The peacock (मोर) is India's national bird." },
+        { q: "भारत का राष्ट्रीय फूल कौन सा है?", a: "कमल (Lotus)", w: ["गुलाब", "सूरजमुखी", "गेंदा"], e: "The lotus (कमल) is India's national flower." },
+        { q: "भारत का राष्ट्रीय जानवर कौन सा है?", a: "बाघ (Tiger)", w: ["हाथी", "सिंह", "भालू"], e: "The Bengal tiger (बाघ) is India's national animal." },
+        { q: "'स्वतंत्रता दिवस' कब मनाया जाता है?", a: "15 अगस्त", w: ["26 जनवरी", "2 अक्टूबर", "14 नवंबर"], e: "Independence Day is celebrated on 15th August." },
+        { q: "भारत की सबसे बड़ी नदी कौन सी है?", a: "गंगा (Ganges)", w: ["यमुना", "कावेरी", "नर्मदा"], e: "The Ganga is the longest and most sacred river in India." },
+        { q: "भारत में कितने राज्य हैं?", a: "28 राज्य", w: ["25 राज्य", "30 राज्य", "20 राज्य"], e: "India has 28 states and 8 Union territories." },
+        { q: "'वंदे मातरम' का अर्थ क्या है?", a: "मैं मातृभूमि को प्रणाम करता हूँ", w: ["जय हिन्द", "भारत माता की जय", "जय जवान"], e: "Vande Mataram means 'I bow to thee, Mother'." },
+        { q: "भारत का राष्ट्रीय ध्वज कैसा दिखता है?", a: "तीन रंगों की पट्टियाँ: केसरिया, सफेद, हरा", w: ["दो रंग: लाल और नीला", "एक रंग: हरा", "चार रंग"], e: "The Indian flag has three horizontal stripes: saffron, white, and green." },
+      ],
+      // World 10: प्रकृति (Nature - Poem)
+      [
+        { q: "'प्रकृति' शब्द का अर्थ क्या है?", a: "Nature / प्राकृतिक संसार", w: ["City", "Village", "Building"], e: "प्रकृति = Nature = the natural world around us." },
+        { q: "'पेड़' शब्द का बहुवचन क्या है?", a: "पेड़", w: ["पेड़ा", "पेड़ों", "पेड़ी"], e: "पेड़ = Tree(s) - same form for singular and plural." },
+        { q: "प्रकृति में कौन-कौन से रंग हैं?", a: "हरा, पीला, लाल, नीला", w: ["सिर्फ काला और सफेद", "सिर्फ हरा", "कोई रंग नहीं"], e: "Nature is full of many beautiful colours." },
+        { q: "'पहाड़' शब्द का पर्यायवाची शब्द क्या है?", a: "पर्वत / अचल", w: ["नदी", "समुद्र", "मैदान"], e: "पहाड़ = पर्वत = Mountain." },
+        { q: "'नदी' शब्द का बहुवचन क्या है?", a: "नदियाँ", w: ["नदी", "नदा", "नदिन"], e: "नदी (Singular) → नदियाँ (Plural)." },
+        { q: "प्रकृति से हमें क्या सीखना चाहिए?", a: "शांति और सद्भाव", w: ["लड़ना", "चिल्लाना", "गुस्सा करना"], e: "Nature teaches us peace and harmony." },
+        { q: "'फूल' शब्द का बहुवचन क्या है?", a: "फूल", w: ["फूला", "फूली", "फूलों"], e: "फूल = same in singular and plural." },
+        { q: "प्रकृति की सुंदरता कब सबसे अच्छी लगती है?", a: "सुबह-सुबह (Morning)", w: ["रात में", "दोपहर में", "शाम को"], e: "Nature is most beautiful in the early morning." },
+        { q: "'पत्ती' शब्द का बहुवचन क्या है?", a: "पत्तियाँ", w: ["पत्ता", "पत्ते", "पत्तिन"], e: "पत्ती (Singular) → पत्तियाँ (Plural - feminine)." },
+        { q: "प्रकृति की कविताएँ क्या सिखाती हैं?", a: "प्रकृति के प्रति प्रेम और सम्मान", w: ["गुस्सा और लड़ाई", "डर और चिंता", "थकान और नींद"], e: "Nature poems teach us to love and respect nature." },
       ],
     ];
     const selected = questions[worldId - 1] || questions[0];
@@ -701,21 +887,22 @@ class QG {
     });
   }
 
-  // ============ MAIN ROUTER ============
   static getQuestions(subjectId: string, bookId: number, worldId: number, count = 5): MathQuestion[] {
     switch (subjectId) {
       case 'math': {
         switch (worldId) {
           case 1: return this.mathPlaceValue(count);
-          case 2: return this.mathMultiply(count);
-          case 3: return this.mathDivide(count);
-          case 4: return this.mathFactors(count);
-          case 5: return this.mathFractions(count);
-          case 6: return this.mathDecimals(count);
-          case 7: return this.mathPercent(count);
+          case 2: return this.mathAddSubtract(count);
+          case 3: return this.mathMultiply(count);
+          case 4: return this.mathDivide(count);
+          case 5: return this.mathFactors(count);
+          case 6: return this.mathFractions(count);
+          case 7: return this.mathDecimals(count);
           case 8: return this.mathGeometry(count);
           case 9: return this.mathMeasure(count);
           case 10: return this.mathData(count);
+          case 11: return this.mathPercent(count);
+          case 12: return this.mathMoney(count);
           default: return this.mathPlaceValue(count);
         }
       }

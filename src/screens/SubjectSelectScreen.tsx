@@ -34,7 +34,7 @@ export default function SubjectSelectScreen() {
                 onClick={() => gameStore.selectSubject(subject.id)}
                 style={{ borderColor: subject.color + '60', background: subject.color + '15' }}
               >
-                <div className="subject-icon-wrapper" style={{ background: subject.color + '30' }}>
+                <div className="subject-icon-wrapper">
                   <img src={subject.icon} alt={subject.name} className="subject-icon-img" />
                 </div>
                 <div className="subject-info">
