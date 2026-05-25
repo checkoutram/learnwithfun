@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    namespace "com.mathquest.grade5"
+    namespace "com.subjects.fun.grade5"
     compileSdk rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.mathquest.grade5"
+        applicationId "com.subjects.fun.grade5"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

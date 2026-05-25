@@ -1,4 +1,4 @@
-package com.mathquest.grade5;
+package com.subjects.fun.grade5;
 
 import com.getcapacitor.BridgeActivity;
 
