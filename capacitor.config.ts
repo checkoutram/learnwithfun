@@ -1,7 +1,7 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.subjects.fun.grade5',
+  appId: 'com.learnwithfun.app',
   appName: 'Learn With Fun',
   webDir: 'dist',
   server: {
