@@ -13,6 +13,10 @@ const config: CapacitorConfig = {
       keystoreAlias: undefined,
     },
   },
+  ios: {
+    contentInset: 'always',
+    scheme: 'LearnWithFun',
+  },
 };
 
 export default config;
