@@ -33,7 +33,7 @@ export default function NameInputScreen() {
 
     setError('');
     gameStore.setPlayerName(trimmed);
-    gameStore.goToSubjects();
+    gameStore.goToGrade();
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -78,7 +78,7 @@ export default function NameInputScreen() {
           className="btn-secondary"
           onClick={() => {
             gameStore.setPlayerName('Explorer');
-            gameStore.goToSubjects();
+            gameStore.goToGrade();
           }}
           data-testid="name-skip"
         >

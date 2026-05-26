@@ -3,7 +3,32 @@ import type { MathQuestion } from './QuestionGenerator';
 import { SUBJECTS } from './subjects';
 import type { SubjectData, BookData, WorldData } from './subjects';
 
-export type GameScreen = 'menu' | 'nameInput' | 'subjects' | 'books' | 'worlds' | 'question' | 'worldComplete' | 'allComplete';
+export type GameScreen = 'menu' | 'nameInput' | 'grade' | 'syllabus' | 'subjects' | 'books' | 'worlds' | 'question' | 'worldComplete' | 'allComplete';
+
+export interface GradeData { id: number; name: string; label: string; enabled: boolean; }
+export interface SyllabusData { id: string; name: string; label: string; enabled: boolean; }
+
+export const GRADES: GradeData[] = [
+  { id: 1, name: '1st', label: '1st Standard', enabled: false },
+  { id: 2, name: '2nd', label: '2nd Standard', enabled: false },
+  { id: 3, name: '3rd', label: '3rd Standard', enabled: false },
+  { id: 4, name: '4th', label: '4th Standard', enabled: false },
+  { id: 5, name: '5th', label: '5th Standard', enabled: true },
+  { id: 6, name: '6th', label: '6th Standard', enabled: false },
+  { id: 7, name: '7th', label: '7th Standard', enabled: false },
+  { id: 8, name: '8th', label: '8th Standard', enabled: false },
+  { id: 9, name: '9th', label: '9th Standard', enabled: false },
+  { id: 10, name: '10th', label: '10th Standard', enabled: false },
+  { id: 11, name: '11th', label: '11th Standard', enabled: false },
+  { id: 12, name: '12th', label: '12th Standard', enabled: false },
+];
+
+export const SYLLABI: SyllabusData[] = [
+  { id: 'cbse', name: 'CBSE', label: 'Central Board of Secondary Education', enabled: true },
+  { id: 'icse', name: 'ICSE', label: 'Indian Certificate of Secondary Education', enabled: false },
+  { id: 'state', name: 'State Board', label: 'State Board (TN / Other)', enabled: false },
+  { id: 'ib', name: 'IB / Cambridge Intl', label: 'International Baccalaureate', enabled: false },
+];
 
 export interface QuestionAttempt {
   retries: number;
@@ -33,6 +58,8 @@ class GameStore {
   private listeners: Listener[] = [];
 
   screen: GameScreen = 'menu';
+  selectedGrade: GradeData | null = null;
+  selectedSyllabus: SyllabusData | null = null;
   currentSubject: SubjectData | null = null;
   currentBook: BookData | null = null;
   currentWorld: WorldData | null = null;
@@ -60,6 +87,29 @@ class GameStore {
   setPlayerName(name: string) {
     this.progress.playerName = name.trim();
     saveProgress(this.progress);
+    this.notify();
+  }
+
+  selectGrade(gradeId: number) {
+    const grade = GRADES.find(g => g.id === gradeId);
+    if (!grade || !grade.enabled) return;
+    this.selectedGrade = grade;
+    this.selectedSyllabus = null;
+    this.currentSubject = null;
+    this.currentBook = null;
+    this.currentWorld = null;
+    this.screen = 'syllabus';
+    this.notify();
+  }
+
+  selectSyllabus(syllabusId: string) {
+    const syllabus = SYLLABI.find(s => s.id === syllabusId);
+    if (!syllabus || !syllabus.enabled) return;
+    this.selectedSyllabus = syllabus;
+    this.currentSubject = null;
+    this.currentBook = null;
+    this.currentWorld = null;
+    this.screen = 'subjects';
     this.notify();
   }
 
@@ -167,7 +217,9 @@ class GameStore {
   }
 
   goToMenu() { this.screen = 'menu'; this.notify(); }
-  goToSubjects() { this.screen = 'subjects'; this.notify(); }
+  goToGrade() { this.screen = 'grade'; this.currentSubject = null; this.currentBook = null; this.currentWorld = null; this.notify(); }
+  goToSyllabus() { this.screen = 'syllabus'; this.currentSubject = null; this.currentBook = null; this.currentWorld = null; this.notify(); }
+  goToSubjects() { this.screen = 'subjects'; this.currentBook = null; this.currentWorld = null; this.notify(); }
   goToBooks() { this.screen = 'books'; this.notify(); }
   goToWorlds() { this.screen = 'worlds'; this.notify(); }
 
@@ -184,6 +236,8 @@ class GameStore {
   getState() {
     return {
       screen: this.screen,
+      selectedGrade: this.selectedGrade,
+      selectedSyllabus: this.selectedSyllabus,
       currentSubject: this.currentSubject,
       currentBook: this.currentBook,
       currentWorld: this.currentWorld,

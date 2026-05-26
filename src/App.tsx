@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { gameStore, type GameScreen } from './game/gameStore';
 import MenuScreen from './screens/MenuScreen';
 import NameInputScreen from './screens/NameInputScreen';
+import GradeSelectScreen from './screens/GradeSelectScreen';
+import SyllabusSelectScreen from './screens/SyllabusSelectScreen';
 import SubjectSelectScreen from './screens/SubjectSelectScreen';
 import BookSelectScreen from './screens/BookSelectScreen';
 import WorldSelectScreen from './screens/WorldSelectScreen';
@@ -28,6 +30,8 @@ function App() {
     switch (screen) {
       case 'menu': return <MenuScreen />;
       case 'nameInput': return <NameInputScreen />;
+      case 'grade': return <GradeSelectScreen />;
+      case 'syllabus': return <SyllabusSelectScreen />;
       case 'subjects': return <SubjectSelectScreen />;
       case 'books': return <BookSelectScreen />;
       case 'worlds': return <WorldSelectScreen />;

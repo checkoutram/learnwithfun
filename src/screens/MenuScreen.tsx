@@ -21,7 +21,7 @@ export default function MenuScreen() {
   const handlePlay = () => {
     const state = gameStore.getState();
     if (state.progress.playerName) {
-      gameStore.goToSubjects();
+      gameStore.goToGrade();
     } else {
       gameStore.setScreen('nameInput');
     }
@@ -68,11 +68,11 @@ export default function MenuScreen() {
           <div className="modal-content" onClick={e => e.stopPropagation()}>
             <h2 className="modal-title">How to Play</h2>
             <ul className="modal-list">
-              <li><span className="modal-step">1</span>Choose a subject you love</li>
-              <li><span className="modal-step">2</span>Pick a book and world to explore</li>
-              <li><span className="modal-step">3</span>Answer 5 fun questions</li>
-              <li><span className="modal-step">4</span>Tap the correct answer</li>
-              <li><span className="modal-step">5</span>Collect stars and master all subjects!</li>
+              <li><span className="modal-step">1</span>Select your Grade (Standard)</li>
+              <li><span className="modal-step">2</span>Choose your Syllabus (CBSE, etc.)</li>
+              <li><span className="modal-step">3</span>Pick a Subject and Book</li>
+              <li><span className="modal-step">4</span>Select a World to explore</li>
+              <li><span className="modal-step">5</span>Answer questions and collect stars!</li>
             </ul>
             <button className="modal-close" onClick={() => setShowHelp(false)}>
               Got it!

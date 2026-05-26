@@ -3,6 +3,8 @@ import { gameStore, SUBJECTS } from '../game/gameStore';
 export default function SubjectSelectScreen() {
   const state = gameStore.getState();
   const playerName = state.progress.playerName || 'Explorer';
+  const gradeLabel = state.selectedGrade?.label || '5th Standard';
+  const syllabusName = state.selectedSyllabus?.name || 'CBSE';
 
   return (
     <div className="subject-screen">
@@ -11,12 +13,22 @@ export default function SubjectSelectScreen() {
       <div className="subject-content">
         {/* Header */}
         <div className="subject-header">
-          <button className="btn-back" onClick={() => gameStore.goToMenu()}>
+          <button className="btn-back" onClick={() => gameStore.goToSyllabus()}>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
           </button>
           <h2 className="subject-title">Subjects</h2>
+        </div>
+
+        {/* Grade & Syllabus Badge */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 8 }}>
+          <span style={{ background: '#FF6B3520', color: '#FF6B35', padding: '3px 12px', borderRadius: 10, fontSize: 12, fontWeight: 700 }}>
+            {syllabusName}
+          </span>
+          <span style={{ background: '#667EEA20', color: '#a5b4fc', padding: '3px 12px', borderRadius: 10, fontSize: 12, fontWeight: 700 }}>
+            {gradeLabel}
+          </span>
         </div>
 
         <p className="subject-greeting">Hi {playerName}! Pick a subject:</p>
