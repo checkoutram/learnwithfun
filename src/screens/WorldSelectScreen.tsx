@@ -32,7 +32,8 @@ export default function WorldSelectScreen() {
     <div className="worlds-screen">
       <div className="worlds-header">
         <button className="btn-back" onClick={() => {
-          if (subject.books.length > 1) gameStore.goToBooks();
+          const activeBooks = subject.books.filter(b => !b.disabled);
+          if (activeBooks.length > 1) gameStore.goToBooks();
           else gameStore.goToSubjects();
         }}>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
