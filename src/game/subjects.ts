@@ -158,13 +158,13 @@ export const SUBJECTS: SubjectData[] = [
   },
   {
     id: 'hindi',
-    name: 'Hindi (3rd Language)',
+    name: 'Hindi',
     color: '#FF5722',
     icon: '/assets/subject_hindi.png',
     books: [
       {
         id: 1,
-        name: 'Finding Text-Cum Work Book 3',
+        name: 'Hindi (3rd Language) - Finding Text-Cum Work Book 3',
         worlds: [
           { id: 1, name: 'मेहनत', topic: 'Hard Work & Perseverance', color: '#FF5722', icon: '/assets/eng_word.png' },
           { id: 2, name: 'पंछी (Poem)', topic: 'Birds & Nature', color: '#FFB300', icon: '/assets/eng_adj.png' },
