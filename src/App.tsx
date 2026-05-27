@@ -14,15 +14,12 @@ import './game.css';
 
 function App() {
   const [screen, setScreen] = useState<GameScreen>(gameStore.screen);
-  const [transition, setTransition] = useState<'in' | 'out'>('in');
+  const [key, setKey] = useState(0);
 
   useEffect(() => {
     return gameStore.subscribe(() => {
-      setTransition('out');
-      setTimeout(() => {
-        setScreen(gameStore.screen);
-        setTransition('in');
-      }, 200);
+      setScreen(gameStore.screen);
+      setKey(k => k + 1);
     });
   }, []);
 
@@ -44,7 +41,7 @@ function App() {
 
   return (
     <div className="game-container">
-      <div className={`screen-wrapper ${transition === 'in' ? 'screen-in' : 'screen-out'}`}>
+      <div className="screen-wrapper screen-in" key={key}>
         {renderScreen()}
       </div>
     </div>
