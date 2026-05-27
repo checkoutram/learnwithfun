@@ -143,7 +143,7 @@ class GameStore {
     const world = this.currentBook.worlds.find(w => w.id === worldId);
     if (!world) return;
     this.currentWorld = world;
-    this.questions = QuestionGenerator.getQuestions(this.currentSubject.id, this.currentBook.id, worldId, 10);
+    this.questions = QuestionGenerator.getQuestions(this.currentSubject.id, this.currentBook.id, worldId, 30);
     this.currentQuestionIndex = 0;
     this.correctCount = 0;
     this.wrongCount = 0;

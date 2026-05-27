@@ -55,7 +55,7 @@ class QG {
   }
 
   // ============ MATH (12 chapters - Cambridge Primary Maths / NCERT Grade 5) ============
-  static mathPlaceValue(n = 5): MathQuestion[] {
+  static mathPlaceValue(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       const num = this.getRandomInt(10000, 999999), ns = num.toString(), pos = this.getRandomInt(0, ns.length - 1);
@@ -73,7 +73,7 @@ class QG {
     return q;
   }
 
-  static mathAddSubtract(n = 5): MathQuestion[] {
+  static mathAddSubtract(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 2 === 0) { const a = this.getRandomInt(1000, 9999), b = this.getRandomInt(1000, 9999), s = a + b; q.push({ question: `What is ${a.toLocaleString()} + ${b.toLocaleString()}?`, ...this.makeOptions(s.toLocaleString(), [() => (s + this.getRandomInt(1, 50)).toLocaleString(), () => (s - this.getRandomInt(1, 50)).toLocaleString(), () => (a + b + this.getRandomInt(100, 500)).toLocaleString()]), explanation: `${a.toLocaleString()} + ${b.toLocaleString()} = ${s.toLocaleString()}.` }); }
@@ -82,15 +82,15 @@ class QG {
     return q;
   }
 
-  static mathMultiply(n = 5): MathQuestion[] {
+  static mathMultiply(n = 30): MathQuestion[] {
     return Array.from({ length: n }, () => { const a = this.getRandomInt(100, 999), b = this.getRandomInt(2, 9), ans = a * b; return { question: `What is ${a} x ${b}?`, ...this.makeOptions(ans.toString(), [() => (ans + this.getRandomInt(21, 50)).toString(), () => Math.max(0, ans - this.getRandomInt(21, 50)).toString(), () => ((a + this.getRandomInt(2, 5)) * b).toString()]), explanation: `${a} x ${b} = ${ans}.` }; });
   }
 
-  static mathDivide(n = 5): MathQuestion[] {
+  static mathDivide(n = 30): MathQuestion[] {
     return Array.from({ length: n }, () => { const d = this.getRandomInt(2, 9), q = this.getRandomInt(10, 99), r = this.getRandomInt(1, d - 1), div = d * q + r; return { question: `What is ${div} divided by ${d}?`, ...this.makeOptions(`${q} remainder ${r}`, [() => `${q + this.getRandomInt(1, 5)} remainder ${r}`, () => `${q} remainder ${r + this.getRandomInt(1, 3)}`, () => `${Math.max(1, q - this.getRandomInt(1, 5))} remainder ${r}`]), explanation: `${div} / ${d} = ${q} remainder ${r}.` }; });
   }
 
-  static mathFactors(n = 5): MathQuestion[] {
+  static mathFactors(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 3 === 0) {
@@ -110,7 +110,7 @@ class QG {
     return q;
   }
 
-  static mathFractions(n = 5): MathQuestion[] {
+  static mathFractions(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 3 === 0) {
@@ -129,7 +129,7 @@ class QG {
     return q;
   }
 
-  static mathDecimals(n = 5): MathQuestion[] {
+  static mathDecimals(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 3 === 0) { const a = this.getRandomInt(1, 50) / 10, b = this.getRandomInt(1, 50) / 10, s = Math.round((a + b) * 10) / 10; q.push({ question: `What is ${a.toFixed(1)} + ${b.toFixed(1)}?`, ...this.makeOptions(s.toFixed(1), [() => (s + this.getRandomInt(2, 9) / 10).toFixed(1), () => Math.max(0.1, s - this.getRandomInt(2, 9) / 10).toFixed(1), () => (s + this.getRandomInt(10, 30) / 10).toFixed(1)]), explanation: `${a.toFixed(1)} + ${b.toFixed(1)} = ${s.toFixed(1)}.` }); }
@@ -139,7 +139,7 @@ class QG {
     return q;
   }
 
-  static mathPercent(n = 5): MathQuestion[] {
+  static mathPercent(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 2 === 0) { const p = [10, 20, 25, 75, 100][this.getRandomInt(0, 4)], base = this.getRandomInt(20, 200), ans = Math.round((p / 100) * base); q.push({ question: `What is ${p}% of ${base}?`, ...this.makeOptions(ans.toString(), [() => (ans + base + this.getRandomInt(1, 20)).toString(), () => Math.abs(base - ans + this.getRandomInt(5, 30)).toString(), () => (ans * 2 + this.getRandomInt(1, 10)).toString()]), explanation: `${p}% of ${base} = ${ans}.` }); }
@@ -148,7 +148,7 @@ class QG {
     return q;
   }
 
-  static mathGeometry(n = 5): MathQuestion[] {
+  static mathGeometry(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 3 === 0) { const angles = [{ n: 'acute', r: 'less than 90 degrees' }, { n: 'right', r: 'exactly 90 degrees' }, { n: 'obtuse', r: 'between 90 and 180 degrees' }, { n: 'straight', r: 'exactly 180 degrees' }], t = angles[this.getRandomInt(0, 3)], wrong = angles.filter(a => a.n !== t.n); q.push({ question: `An angle that is ${t.r} is called:`, ...this.makeOptions(t.n.charAt(0).toUpperCase() + t.n.slice(1), wrong.map(a => () => a.n.charAt(0).toUpperCase() + a.n.slice(1))), explanation: `A ${t.n} angle is ${t.r}.` }); }
@@ -158,7 +158,7 @@ class QG {
     return q;
   }
 
-  static mathMeasure(n = 5): MathQuestion[] {
+  static mathMeasure(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 3 === 0) { const km = this.getRandomInt(1, 10), m = km * 1000; q.push({ question: `How many meters are in ${km} kilometre(s)?`, ...this.makeOptions(`${m} m`, [() => `${km * 100} m`, () => `${km * 10} m`, () => `${km + 1000} m`]), explanation: `1 km = 1000 m, so ${km} km = ${m} m.` }); }
@@ -168,7 +168,7 @@ class QG {
     return q;
   }
 
-  static mathData(n = 5): MathQuestion[] {
+  static mathData(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [], fruits = ['Apple', 'Banana', 'Orange', 'Mango', 'Grapes'];
     for (let i = 0; i < n; i++) {
       if (i % 3 === 0) { const data: Record<string, number> = {}; let start = this.getRandomInt(10, 20); fruits.forEach((f, j) => data[f] = start + j * 3); const vals = Object.values(data).sort(() => Math.random() - 0.5); fruits.forEach((f, j) => data[f] = vals[j]); const most = Object.entries(data).sort((a, b) => b[1] - a[1])[0]; q.push({ question: `A survey shows: ${Object.entries(data).map(([k, v]) => `${k}: ${v}`).join(', ')}. Which is most popular?`, ...this.makeOptions(most[0], fruits.filter(f => f !== most[0]).slice(0, 3).map(f => () => f)), explanation: `${most[0]} has ${most[1]} votes, the highest.` }); }
@@ -178,7 +178,7 @@ class QG {
     return q;
   }
 
-  static mathMoney(n = 5): MathQuestion[] {
+  static mathMoney(n = 30): MathQuestion[] {
     const q: MathQuestion[] = [];
     for (let i = 0; i < n; i++) {
       if (i % 3 === 0) { const p = this.getRandomInt(10, 500), r = this.getRandomInt(5, p - 1); q.push({ question: `An item costs ₹${p}. You pay ₹${p + r}. What is the change?`, ...this.makeOptions(`₹${r}`, [() => `₹${r + this.getRandomInt(1, 10)}`, () => `₹${Math.max(1, r - this.getRandomInt(1, 5))}`, () => `₹${p}`]), explanation: `Change = Amount paid - Cost = ₹${p + r} - ₹${p} = ₹${r}.` }); }
@@ -189,7 +189,7 @@ class QG {
   }
 
   // ============ ENGLISH GRAMMAR (Communicate with Cambridge Grade 5 Grammar) ============
-  static engGrammar(worldId: number, n = 5): MathQuestion[] {
+  static engGrammar(worldId: number, n = 30): MathQuestion[] {
     switch (worldId) {
       case 1: return this.engNouns(n);
       case 2: return this.engVerbs(n);
@@ -203,7 +203,7 @@ class QG {
     }
   }
 
-  static engNouns(n = 5): MathQuestion[] {
+  static engNouns(n = 30): MathQuestion[] {
     const nouns = [{ w: 'dog', t: 'common' }, { w: 'India', t: 'proper' }, { w: 'team', t: 'collective' }, { w: 'honesty', t: 'abstract' }, { w: 'happiness', t: 'abstract' }, { w: 'Ravi', t: 'proper' }, { w: 'flock', t: 'collective' }, { w: 'courage', t: 'abstract' }, { w: 'cat', t: 'common' }, { w: 'Monday', t: 'proper' }];
     return Array.from({ length: n }, (_, i) => {
       const item = nouns[i % nouns.length];
@@ -211,7 +211,7 @@ class QG {
     });
   }
 
-  static engVerbs(n = 5): MathQuestion[] {
+  static engVerbs(n = 30): MathQuestion[] {
     const verbs = ['run', 'jump', 'eat', 'write', 'think', 'play', 'read', 'sing', 'dance', 'swim'];
     return Array.from({ length: n }, (_, i) => {
       if (i % 2 === 0) {
@@ -225,7 +225,7 @@ class QG {
     });
   }
 
-  static engAdjectives(n = 5): MathQuestion[] {
+  static engAdjectives(n = 30): MathQuestion[] {
     const items = [{ w: 'beautiful', t: 'adjective', q: 'describes a noun' }, { w: 'quickly', t: 'adverb', q: 'describes a verb' }, { w: 'brave', t: 'adjective', q: 'describes a noun' }, { w: 'happily', t: 'adverb', q: 'describes a verb' }, { w: 'tall', t: 'adjective', q: 'describes a noun' }];
     return Array.from({ length: n }, (_, i) => {
       const item = items[i % items.length];
@@ -234,7 +234,7 @@ class QG {
     });
   }
 
-  static engPronouns(n = 5): MathQuestion[] {
+  static engPronouns(n = 30): MathQuestion[] {
     const questions = [
       { q: '___ is my best friend. (He/Him/His)', a: 'He', e: '"He" is a subject pronoun.' },
       { q: 'The book is ___ . (my/mine/me)', a: 'mine', e: '"Mine" is a possessive pronoun.' },
@@ -245,7 +245,7 @@ class QG {
     return questions.map(q => ({ question: q.q, ...this.makeOptions(q.a, [() => q.a === 'He' ? 'Him' : q.a === 'mine' ? 'my' : q.a === 'Which' ? 'Who' : q.a === 'them' ? 'they' : 'A', () => q.a === 'He' ? 'His' : q.a === 'mine' ? 'me' : q.a === 'Which' ? 'What' : q.a === 'them' ? 'their' : 'The', () => 'It']), explanation: q.e }));
   }
 
-  static engSentences(n = 5): MathQuestion[] {
+  static engSentences(n = 30): MathQuestion[] {
     const questions = [
       { q: '"What a beautiful day!" is what type of sentence?', a: 'Exclamatory', e: 'Exclamatory sentences express strong emotion with "!"' },
       { q: '"Close the door." is what type of sentence?', a: 'Imperative', e: 'Imperative sentences give commands or requests.' },
@@ -256,7 +256,7 @@ class QG {
     return questions.map(q => ({ question: q.q, ...this.makeOptions(q.a, ['Declarative', 'Interrogative', 'Imperative', 'Exclamatory'].filter(t => t !== q.a).slice(0, 3).map(w => () => w)), explanation: q.e }));
   }
 
-  static engPrepositions(n = 5): MathQuestion[] {
+  static engPrepositions(n = 30): MathQuestion[] {
     const questions = [
       { q: 'The cat is ___ the table. (on/in/under)', a: 'on', e: '"On" means touching a surface.' },
       { q: 'She walked ___ the park. (through/across/beside)', a: 'through', e: '"Through" means going from one side to the other.' },
@@ -267,7 +267,7 @@ class QG {
     return questions.map(q => ({ question: q.q, ...this.makeOptions(q.a, [() => 'Prepositions', () => 'Adverbs', () => 'Articles']), explanation: q.e }));
   }
 
-  static engVoice(n = 5): MathQuestion[] {
+  static engVoice(n = 30): MathQuestion[] {
     const questions = [
       { q: 'Convert to passive: "Ram eats an apple."', a: 'An apple is eaten by Ram.', e: 'Object becomes subject + is + past participle + by + subject.' },
       { q: 'Convert to passive: "She writes a letter."', a: 'A letter is written by her.', e: 'Object becomes subject + is + past participle + by + subject.' },
@@ -278,7 +278,7 @@ class QG {
     return questions.map(q => ({ question: q.q, ...this.makeOptions(q.a, [() => 'A letter is wrote by her.', () => q.a.includes('passive') ? 'Active voice' : 'Passive voice', () => 'The ball kicked by he.']), explanation: q.e }));
   }
 
-  static engWords(n = 5): MathQuestion[] {
+  static engWords(n = 30): MathQuestion[] {
     const syns = [{ w: 'happy', s: 'joyful' }, { w: 'big', s: 'large' }, { w: 'fast', s: 'quick' }, { w: 'sad', s: 'unhappy' }, { w: 'smart', s: 'clever' }];
     const ants = [{ w: 'hot', a: 'cold' }, { w: 'tall', a: 'short' }, { w: 'happy', a: 'sad' }, { w: 'fast', a: 'slow' }, { w: 'brave', a: 'cowardly' }];
     return Array.from({ length: n }, (_, i) => {
@@ -887,35 +887,49 @@ class QG {
     });
   }
 
-  static getQuestions(subjectId: string, bookId: number, worldId: number, count = 5): MathQuestion[] {
+  static getQuestions(subjectId: string, bookId: number, worldId: number, count = 30): MathQuestion[] {
+    let questions: MathQuestion[];
     switch (subjectId) {
       case 'math': {
         switch (worldId) {
-          case 1: return this.mathPlaceValue(count);
-          case 2: return this.mathAddSubtract(count);
-          case 3: return this.mathMultiply(count);
-          case 4: return this.mathDivide(count);
-          case 5: return this.mathFactors(count);
-          case 6: return this.mathFractions(count);
-          case 7: return this.mathDecimals(count);
-          case 8: return this.mathGeometry(count);
-          case 9: return this.mathMeasure(count);
-          case 10: return this.mathData(count);
-          case 11: return this.mathPercent(count);
-          case 12: return this.mathMoney(count);
-          default: return this.mathPlaceValue(count);
+          case 1: questions = this.mathPlaceValue(count); break;
+          case 2: questions = this.mathAddSubtract(count); break;
+          case 3: questions = this.mathMultiply(count); break;
+          case 4: questions = this.mathDivide(count); break;
+          case 5: questions = this.mathFactors(count); break;
+          case 6: questions = this.mathFractions(count); break;
+          case 7: questions = this.mathDecimals(count); break;
+          case 8: questions = this.mathGeometry(count); break;
+          case 9: questions = this.mathMeasure(count); break;
+          case 10: questions = this.mathData(count); break;
+          case 11: questions = this.mathPercent(count); break;
+          case 12: questions = this.mathMoney(count); break;
+          default: questions = this.mathPlaceValue(count); break;
         }
+        break;
       }
       case 'english': {
-        if (bookId === 1) return this.engTextbook(worldId, count);
-        return this.engGrammar(worldId, count);
+        if (bookId === 1) questions = this.engTextbook(worldId, count);
+        else questions = this.engGrammar(worldId, count);
+        break;
       }
-      case 'science': return this.science(worldId, count);
-      case 'social': return this.social(worldId, count);
-      case 'tamil': return this.tamilGrammar(worldId, count);
-      case 'hindi': return this.hindi(worldId, count);
-      default: return this.mathPlaceValue(count);
+      case 'science': questions = this.science(worldId, count); break;
+      case 'social': questions = this.social(worldId, count); break;
+      case 'tamil': questions = this.tamilGrammar(worldId, count); break;
+      case 'hindi': questions = this.hindi(worldId, count); break;
+      default: questions = this.mathPlaceValue(count); break;
     }
+    // Shuffle questions so they appear in random order on each retry
+    return this.shuffleQuestions(questions);
+  }
+
+  private static shuffleQuestions(questions: MathQuestion[]): MathQuestion[] {
+    const shuffled = [...questions];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }
 }
 
