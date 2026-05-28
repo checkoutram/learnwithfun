@@ -30,13 +30,10 @@ export default function WorldCompleteScreen() {
         <h2 className="complete-title">World Complete!</h2>
         <p className="complete-world">{world.name}</p>
         <div className="complete-stars">
-          {Array.from({ length: totalQuestions }, (_, i) => i + 1).map(s => {
-            if (s <= earnedStars) return <span key={s} className="complete-star earned">★</span>;
-            if (s <= earnedStars + 0.5) return <span key={s} className="complete-star"><span className="half-star-wrap"><span className="half-star-gold">★</span><span className="half-star-gray">★</span></span></span>;
-            return <span key={s} className="complete-star empty">☆</span>;
-          })}
+          {Array.from({ length: Math.min(earnedStars, 5) }, (_, i) => <span key={`f${i}`} className="complete-star earned">★</span>)}
+          {Array.from({ length: Math.max(0, 5 - earnedStars) }, (_, i) => <span key={`e${i}`} className="complete-star empty">☆</span>)}
         </div>
-        <p className="complete-score">{earnedStars}/{totalQuestions} stars — {msgs[Math.min(Math.floor(earnedStars), 10)]}</p>
+        <p className="complete-score">{earnedStars}/{totalQuestions} stars — {msgs[Math.min(Math.floor((earnedStars / totalQuestions) * 10), 10)]}</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '260px' }}>
           <button className="btn-play" style={{ marginBottom: 0 }} onClick={() => gameStore.goToWorlds()}>Back to Worlds</button>
         </div>

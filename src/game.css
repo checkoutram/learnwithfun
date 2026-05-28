@@ -510,6 +510,31 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
 .progress-bar-bg { height: 8px; background: rgba(0,0,0,0.1); border-radius: 4px; overflow: hidden; }
 .progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
 .progress-text { font-size: 11px; color: #555; font-weight: 800; margin-top: 3px; text-align: center; }
+.question-star-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #FF8C42, #FF6B35);
+  border-radius: 14px;
+  padding: 4px 12px;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(255,107,53,0.35);
+  min-width: 52px;
+  justify-content: center;
+}
+.question-star-icon {
+  font-size: 15px;
+  color: #fff;
+  line-height: 1;
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.2));
+}
+.question-star-count {
+  font-size: 13px;
+  font-weight: 800;
+  color: #fff;
+  line-height: 1;
+}
 .question-stars { display: flex; gap: 2px; }
 .star-icon { font-size: 16px; color: rgba(0,0,0,0.15); transition: all 0.3s ease; }
 .star-icon.earned { color: #FFC107; filter: drop-shadow(0 0 4px rgba(255,193,7,0.8)); animation: starPop 0.5s ease; }
@@ -624,7 +649,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
   flex-shrink: 0;
 }
 .complete-world { font-size: min(18px, 4.5vw); font-weight: 800; color: #333; flex-shrink: 0; }
-.complete-stars { display: flex; gap: 8px; flex-shrink: 0; }
+.complete-stars { display: flex; gap: 8px; flex-shrink: 0; flex-wrap: wrap; justify-content: center; }
 .complete-star { font-size: min(40px, 8vw); animation: starPop 0.5s ease backwards; }
 .complete-star:nth-child(1) { animation-delay: 0.2s; }
 .complete-star:nth-child(2) { animation-delay: 0.4s; }
