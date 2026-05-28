@@ -8,14 +8,14 @@ export default function SubjectSelectScreen() {
 
   return (
     <div className="subject-screen">
+      <button className="btn-back" onClick={() => gameStore.goToSyllabus()}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
       <div className="subject-content">
         {/* Header */}
         <div className="subject-header">
-          <button className="btn-back" onClick={() => gameStore.goToSyllabus()}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-          </button>
           <h2 className="subject-title">Subjects</h2>
         </div>
 

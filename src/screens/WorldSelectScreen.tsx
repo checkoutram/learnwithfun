@@ -30,16 +30,16 @@ export default function WorldSelectScreen() {
 
   return (
     <div className="worlds-screen">
+      <button className="btn-back" onClick={() => {
+        const activeBooks = subject.books.filter(b => !b.disabled);
+        if (activeBooks.length > 1) gameStore.goToBooks();
+        else gameStore.goToSubjects();
+      }}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
       <div className="worlds-header">
-        <button className="btn-back" onClick={() => {
-          const activeBooks = subject.books.filter(b => !b.disabled);
-          if (activeBooks.length > 1) gameStore.goToBooks();
-          else gameStore.goToSubjects();
-        }}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 19l-7-7 7-7"/>
-          </svg>
-        </button>
         <div style={{ flex: 1 }}>
           <h2 className="worlds-title">{book.name}</h2>
           <div style={{ fontSize: '11px', color: '#888' }}>{subject.name}</div>

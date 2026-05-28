@@ -100,10 +100,10 @@ export default function QuestionScreen() {
         </div>
       )}
 
+      <button className="btn-back" onClick={handleBack}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
       <div className="question-header">
-        <button className="btn-back" onClick={handleBack}>
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-        </button>
         <div className="question-progress">
           <div className="progress-bar-bg"><div className="progress-bar-fill" style={{ width: `${progress}%`, background: `linear-gradient(90deg, ${world.color}, #81C784)` }} /></div>
           <div className="progress-text">Q{state.currentQuestionIndex + 1} of {state.questions.length}</div>

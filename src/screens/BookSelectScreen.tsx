@@ -6,14 +6,14 @@ export default function BookSelectScreen() {
 
   return (
     <div className="book-screen">
+      <button className="btn-back" onClick={() => gameStore.goToSubjects()}>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+      </button>
       <div className="book-content">
         {/* Header */}
         <div className="book-header">
-          <button className="btn-back" onClick={() => gameStore.goToSubjects()}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M19 12H5M12 19l-7-7 7-7"/>
-            </svg>
-          </button>
           <h2 className="book-title">{subject.name}</h2>
         </div>
 

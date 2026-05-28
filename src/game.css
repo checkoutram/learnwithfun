@@ -260,7 +260,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
   display: flex; flex-direction: column;
   padding: 56px 14px 20px;
 }
-.subject-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-shrink: 0; position: relative; }
+.subject-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-shrink: 0; position: relative; padding-left: 56px; }
 .subject-title {
   font-family: 'Fredoka One', cursive;
   font-size: min(24px, 6.5vw);
@@ -357,7 +357,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
   display: flex; flex-direction: column;
   padding: 56px 14px 20px;
 }
-.book-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-shrink: 0; position: relative; }
+.book-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; flex-shrink: 0; position: relative; padding-left: 56px; }
 .book-title { font-family: 'Fredoka One', cursive; font-size: min(22px, 6vw); color: #2E7D32; flex: 1; }
 .book-subtitle { font-size: min(13px, 3.2vw); font-weight: 700; color: #666; margin-bottom: 8px; flex-shrink: 0; }
 .book-list { display: flex; flex-direction: column; gap: min(10px, 1.5vh); }
@@ -403,7 +403,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
   padding-bottom: var(--safe-bottom);
   position: relative;
 }
-.worlds-header { padding: 56px 14px 8px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; position: relative; }
+.worlds-header { padding: 16px 14px 8px 56px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; position: relative; }
 .worlds-title { font-family: 'Fredoka One', cursive; font-size: min(20px, 5.5vw); color: #E65100; flex: 1; }
 .worlds-grid {
   padding: 0 14px 20px;
@@ -483,7 +483,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
   position: relative;
 }
 .question-header {
-  padding: 12px 14px 12px 56px;
+  padding: 16px 14px 12px 56px;
   display: flex; align-items: center; gap: 10px;
   flex-shrink: 0;
   background: rgba(255,255,255,0.6);
