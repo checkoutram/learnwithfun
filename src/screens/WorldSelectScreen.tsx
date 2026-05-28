@@ -42,7 +42,7 @@ export default function WorldSelectScreen() {
         </button>
         <div style={{ flex: 1 }}>
           <h2 className="worlds-title">{book.name}</h2>
-          <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)' }}>{subject.name}</div>
+          <div style={{ fontSize: '11px', color: '#888' }}>{subject.name}</div>
         </div>
       </div>
 
@@ -65,7 +65,7 @@ export default function WorldSelectScreen() {
                 <div className="world-topic">{world.topic}</div>
                 <div className="world-stars">
                   {renderStars(stars)}
-                  <span style={{ fontSize: '11px', color: stars > 0 ? '#FFC107' : 'rgba(255,255,255,0.3)', marginLeft: '4px', fontWeight: 700 }}>
+                  <span style={{ fontSize: '11px', color: stars > 0 ? '#FF8C42' : '#ccc', marginLeft: '4px', fontWeight: 700 }}>
                     {stars > 0 ? `${stars}/5` : ''}
                   </span>
                 </div>
@@ -76,7 +76,7 @@ export default function WorldSelectScreen() {
       </div>
 
       <div style={{ padding: '0 16px 16px', textAlign: 'center' }}>
-        <button onClick={() => setShowReset(true)} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.3)', fontSize: '12px', cursor: 'pointer', padding: '8px' }}>
+        <button onClick={() => setShowReset(true)} style={{ background: 'none', border: 'none', color: '#bbb', fontSize: '12px', cursor: 'pointer', padding: '8px' }}>
           Reset All Progress
         </button>
       </div>

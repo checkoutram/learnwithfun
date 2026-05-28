@@ -8,8 +8,6 @@ export default function SubjectSelectScreen() {
 
   return (
     <div className="subject-screen">
-      <div className="subject-bg" />
-
       <div className="subject-content">
         {/* Header */}
         <div className="subject-header">
@@ -23,10 +21,10 @@ export default function SubjectSelectScreen() {
 
         {/* Grade & Syllabus Badge */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 8 }}>
-          <span style={{ background: '#FF6B3520', color: '#FF6B35', padding: '3px 12px', borderRadius: 10, fontSize: 12, fontWeight: 700 }}>
+          <span style={{ background: '#E3F2FD', color: '#1565C0', padding: '3px 12px', borderRadius: 10, fontSize: 12, fontWeight: 700 }}>
             {syllabusName}
           </span>
-          <span style={{ background: '#667EEA20', color: '#a5b4fc', padding: '3px 12px', borderRadius: 10, fontSize: 12, fontWeight: 700 }}>
+          <span style={{ background: '#E8F5E9', color: '#2E7D32', padding: '3px 12px', borderRadius: 10, fontSize: 12, fontWeight: 700 }}>
             {gradeLabel}
           </span>
         </div>

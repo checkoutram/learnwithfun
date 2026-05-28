@@ -6,8 +6,6 @@ export default function BookSelectScreen() {
 
   return (
     <div className="book-screen">
-      <div className="book-bg" style={{ background: `linear-gradient(180deg, ${subject.color} 0%, #1a1a2e 60%)` }} />
-
       <div className="book-content">
         {/* Header */}
         <div className="book-header">
@@ -33,9 +31,9 @@ export default function BookSelectScreen() {
                 key={book.id}
                 className={`book-card ${isDisabled ? 'disabled' : ''}`}
                 onClick={() => { if (!isDisabled) gameStore.selectBook(book.id); }}
-                style={isDisabled ? {} : { borderColor: subject.color + '60', background: subject.color + '12' }}
+                style={isDisabled ? {} : { borderColor: subject.color + '40', background: subject.color + '08' }}
               >
-                <div className="book-icon" style={{ background: isDisabled ? '#555' : subject.color + '25' }}>
+                <div className="book-icon" style={{ background: isDisabled ? '#eee' : subject.color + '15' }}>
                   <img src={subject.icon} alt={subject.name} className="book-icon-img" />
                 </div>
                 <div className="book-info">
