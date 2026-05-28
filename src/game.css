@@ -342,6 +342,21 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
   color: #888;
   font-weight: 600;
 }
+.subject-stars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  row-gap: 2px;
+  align-items: center;
+  margin-top: 4px;
+}
+.subject-star-count {
+  font-size: 11px;
+  color: #FF8C42;
+  margin-left: 4px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
 
 /* ===== BOOK SELECT ===== */
 .book-screen {
@@ -468,7 +483,7 @@ html, body, #root { width: 100%; height: 100%; overflow: hidden; background: #E8
   color: #888;
   text-align: center;
 }
-.world-stars { display: flex; gap: 2px; justify-content: center; margin-top: 4px; }
+.world-stars { display: flex; gap: 1px; justify-content: center; margin-top: 4px; flex-wrap: wrap; row-gap: 2px; }
 .star-small { font-size: 12px; color: #ddd; }
 .star-small.earned { color: #FFC107; filter: drop-shadow(0 0 3px rgba(255,193,7,0.6)); }
 .world-lock { position: absolute; font-size: 20px; opacity: 0.6; }

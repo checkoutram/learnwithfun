@@ -54,10 +54,9 @@ export default function SubjectSelectScreen() {
                   </div>
                   {stars > 0 && (
                     <div className="subject-stars">
-                      {Array.from({ length: Math.min(Math.floor(stars), 5) }, (_, i) => <span key={`f${i}`} className="star-small earned">★</span>)}
+                      {Array.from({ length: Math.min(Math.floor(stars), 15) }, (_, i) => <span key={`f${i}`} className="star-small earned">★</span>)}
                       {(stars - Math.floor(stars) >= 0.5) && <span key="h" className="star-small earned"><span className="half-star-wrap"><span className="half-star-gold">★</span><span className="half-star-gray">★</span></span></span>}
-                      {Array.from({ length: Math.max(0, 5 - Math.ceil(stars)) }, (_, i) => <span key={`e${i}`} className="star-small">☆</span>)}
-                      <span className="subject-star-count"> {stars}/{totalWorlds * 10}</span>
+                      <span className="subject-star-count"> {stars}/{totalWorlds * 30}</span>
                     </div>
                   )}
                 </div>
