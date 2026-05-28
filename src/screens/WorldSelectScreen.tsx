@@ -14,14 +14,14 @@ export default function WorldSelectScreen() {
     gameStore.startWorld(worldId);
   };
 
-  // Helper to render stars (shows earned stars only, with count)
-  const renderStars = (stars: number) => {
-    const fullStars = Math.floor(stars);
-    const hasHalf = stars - fullStars >= 0.5;
+  // Helper to render 5 stars filled proportionally, with count
+  const renderFiveStars = (stars: number, maxStars: number) => {
+    const filled = Math.min(5, Math.round((stars / maxStars) * 5));
     return (
       <>
-        {Array.from({ length: fullStars }, (_, i) => <span key={`f${i}`} className="star-small earned">★</span>)}
-        {hasHalf && <span key="h" className="star-small earned"><span className="half-star-wrap"><span className="half-star-gold">★</span><span className="half-star-gray">★</span></span></span>}
+        {Array.from({ length: 5 }, (_, i) => (
+          <span key={i} className="star-small" style={{ color: i < filled ? '#FF8C42' : '#ddd' }}>★</span>
+        ))}
       </>
     );
   };
@@ -62,9 +62,9 @@ export default function WorldSelectScreen() {
                 <div className="world-name">{world.name}</div>
                 <div className="world-topic">{world.topic}</div>
                 <div className="world-stars">
-                  {renderStars(stars)}
-                  <span style={{ fontSize: '11px', color: stars > 0 ? '#FF8C42' : '#ccc', marginLeft: '4px', fontWeight: 700, flexShrink: 0 }}>
-                    {stars > 0 ? `${stars}/30` : '0/30'}
+                  {renderFiveStars(stars, 30)}
+                  <span style={{ fontSize: '11px', color: '#FF8C42', marginLeft: '4px', fontWeight: 700, flexShrink: 0 }}>
+                    {stars}/30
                   </span>
                 </div>
               </div>

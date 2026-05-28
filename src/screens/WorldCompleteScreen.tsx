@@ -30,10 +30,12 @@ export default function WorldCompleteScreen() {
         <h2 className="complete-title">World Complete!</h2>
         <p className="complete-world">{world.name}</p>
         <div className="complete-stars">
-          {Array.from({ length: Math.min(earnedStars, 5) }, (_, i) => <span key={`f${i}`} className="complete-star earned">★</span>)}
-          {Array.from({ length: Math.max(0, 5 - earnedStars) }, (_, i) => <span key={`e${i}`} className="complete-star empty">☆</span>)}
+          {Array.from({ length: 5 }, (_, i) => (
+            <span key={i} className="complete-star" style={{ color: i < Math.round((earnedStars / totalQuestions) * 5) ? '#FF8C42' : '#ccc' }}>★</span>
+          ))}
+          <span style={{ fontSize: '16px', color: '#FF8C42', fontWeight: 800, marginLeft: '6px' }}>{earnedStars}/{totalQuestions}</span>
         </div>
-        <p className="complete-score">{earnedStars}/{totalQuestions} stars — {msgs[Math.min(Math.floor((earnedStars / totalQuestions) * 10), 10)]}</p>
+        <p className="complete-score">{msgs[Math.min(Math.floor((earnedStars / totalQuestions) * 10), 10)]}</p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', width: '100%', maxWidth: '260px' }}>
           <button className="btn-play" style={{ marginBottom: 0 }} onClick={() => gameStore.goToWorlds()}>Back to Worlds</button>
         </div>

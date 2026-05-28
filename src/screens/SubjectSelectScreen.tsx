@@ -52,13 +52,12 @@ export default function SubjectSelectScreen() {
                   <div className="subject-books">
                     {subject.books.filter(b => !b.disabled).length} {subject.books.filter(b => !b.disabled).length === 1 ? 'book' : 'books'}
                   </div>
-                  {stars > 0 && (
-                    <div className="subject-stars">
-                      {Array.from({ length: Math.min(Math.floor(stars), 15) }, (_, i) => <span key={`f${i}`} className="star-small earned">★</span>)}
-                      {(stars - Math.floor(stars) >= 0.5) && <span key="h" className="star-small earned"><span className="half-star-wrap"><span className="half-star-gold">★</span><span className="half-star-gray">★</span></span></span>}
-                      <span className="subject-star-count"> {stars}/{totalWorlds * 30}</span>
-                    </div>
-                  )}
+                  <div className="subject-stars">
+                    {Array.from({ length: 5 }, (_, i) => (
+                      <span key={i} style={{ fontSize: 11, color: i < Math.round((stars / (totalWorlds * 30)) * 5) ? '#FF8C42' : '#ccc' }}>★</span>
+                    ))}
+                    <span className="subject-star-count"> {stars}/{totalWorlds * 30}</span>
+                  </div>
                 </div>
               </div>
             );

@@ -106,9 +106,14 @@ export default function QuestionScreen() {
       <div className="question-header">
         <div className="question-progress">
           <div className="progress-bar-bg"><div className="progress-bar-fill" style={{ width: `${progress}%`, background: `linear-gradient(90deg, ${world.color}, #81C784)` }} /></div>
-          <div className="progress-text">
-            Q{state.currentQuestionIndex + 1} of {state.questions.length}
-            <span style={{ marginLeft: 8, color: '#FF8C42', fontWeight: 800 }}>★ {earnedStars}/{state.questions.length}</span>
+          <div className="progress-text" style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span>Q{state.currentQuestionIndex + 1} of {state.questions.length}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              {Array.from({ length: 5 }, (_, i) => (
+                <span key={i} style={{ fontSize: 11, color: i < Math.ceil((earnedStars / state.questions.length) * 5) ? '#FF8C42' : '#ccc' }}>★</span>
+              ))}
+            </span>
+            <span style={{ color: '#FF8C42', fontWeight: 800, fontSize: 11 }}>{earnedStars}/{state.questions.length}</span>
           </div>
         </div>
       </div>
